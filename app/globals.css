@@ -1,0 +1,49 @@
+@import "tailwindcss";
+@source "../components/**/*.{ts,tsx}";
+@source "../app/**/*.{ts,tsx}";
+@source "../lib/**/*.{ts,tsx}";
+
+/* ─── Helvetica World (self-hosted) ──────────────────────────────────────────
+   Drop font files into /public/fonts/ with these exact filenames:
+   - HelveticaWorld-Regular.woff2
+   - HelveticaWorld-Bold.woff2
+   ─────────────────────────────────────────────────────────────────────────── */
+@font-face {
+  font-family: "Helvetica World";
+  src: url("/fonts/HelveticaWorld-Regular.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Helvetica World";
+  src: url("/fonts/HelveticaWorld-Bold.woff2") format("woff2");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@theme {
+  /* Colors */
+  --color-soft-black: #0D0A09;
+  --color-paper:      #F2EDE4;
+  --color-red:        #C41230;
+  --color-cobalt:     #1B44D8;
+
+  /* Typography
+     font-title    → HelveticaWorldBold     (h1, h2, h3)
+     font-body     → HelveticaWorldRegular  (paragraphs, UI)
+     font-subtitle → IBM Plex Serif Regular (subtitles, section labels)
+     font-quote    → IBM Plex Serif         (blockquotes — pair with italic + font-bold)
+  */
+  --font-title:    "Helvetica World", "Helvetica Neue", Arial, sans-serif;
+  --font-body:     "Helvetica World", "Helvetica Neue", Arial, sans-serif;
+  --font-subtitle: var(--font-ibm-plex-serif), Georgia, serif;
+  --font-quote:    var(--font-ibm-plex-serif), Georgia, serif;
+}
+
+/* Base */
+body {
+  font-family: var(--font-body);
+}
