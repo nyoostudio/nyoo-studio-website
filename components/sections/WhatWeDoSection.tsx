@@ -28,7 +28,7 @@ export function WhatWeDoSection() {
         aria-hidden="true"
       />
       {/* Dark overlay to keep text readable */}
-      <div className="absolute inset-0 bg-midnight/80" />
+      <div className="absolute inset-0 bg-black/80" />
       <GrainOverlay />
       <div className="relative mx-auto max-w-[1200px]">
         <SectionLabel>Our work</SectionLabel>
@@ -39,7 +39,7 @@ export function WhatWeDoSection() {
           {services.map((service) => (
             <div
               key={service.title}
-              className="border border-white/15 p-10 flex flex-col gap-4"
+              className="border border-white/15 p-10 flex flex-col gap-4 bg-black/100"
             >
               <span className="text-red font-bold text-sm tracking-widest uppercase">
                 →
