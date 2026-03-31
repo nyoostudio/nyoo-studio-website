@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { SectionLabel } from "@/components/ui/SectionLabel";
 import { GrainOverlay } from "@/components/ui/GrainOverlay";
 
@@ -16,7 +17,18 @@ const services = [
 
 export function WhatWeDoSection() {
   return (
-    <section className="relative bg-soft-black text-white px-6 py-24 md:py-32">
+    <section className="relative text-white px-6 py-24 md:py-32 overflow-hidden">
+      {/* Background image */}
+      <Image
+        src="/images/night-street-bokeh.png"
+        alt=""
+        fill
+        className="object-cover object-center"
+        priority={false}
+        aria-hidden="true"
+      />
+      {/* Dark overlay to keep text readable */}
+      <div className="absolute inset-0 bg-midnight/80" />
       <GrainOverlay />
       <div className="relative mx-auto max-w-[1200px]">
         <SectionLabel>Our work</SectionLabel>
