@@ -30,8 +30,8 @@ export default function HomePage() {
     <>
       <Hero
         gradient={true}
-        headline="Your business has been running for years. Your marketing hasn't caught up."
-        subhead="We help established small businesses in DC Metro grow through social media management and content strategy built for lead generation."
+        headline="Most small businesses don't have a marketing problem. They have a visibility problem."
+        subhead="Your work is good. But the people who haven't found you yet? They're still choosing someone else."
         cta={
           <>
             <Link
@@ -49,7 +49,7 @@ export default function HomePage() {
           </>
         }
       />
-      <ProblemSection />
+      {/* <ProblemSection /> */}
       <WhatWeDoSection />
       <HowItWorksSection />
       <SocialProofSection />
