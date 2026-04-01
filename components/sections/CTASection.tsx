@@ -11,7 +11,7 @@ interface CTASectionProps {
 export function CTASection({
   headline = "Ready for a Nyoo standard?",
   ctaLabel = "Book Your Free Call",
-  ctaHref = "/contact",
+  ctaHref = "/book",
   variant = "flat",
 }: CTASectionProps) {
   const isGradient = variant === "gradient";

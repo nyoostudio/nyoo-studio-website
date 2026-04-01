@@ -30,15 +30,15 @@ export default function HomePage() {
     <>
       <Hero
         gradient={true}
-        headline="Most small businesses don't have a marketing problem. They have a visibility problem."
-        subhead="Your work is good. But the people who haven't found you yet? They're still choosing someone else."
+        headline="Bridge the gap between where your business is and where your brand should be."
+        subhead="We help established small businesses in DC Metro grow through social media management and content strategy built for lead generation."
         cta={
           <>
             <Link
-              href="/contact"
+              href="/book"
               className="inline-flex items-center justify-center bg-red text-white px-8 py-4 text-base font-bold tracking-wide transition-colors hover:bg-red/90"
             >
-              Book a Free Strategy Call
+              Book Your Strategy Call
             </Link>
             <Link
               href="/services"

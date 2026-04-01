@@ -42,6 +42,7 @@ export function PricingCard({
           {name}
         </p>
         <div className="flex items-baseline gap-1">
+          <span className="text-xs opacity-50 mr-1">starting at</span>
           <span className="text-4xl font-bold">{price}</span>
           <span className="text-sm opacity-60">{priceSuffix}</span>
         </div>

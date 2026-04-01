@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { SectionLabel } from "@/components/ui/SectionLabel";
 import { GrainOverlay } from "@/components/ui/GrainOverlay";
 
 const founders = [
@@ -19,8 +20,9 @@ export function FoundersTeaser() {
     <section className="relative bg-soft-black text-white px-6 py-24 md:py-32">
       <GrainOverlay />
       <div className="relative mx-auto max-w-[1200px]">
+        <SectionLabel>The Team</SectionLabel>
         <h2 className="font-title text-4xl md:text-6xl font-bold leading-tight">
-          Not a faceless agency.
+          Meet the team.
         </h2>
         <div className="mt-16 grid gap-12 md:grid-cols-2">
           {founders.map((founder) => (

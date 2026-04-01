@@ -35,7 +35,7 @@ const tiers = [
   },
   {
     name: "Scale",
-    price: "From $3,499",
+    price: "$3,499",
     priceSuffix: "/mo",
     description:
       "Full-output mode for businesses ready to dominate their market segment.",
@@ -56,7 +56,7 @@ const tiers = [
 
 export function PricingTiers() {
   return (
-    <section className="relative bg-soft-black text-white px-6 py-24 md:py-32">
+    <section className="relative bg-soft-black text-white px-6 py-14 md:py-16">
       <div className="relative mx-auto max-w-[1200px]">
         <SectionLabel>Packages</SectionLabel>
         <h2 className="mt-4 font-title text-4xl md:text-5xl font-bold leading-tight max-w-2xl">

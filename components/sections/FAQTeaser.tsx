@@ -17,7 +17,7 @@ const teaserItems = [
   {
     question: "Are your contracts month-to-month?",
     answer:
-      "Yes. All retainers are month-to-month. No long-term lock-in. We earn your business every month.",
+      "Yes. All packages are month-to-month by default — no lock-in. If you want to commit to a 3- or 6-month term upfront, you get a discount (10% and 15% respectively). Either way, you're never stuck in a contract you didn't choose.",
   },
 ];
 

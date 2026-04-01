@@ -25,23 +25,25 @@ export default function ContactPage() {
         {/* Left column — copy */}
         <div>
           <h1 className="font-title text-5xl md:text-7xl font-bold leading-[1.05] tracking-tight">
-            Let&apos;s talk.
+            Get in touch.
           </h1>
           <div className="mt-8 flex flex-col gap-5 text-base leading-relaxed opacity-70 max-w-sm">
             <p>
-              The strategy call is 30 minutes. No pitch, no deck, no pressure.
-              We&apos;ll ask about your business, tell you what we think, and
-              let you decide if it&apos;s worth going further.
+              Partnerships, collaborations, press, or anything else — this is
+              the right place.
             </p>
             <p>
-              If we&apos;re not the right fit, we&apos;ll tell you — and we
-              might be able to point you toward someone who is.
+              If you&apos;re looking to work with us as a client, use the{" "}
+              <a href="/book" className="underline underline-offset-2 hover:text-amber transition-colors">
+                Book a Call
+              </a>{" "}
+              page instead.
             </p>
           </div>
 
           <div className="mt-12 flex flex-col gap-3">
             <p className="text-xs font-bold uppercase tracking-widest opacity-40">
-              Prefer to email?
+              Email us directly
             </p>
             <a
               href="mailto:hello@nyoostudio.com"

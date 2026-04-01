@@ -131,14 +131,14 @@ export function ContactForm() {
 
       <div className="flex flex-col gap-2">
         <label htmlFor="challenge" className="text-xs font-bold uppercase tracking-widest opacity-50">
-          What&apos;s your biggest marketing challenge? <span className="text-red">*</span>
+          What&apos;s this about? <span className="text-red">*</span>
         </label>
         <textarea
           id="challenge"
           name="challenge"
           required
           rows={5}
-          placeholder="Tell us what's not working — or what you need to work better."
+          placeholder="Tell us what you have in mind."
           className="bg-transparent border border-white/20 px-4 py-3 text-sm text-white placeholder:opacity-30 focus:outline-none focus:border-red transition-colors resize-none"
         />
       </div>
@@ -163,7 +163,7 @@ export function ContactForm() {
         disabled={status === "sending"}
         className="self-start bg-red text-white font-bold px-8 py-4 text-sm tracking-wide hover:bg-red/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
       >
-        {status === "sending" ? "Sending…" : "Request a Call"}
+        {status === "sending" ? "Sending…" : "Send Message"}
       </button>
     </form>
   );
