@@ -17,7 +17,7 @@ const discountBlocks = [
 
 export function ReferralDiscounts() {
   return (
-    <section className="relative bg-soft-black text-white px-6 py-20">
+    <section className="relative bg-soft-black text-white px-6 py-10 md:py-12">
       <div className="mx-auto max-w-[1200px]">
         <SectionLabel>More Ways to Save</SectionLabel>
         <div className="mt-12 grid md:grid-cols-2 gap-px bg-white/10 border border-white/10">

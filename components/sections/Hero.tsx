@@ -33,7 +33,7 @@ export function Hero({ headline, subhead, cta, gradient = false, className }: He
           {headline}
         </h1>
         {subhead && (
-          <p className="mt-6 text-lg md:text-xl leading-relaxed opacity-70 max-w-2xl">
+          <p className="mt-6 text-lg md:text-xl leading-relaxed opacity-90 max-w-2xl">
             {subhead}
           </p>
         )}

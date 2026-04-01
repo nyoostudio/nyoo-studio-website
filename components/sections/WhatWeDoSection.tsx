@@ -36,7 +36,7 @@ export function WhatWeDoSection() {
       <div className="absolute inset-0 bg-black/80" />
       <GrainOverlay />
       <div className="relative mx-auto max-w-[1200px]">
-        <SectionLabel>Our work</SectionLabel>
+        <SectionLabel>The Solution</SectionLabel>
         <h2 className="mt-4 font-title text-4xl md:text-6xl font-bold leading-tight">
           Growth done well.
         </h2>

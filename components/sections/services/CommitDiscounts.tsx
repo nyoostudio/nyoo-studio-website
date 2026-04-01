@@ -15,7 +15,7 @@ const discounts = [
 
 export function CommitDiscounts() {
   return (
-    <section className="relative bg-soft-black text-white px-6 py-20">
+    <section className="relative bg-soft-black text-white px-6 py-10 md:py-12">
       <div className="mx-auto max-w-[1200px]">
         <SectionLabel>Commit Discounts</SectionLabel>
         <h2 className="mt-4 font-title text-3xl md:text-4xl font-bold leading-tight">
