@@ -10,12 +10,12 @@ export function JinStory() {
         <div>
           <SectionLabel>Jin Yoo</SectionLabel>
           <h2 className="mt-4 font-title text-4xl md:text-5xl font-bold leading-tight">
-            He's launched products for the federal government. Nyoo Studio runs on what he built.
+            He built systems for the federal government. Now he builds them <u>especially</u> for those who earn it.
           </h2>
         </div>
         <div className="flex flex-col gap-6 text-base leading-relaxed opacity-70">
           <p>
-            Jin spent years in product and technology — working inside systems that had to work. No room for "good enough." You ship something for the federal government, it either works or it doesn't. He learned to build things that hold.
+            Jin spent 15 years in federal product and technology — working inside systems that had to work. You ship something for the federal government, it either works or it doesn't. He learned to build things that hold, and buid processes that break through bureacracy.
           </p>
           <p>
             At Nyoo Studio, he handles strategy, automation, and the infrastructure behind how the work gets done. The systems that make it possible to do great work at speed, without dropping anything.
