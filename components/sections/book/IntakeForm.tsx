@@ -51,13 +51,23 @@ export function IntakeForm() {
     const form = e.currentTarget;
     const data = new FormData(form);
 
+    const payload = Object.fromEntries(data);
+
     try {
-      const res = await fetch("https://formspree.io/f/YOUR_FORM_ID", {
-        method: "POST",
-        body: data,
-        headers: { Accept: "application/json" },
-      });
-      if (res.ok) {
+      const [formspreeRes] = await Promise.all([
+        fetch("https://formspree.io/f/xaqlbrap", {
+          method: "POST",
+          body: data,
+          headers: { Accept: "application/json" },
+        }),
+        fetch("https://nyoostudio.app.n8n.cloud/webhook/inquiry", {
+          method: "POST",
+          body: JSON.stringify(payload),
+          headers: { "Content-Type": "application/json" },
+        }).catch(() => null), // n8n failure is non-blocking
+      ]);
+
+      if (formspreeRes.ok) {
         setStatus("success");
         form.reset();
         window.open(CALENDAR_URL, "_blank", "noopener,noreferrer");
@@ -160,15 +170,13 @@ export function IntakeForm() {
       {/* Website */}
       <div className="flex flex-col gap-2">
         <label htmlFor="website" className={labelClass}>
-          Website URL{" "}
-          <span className="opacity-40 normal-case tracking-normal font-normal">
-            (optional)
-          </span>
+          Website URL <span className="text-red">*</span>
         </label>
         <input
           id="website"
           name="website"
           type="url"
+          required
           placeholder="https://yoursite.com"
           className={inputClass}
         />
