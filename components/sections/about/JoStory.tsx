@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { GrainOverlay } from "@/components/ui/GrainOverlay";
 import { SectionLabel } from "@/components/ui/SectionLabel";
 
@@ -24,10 +25,15 @@ export function JoStory() {
           </p>
         </div>
       </div>
-      {/* Photo placeholder */}
       <div className="relative mx-auto max-w-[1200px] mt-16">
-        <div className="h-80 w-64 bg-white/10 border border-white/15 flex items-center justify-center text-xs opacity-40 tracking-widest uppercase">
-          [JO_HEADSHOT]
+        <div className="h-80 w-64 overflow-hidden">
+          <Image
+            src="/images/JO_HEADSHOT.jpg"
+            alt="Jo Yoo"
+            width={256}
+            height={320}
+            className="h-full w-full object-cover object-top"
+          />
         </div>
       </div>
     </section>

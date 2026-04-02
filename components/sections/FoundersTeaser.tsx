@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { SectionLabel } from "@/components/ui/SectionLabel";
 import { GrainOverlay } from "@/components/ui/GrainOverlay";
 
@@ -27,8 +28,14 @@ export function FoundersTeaser() {
         <div className="mt-16 grid gap-12 md:grid-cols-2">
           {founders.map((founder) => (
             <div key={founder.name} className="flex flex-col gap-4">
-              <div className="h-48 w-48 bg-white/10 border border-white/15 flex items-center justify-center text-xs opacity-40 tracking-widest uppercase">
-                {founder.photo}
+              <div className="h-48 w-48 overflow-hidden">
+                <Image
+                  src={founder.photo === "[JO_HEADSHOT]" ? "/images/JO_HEADSHOT.jpg" : "/images/JIN_HEADSHOT.jpg"}
+                  alt={founder.name}
+                  width={192}
+                  height={192}
+                  className="h-full w-full object-cover object-top"
+                />
               </div>
               <h3 className="font-title text-2xl font-bold">{founder.name}</h3>
               <p className="text-base leading-relaxed opacity-70">{founder.bio}</p>

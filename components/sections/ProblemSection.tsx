@@ -38,7 +38,7 @@ export function ProblemSection() {
           ))}
         </div>
 
-        <div className="mt-16 max-w-2xl">
+        {/* <div className="mt-16 max-w-2xl">
           <p className="text-lg leading-relaxed opacity-70">
             That's the gap. And it's not a talent problem — it's a system problem.
           </p>
@@ -46,7 +46,7 @@ export function ProblemSection() {
             Here's how we fix it
             <span className="inline-block h-px w-12 bg-amber/40" />
           </p>
-        </div>
+        </div> */}
       </div>
     </section>
   );
