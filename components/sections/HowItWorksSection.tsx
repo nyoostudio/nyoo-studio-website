@@ -1,18 +1,22 @@
+"use client";
+
 import { SectionLabel } from "@/components/ui/SectionLabel";
 import { GrainOverlay } from "@/components/ui/GrainOverlay";
+import { useScrollReveal } from "@/lib/useScrollReveal";
+import { useParallax } from "@/lib/useParallax";
 
 const steps = [
   {
     number: "01",
     title: "Strategy Call",
     description:
-      "A 30-minute conversation about your business. We listen more than we talk. No pitch.",
+      "A 30-minute conversation about your business. We listen more than we talk.",
   },
   {
     number: "02",
     title: "Custom Plan",
     description:
-      "We build a content brief tailored to your voice, your goals, and your audience. You review it. We adjust.",
+      "We build a content strategy tailored to your voice, your goals, and your audience. You review it. We adjust.",
   },
   {
     number: "03",
@@ -23,24 +27,39 @@ const steps = [
 ];
 
 export function HowItWorksSection() {
+  const headingRef = useScrollReveal<HTMLDivElement>({ y: 40, duration: 0.8 });
+  const bgParallax = useParallax<HTMLDivElement>({ speed: 0.2 });
+  const stepsRef = useScrollReveal<HTMLDivElement>({
+    staggerChildren: true,
+    stagger: 0.2,
+    y: 40,
+    duration: 0.7,
+  });
+
   return (
-    <section className="relative bg-soft-black text-white px-6 py-24 md:py-32">
+    <section className="relative bg-soft-black text-white px-6 py-24 md:py-32 overflow-hidden">
+      {/* Parallax background orb */}
+      <div ref={bgParallax} className="absolute inset-0 pointer-events-none" aria-hidden>
+        <div className="orb orb-red w-[400px] h-[400px] -bottom-32 -left-32 opacity-30" />
+      </div>
       <GrainOverlay />
       <div className="relative mx-auto max-w-[1200px]">
-        <SectionLabel>The process</SectionLabel>
-        <h2 className="mt-4 font-title text-4xl md:text-6xl font-bold leading-tight max-w-2xl">
-          No onboarding decks. No 12-week discovery phases.
-        </h2>
-        <div className="mt-16 grid gap-0 md:grid-cols-3">
-          {steps.map((step, i) => (
+        <div ref={headingRef}>
+          <SectionLabel>The process</SectionLabel>
+          <h2 className="mt-4 font-title text-4xl md:text-6xl font-bold leading-tight max-w-2xl">
+            No onboarding decks. No 12-week discovery phases.
+          </h2>
+        </div>
+        <div ref={stepsRef} className="mt-16 grid gap-6 md:grid-cols-3">
+          {steps.map((step) => (
             <div
               key={step.number}
-              className={`py-10 px-8 ${i !== 0 ? "md:border-l md:border-white/15" : ""} ${i === 0 ? "md:pl-0" : ""} ${i === steps.length - 1 ? "md:pr-0" : ""}`}
+              className="glass-card p-8 md:p-10 group"
             >
-              <span className="text-red font-bold text-sm tracking-widest">
+              <span className="inline-flex items-center justify-center w-10 h-10 rounded-full border border-red/40 text-red font-bold text-sm tracking-widest transition-all duration-300 group-hover:bg-red group-hover:text-white group-hover:border-red">
                 {step.number}
               </span>
-              <h3 className="mt-4 font-title text-2xl font-bold">
+              <h3 className="mt-5 font-title text-2xl font-bold">
                 {step.title}
               </h3>
               <p className="mt-3 text-base leading-relaxed opacity-70">

@@ -1,29 +1,19 @@
-import type { Metadata } from "next";
+"use client";
+
 import { GrainOverlay } from "@/components/ui/GrainOverlay";
 import { IntakeForm } from "@/components/sections/book/IntakeForm";
-
-export const metadata: Metadata = {
-  title: "Book a Free Strategy Call | Nyoo Studio | DC Metro Marketing Agency",
-  description:
-    "Tell us about your business. We'll reach out within one business day to schedule your free 30-minute strategy call.",
-  alternates: {
-    canonical: "https://nyoostudio.com/book",
-  },
-  openGraph: {
-    title: "Book a Free Strategy Call | Nyoo Studio",
-    description:
-      "Tell us about your business. We'll reach out within one business day to schedule your free 30-minute strategy call.",
-    url: "https://nyoostudio.com/book",
-  },
-};
+import { useScrollReveal } from "@/lib/useScrollReveal";
 
 export default function BookPage() {
+  const leftRef = useScrollReveal<HTMLDivElement>({ y: 40, duration: 0.8 });
+  const rightRef = useScrollReveal<HTMLDivElement>({ y: 40, duration: 0.8, delay: 0.2 });
+
   return (
     <section className="relative bg-soft-black text-white px-6 py-24 md:py-36">
       <GrainOverlay />
       <div className="relative mx-auto max-w-[1200px] grid md:grid-cols-2 gap-16 md:gap-24 items-start">
         {/* Left column — copy */}
-        <div>
+        <div ref={leftRef}>
           <p className="text-xs font-bold uppercase tracking-widest text-amber mb-4">
             Free Strategy Call
           </p>
@@ -48,7 +38,7 @@ export default function BookPage() {
             </p>
             <a
               href="mailto:hello@nyoostudio.com"
-              className="text-sm font-bold hover:text-amber transition-colors"
+              className="text-sm font-bold hover:text-amber transition-colors duration-300"
             >
               hello@nyoostudio.com
             </a>
@@ -56,7 +46,9 @@ export default function BookPage() {
         </div>
 
         {/* Right column — form */}
-        <IntakeForm />
+        <div ref={rightRef}>
+          <IntakeForm />
+        </div>
       </div>
     </section>
   );

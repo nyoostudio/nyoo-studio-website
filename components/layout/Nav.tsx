@@ -21,7 +21,7 @@ export function Nav({ className, onLinkClick }: NavProps) {
           key={href}
           href={href}
           onClick={onLinkClick}
-          className="text-sm font-bold tracking-wide transition-opacity hover:opacity-60"
+          className="relative text-sm font-bold tracking-wide transition-all duration-300 hover:opacity-80 after:absolute after:bottom-0 after:left-0 after:h-px after:w-0 after:bg-red after:transition-all after:duration-300 hover:after:w-full"
         >
           {label}
         </Link>

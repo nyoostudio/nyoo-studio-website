@@ -1,5 +1,8 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
+import { useScrollReveal } from "@/lib/useScrollReveal";
 
 const navLinks = [
   { label: "About", href: "/about" },
@@ -9,12 +12,23 @@ const navLinks = [
 ];
 
 export function Footer() {
+  const ref = useScrollReveal<HTMLElement>({ y: 30, duration: 0.6 });
+
   return (
-    <footer className="bg-soft-black text-white border-t border-white/10">
-      <div className="mx-auto max-w-[1200px] px-6 py-12">
+    <footer
+      ref={ref}
+      className="relative bg-soft-black text-white border-t border-white/10 overflow-hidden"
+    >
+      {/* Subtle radial glow */}
+      <div
+        className="absolute -top-32 left-1/2 -translate-x-1/2 w-[600px] h-[200px] orb orb-cobalt opacity-30"
+        aria-hidden
+      />
+
+      <div className="relative mx-auto max-w-[1200px] px-6 py-12">
         <div className="flex flex-col gap-8 md:flex-row md:items-center md:justify-between">
           {/* Logo */}
-          <Link href="/" className="hover:opacity-80 transition-opacity">
+          <Link href="/" className="hover:opacity-80 transition-opacity duration-300">
             <Image
               src="/images/nyoo studio logo white.png"
               alt="Nyoo Studio"
@@ -29,7 +43,7 @@ export function Footer() {
               <Link
                 key={href}
                 href={href}
-                className="text-sm font-bold tracking-wide transition-opacity hover:opacity-60"
+                className="text-sm font-bold tracking-wide transition-all duration-300 hover:opacity-60 hover:-translate-y-0.5"
               >
                 {label}
               </Link>
@@ -39,7 +53,7 @@ export function Footer() {
           {/* Email */}
           <a
             href="mailto:hello@nyoostudio.com"
-            className="text-sm transition-opacity hover:opacity-60"
+            className="text-sm transition-all duration-300 hover:opacity-60 hover:text-red"
           >
             hello@nyoostudio.com
           </a>

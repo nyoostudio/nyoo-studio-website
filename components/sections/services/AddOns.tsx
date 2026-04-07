@@ -1,4 +1,7 @@
+"use client";
+
 import { SectionLabel } from "@/components/ui/SectionLabel";
+import { useScrollReveal } from "@/lib/useScrollReveal";
 
 const addons = [
   {
@@ -49,23 +52,33 @@ const addons = [
 ];
 
 export function AddOns() {
+  const headingRef = useScrollReveal<HTMLDivElement>({ y: 40, duration: 0.8 });
+  const tableRef = useScrollReveal<HTMLDivElement>({
+    staggerChildren: true,
+    stagger: 0.08,
+    y: 20,
+    duration: 0.5,
+  });
+
   return (
     <section className="relative bg-soft-black text-white px-6 py-10 md:py-12">
       <div className="mx-auto max-w-[1200px]">
-        <SectionLabel>Add-Ons</SectionLabel>
-        <h2 className="mt-4 font-title text-3xl md:text-4xl font-bold leading-tight">
-          Build the package you actually need.
-        </h2>
-        <p className="mt-4 text-sm leading-relaxed opacity-60 max-w-xl">
-          Add anything to any tier. No bundled fluff — just the pieces that move
-          your business forward.
-        </p>
+        <div ref={headingRef}>
+          <SectionLabel>Add-Ons</SectionLabel>
+          <h2 className="mt-4 font-title text-3xl md:text-4xl font-bold leading-tight">
+            Build the package you actually need.
+          </h2>
+          <p className="mt-4 text-sm leading-relaxed opacity-60 max-w-xl">
+            Add anything to any tier. No bundled fluff — just the pieces that move
+            your business forward.
+          </p>
+        </div>
 
-        <div className="mt-12 border border-white/10">
+        <div ref={tableRef} className="mt-12 glass-card-static overflow-hidden">
           {addons.map((addon, i) => (
             <div
               key={addon.name}
-              className={`flex items-start justify-between px-6 py-5 gap-8 ${
+              className={`flex items-start justify-between px-6 py-5 gap-8 transition-all duration-300 hover:bg-white/[0.04] ${
                 i !== addons.length - 1 ? "border-b border-white/10" : ""
               }`}
             >

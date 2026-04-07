@@ -21,17 +21,17 @@ interface AccordionEntryProps {
 
 function AccordionEntry({ item, isOpen, onToggle }: AccordionEntryProps) {
   return (
-    <div className="border-b border-current/20">
+    <div className="border-b border-white/10">
       <button
         onClick={onToggle}
         aria-expanded={isOpen}
-        className="flex w-full items-center justify-between gap-4 py-5 text-left font-bold text-lg transition-colors hover:opacity-80"
+        className="flex w-full items-center justify-between gap-4 py-5 text-left font-bold text-lg transition-all duration-300 hover:opacity-80 group"
       >
         <span>{item.question}</span>
         <span
           className={cn(
-            "shrink-0 text-red transition-transform duration-200",
-            isOpen ? "rotate-45" : "rotate-0"
+            "shrink-0 text-red text-xl transition-all duration-300",
+            isOpen ? "rotate-45 scale-110" : "rotate-0 group-hover:scale-110"
           )}
           aria-hidden
         >
@@ -40,8 +40,8 @@ function AccordionEntry({ item, isOpen, onToggle }: AccordionEntryProps) {
       </button>
       <div
         className={cn(
-          "overflow-hidden transition-all duration-300",
-          isOpen ? "max-h-96 pb-5" : "max-h-0"
+          "overflow-hidden transition-all duration-400 ease-out",
+          isOpen ? "max-h-96 pb-5 opacity-100" : "max-h-0 opacity-0"
         )}
       >
         <p className="leading-relaxed opacity-80">{item.answer}</p>

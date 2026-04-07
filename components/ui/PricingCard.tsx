@@ -24,15 +24,17 @@ export function PricingCard({
   return (
     <div
       className={cn(
-        "relative flex flex-col border p-8",
+        "relative flex flex-col p-8 transition-all duration-400 ease-out",
         isFeatured
-          ? "border-red bg-soft-black text-white"
-          : "border-current/20 bg-transparent",
+          ? "glass-card border-red/40 bg-white/[0.06] hover:border-red/60 scale-[1.01]"
+          : "glass-card",
         className
       )}
     >
       {badge && (
-        <span className="absolute -top-3 left-8 bg-red px-3 py-1 text-xs font-bold uppercase tracking-widest text-white">
+        <span className="absolute -top-3 left-8 bg-red px-3 py-1 text-xs font-bold uppercase tracking-widest text-white shadow-lg shadow-red/20"
+          style={{ animation: "pulse-glow 3s ease-in-out infinite" }}
+        >
           {badge}
         </span>
       )}

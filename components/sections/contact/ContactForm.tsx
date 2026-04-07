@@ -9,6 +9,11 @@ const HOW_HEARD_OPTIONS = [
   "Other",
 ];
 
+const inputClass =
+  "glass-input bg-transparent px-4 py-3 text-sm text-white placeholder:opacity-30 focus:outline-none";
+
+const labelClass = "text-xs font-bold uppercase tracking-widest opacity-50";
+
 export function ContactForm() {
   const [status, setStatus] = useState<"idle" | "sending" | "success" | "error">("idle");
 
@@ -41,7 +46,7 @@ export function ContactForm() {
     <form onSubmit={handleSubmit} noValidate className="flex flex-col gap-6">
       <div className="grid md:grid-cols-2 gap-6">
         <div className="flex flex-col gap-2">
-          <label htmlFor="name" className="text-xs font-bold uppercase tracking-widest opacity-50">
+          <label htmlFor="name" className={labelClass}>
             Your Name <span className="text-red">*</span>
           </label>
           <input
@@ -50,11 +55,11 @@ export function ContactForm() {
             type="text"
             required
             placeholder="Jane Smith"
-            className="bg-transparent border border-white/20 px-4 py-3 text-sm text-white placeholder:opacity-30 focus:outline-none focus:border-red transition-colors"
+            className={inputClass}
           />
         </div>
         <div className="flex flex-col gap-2">
-          <label htmlFor="business" className="text-xs font-bold uppercase tracking-widest opacity-50">
+          <label htmlFor="business" className={labelClass}>
             Business Name <span className="text-red">*</span>
           </label>
           <input
@@ -63,14 +68,14 @@ export function ContactForm() {
             type="text"
             required
             placeholder="Smith & Co."
-            className="bg-transparent border border-white/20 px-4 py-3 text-sm text-white placeholder:opacity-30 focus:outline-none focus:border-red transition-colors"
+            className={inputClass}
           />
         </div>
       </div>
 
       <div className="grid md:grid-cols-2 gap-6">
         <div className="flex flex-col gap-2">
-          <label htmlFor="email" className="text-xs font-bold uppercase tracking-widest opacity-50">
+          <label htmlFor="email" className={labelClass}>
             Email <span className="text-red">*</span>
           </label>
           <input
@@ -79,44 +84,50 @@ export function ContactForm() {
             type="email"
             required
             placeholder="jane@smithco.com"
-            className="bg-transparent border border-white/20 px-4 py-3 text-sm text-white placeholder:opacity-30 focus:outline-none focus:border-red transition-colors"
+            className={inputClass}
           />
         </div>
         <div className="flex flex-col gap-2">
-          <label htmlFor="phone" className="text-xs font-bold uppercase tracking-widest opacity-50">
-            Phone <span className="opacity-40 normal-case tracking-normal font-normal">(optional)</span>
+          <label htmlFor="phone" className={labelClass}>
+            Phone{" "}
+            <span className="opacity-40 normal-case tracking-normal font-normal">
+              (optional)
+            </span>
           </label>
           <input
             id="phone"
             name="phone"
             type="tel"
             placeholder="(202) 555-0100"
-            className="bg-transparent border border-white/20 px-4 py-3 text-sm text-white placeholder:opacity-30 focus:outline-none focus:border-red transition-colors"
+            className={inputClass}
           />
         </div>
       </div>
 
       <div className="flex flex-col gap-2">
-        <label htmlFor="website" className="text-xs font-bold uppercase tracking-widest opacity-50">
-          Website URL <span className="opacity-40 normal-case tracking-normal font-normal">(optional)</span>
+        <label htmlFor="website" className={labelClass}>
+          Website URL{" "}
+          <span className="opacity-40 normal-case tracking-normal font-normal">
+            (optional)
+          </span>
         </label>
         <input
           id="website"
           name="website"
           type="url"
           placeholder="https://yoursite.com"
-          className="bg-transparent border border-white/20 px-4 py-3 text-sm text-white placeholder:opacity-30 focus:outline-none focus:border-red transition-colors"
+          className={inputClass}
         />
       </div>
 
       <div className="flex flex-col gap-2">
-        <label htmlFor="how_heard" className="text-xs font-bold uppercase tracking-widest opacity-50">
+        <label htmlFor="how_heard" className={labelClass}>
           How did you hear about us?
         </label>
         <select
           id="how_heard"
           name="how_heard"
-          className="bg-soft-black border border-white/20 px-4 py-3 text-sm text-white focus:outline-none focus:border-red transition-colors appearance-none"
+          className={`${inputClass} appearance-none bg-[#0D0A09]`}
         >
           <option value="" disabled selected>
             Select one
@@ -130,7 +141,7 @@ export function ContactForm() {
       </div>
 
       <div className="flex flex-col gap-2">
-        <label htmlFor="challenge" className="text-xs font-bold uppercase tracking-widest opacity-50">
+        <label htmlFor="challenge" className={labelClass}>
           What&apos;s this about? <span className="text-red">*</span>
         </label>
         <textarea
@@ -139,7 +150,7 @@ export function ContactForm() {
           required
           rows={5}
           placeholder="Tell us what you have in mind."
-          className="bg-transparent border border-white/20 px-4 py-3 text-sm text-white placeholder:opacity-30 focus:outline-none focus:border-red transition-colors resize-none"
+          className={`${inputClass} resize-none`}
         />
       </div>
 
@@ -161,7 +172,7 @@ export function ContactForm() {
       <button
         type="submit"
         disabled={status === "sending"}
-        className="self-start bg-red text-white font-bold px-8 py-4 text-sm tracking-wide hover:bg-red/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+        className="self-start bg-red text-white font-bold px-8 py-4 text-sm tracking-wide transition-all duration-300 hover:bg-red/90 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-red/20 disabled:opacity-50 disabled:cursor-not-allowed"
       >
         {status === "sending" ? "Sending…" : "Send Message"}
       </button>

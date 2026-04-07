@@ -1,8 +1,17 @@
+"use client";
+
 import { GrainOverlay } from "@/components/ui/GrainOverlay";
+import { useParallax } from "@/lib/useParallax";
 
 export function SocialProofSection() {
+  const bgRef = useParallax<HTMLDivElement>({ speed: 0.2 });
+
   return (
-    <section className="relative bg-red text-soft-black px-6 py-24 md:py-32">
+    <section className="relative bg-red text-soft-black px-6 py-24 md:py-32 overflow-hidden">
+      {/* Parallax gradient accent */}
+      <div ref={bgRef} className="absolute inset-0 pointer-events-none" aria-hidden>
+        <div className="absolute inset-0 bg-gradient-to-br from-red via-red to-red/80" />
+      </div>
       <GrainOverlay opacity={0.08} />
       <div className="relative mx-auto max-w-[1200px]">
         {/* <figure className="max-w-3xl">

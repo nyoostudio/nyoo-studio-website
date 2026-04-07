@@ -1,4 +1,7 @@
+"use client";
+
 import { SectionLabel } from "@/components/ui/SectionLabel";
+import { useScrollReveal } from "@/lib/useScrollReveal";
 
 const discountBlocks = [
   {
@@ -16,13 +19,20 @@ const discountBlocks = [
 ];
 
 export function ReferralDiscounts() {
+  const cardsRef = useScrollReveal<HTMLDivElement>({
+    staggerChildren: true,
+    stagger: 0.15,
+    y: 40,
+    duration: 0.7,
+  });
+
   return (
     <section className="relative bg-soft-black text-white px-6 py-10 md:py-12">
       <div className="mx-auto max-w-[1200px]">
         <SectionLabel>More Ways to Save</SectionLabel>
-        <div className="mt-12 grid md:grid-cols-2 gap-px bg-white/10 border border-white/10">
+        <div ref={cardsRef} className="mt-12 grid md:grid-cols-2 gap-6">
           {discountBlocks.map((block) => (
-            <div key={block.label} className="bg-soft-black p-8 md:p-10">
+            <div key={block.label} className="glass-card p-8 md:p-10">
               <p className="text-xs font-bold uppercase tracking-widest text-amber mb-4">
                 {block.label}
               </p>
