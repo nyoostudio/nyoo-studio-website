@@ -286,16 +286,6 @@ Apply these to ALL copy written for this site:
 
 ---
 
-## Content Placeholders (to fill in later)
-
-These are intentional gaps — do not fabricate content for these:
-- `[CLIENT_QUOTE]` — real client testimonial
-- `[JIN_HEADSHOT]` — editorial photo
-- `[JO_HEADSHOT]` — editorial photo
-- `[CALENDLY_LINK]` — Calendly URL (or contact form only — TBD)
-
----
-
 ## Development Notes
 
 - All retainers month-to-month — emphasize in Services page
