@@ -4,7 +4,17 @@
 Marketing website for Nyoo Studio, a DC Metro creative marketing agency. 5-page static site built with Next.js (App Router). Deployed on Vercel.
 
 **Site:** nyoostudio.com
-**Stack:** Next.js 14+ (App Router), TypeScript, Tailwind CSS, shadcn/ui
+**Stack:** Next.js 16.2 (App Router), React 19, TypeScript, Tailwind CSS v4
+
+---
+
+## Commands
+
+```bash
+npm run dev    # Dev server (Turbopack enabled by default)
+npm run build  # Production build
+npm run lint   # ESLint
+```
 
 ---
 
@@ -17,6 +27,7 @@ Marketing website for Nyoo Studio, a DC Metro creative marketing agency. 5-page 
 | `/services` | `app/services/page.tsx` | Packages & Pricing |
 | `/faq` | `app/faq/page.tsx` | FAQs |
 | `/contact` | `app/contact/page.tsx` | Contact / Book a Call |
+| `/book`    | `app/book/page.tsx`    | Intake Form (post-call booking) |
 
 **Nav order:** Work (future/hidden) → About → Services → FAQ → [Book a Call — red button]
 
@@ -156,19 +167,16 @@ On dark backgrounds use cream stroke. On light backgrounds swap stroke to midnig
 
 ```
 components/
-├── layout/
-│   ├── Header.tsx        # Nav with "Book a Call" red button
-│   ├── Footer.tsx        # Minimal footer
-│   └── Nav.tsx           # Navigation links
-├── sections/             # One file per reusable section type
-│   ├── Hero.tsx
-│   ├── SectionLabel.tsx  # Small label above headlines (italic, muted)
-│   ├── CTASection.tsx    # Full-width cobalt final CTA
-│   ├── FAQAccordion.tsx  # Accordion FAQ component
-│   └── PricingCard.tsx   # Tier pricing cards
-└── ui/                   # Primitives (buttons, cards, etc.)
-    ├── Button.tsx        # Variants: primary (red), ghost, outline
-    └── Accordion.tsx
+├── layout/               # Header, Footer, Nav
+├── sections/             # Page sections, organized by page
+│   ├── about/            # JinStory, JoStory, Values, WhyTheyBuiltIt
+│   ├── book/             # IntakeForm
+│   ├── contact/          # ContactForm
+│   ├── faq/              # FAQContent, FAQStickyMobileCTA
+│   ├── services/         # PricingTiers, AddOns, CommitDiscounts, ReferralDiscounts
+│   └── (shared)          # Hero, CTASection, FAQTeaser, FoundersTeaser, HowItWorksSection, etc.
+├── seo/                  # LocalBusinessJsonLd (reusable schema component)
+└── ui/                   # Button, Accordion, PricingCard, SectionLabel, GrainOverlay
 ```
 
 ---
