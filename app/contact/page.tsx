@@ -1,29 +1,19 @@
-import type { Metadata } from "next";
+"use client";
+
 import { GrainOverlay } from "@/components/ui/GrainOverlay";
 import { ContactForm } from "@/components/sections/contact/ContactForm";
-
-export const metadata: Metadata = {
-  title: "Book a Free Strategy Call | Nyoo Studio | DC Metro Marketing Agency",
-  description:
-    "Schedule a free 30-minute strategy call with Nyoo Studio. No pitch, no pressure — just an honest conversation about your marketing.",
-  alternates: {
-    canonical: "https://nyoostudio.com/contact",
-  },
-  openGraph: {
-    title: "Book a Free Strategy Call | Nyoo Studio",
-    description:
-      "Schedule a free 30-minute strategy call with Nyoo Studio. No pitch, no pressure — just an honest conversation about your marketing.",
-    url: "https://nyoostudio.com/contact",
-  },
-};
+import { useScrollReveal } from "@/lib/useScrollReveal";
 
 export default function ContactPage() {
+  const leftRef = useScrollReveal<HTMLDivElement>({ y: 40, duration: 0.8 });
+  const rightRef = useScrollReveal<HTMLDivElement>({ y: 40, duration: 0.8, delay: 0.2 });
+
   return (
     <section className="relative bg-soft-black text-white px-6 py-24 md:py-36">
       <GrainOverlay />
       <div className="relative mx-auto max-w-[1200px] grid md:grid-cols-2 gap-16 md:gap-24 items-start">
         {/* Left column — copy */}
-        <div>
+        <div ref={leftRef}>
           <h1 className="font-title text-5xl md:text-7xl font-bold leading-[1.05] tracking-tight">
             Get in touch.
           </h1>
@@ -34,7 +24,7 @@ export default function ContactPage() {
             </p>
             <p>
               If you&apos;re looking to work with us as a client, use the{" "}
-              <a href="/book" className="underline underline-offset-2 hover:text-amber transition-colors">
+              <a href="/book" className="underline underline-offset-2 hover:text-amber transition-colors duration-300">
                 Book a Call
               </a>{" "}
               page instead.
@@ -47,7 +37,7 @@ export default function ContactPage() {
             </p>
             <a
               href="mailto:hello@nyoostudio.com"
-              className="text-sm font-bold hover:text-amber transition-colors"
+              className="text-sm font-bold hover:text-amber transition-colors duration-300"
             >
               hello@nyoostudio.com
             </a>
@@ -58,7 +48,9 @@ export default function ContactPage() {
         </div>
 
         {/* Right column — form */}
-        <ContactForm />
+        <div ref={rightRef}>
+          <ContactForm />
+        </div>
       </div>
     </section>
   );

@@ -32,10 +32,10 @@ const CALENDAR_URL =
   "https://calendar.google.com/calendar/appointments/schedules/AcZssZ0ngBnhDlfdX_Gwc3eHb_lr9s_9VOlEWhJIFMSy92UYfKis_T2mOdQ6s8q0e-hNlMuAWlHkVlaS?gv=true";
 
 const inputClass =
-  "bg-transparent border border-white/20 px-4 py-3 text-sm text-white placeholder:opacity-30 focus:outline-none focus:border-red transition-colors";
+  "glass-input bg-transparent px-4 py-3 text-sm text-white placeholder:opacity-30 focus:outline-none";
 
 const selectClass =
-  "bg-[#0D0A09] border border-white/20 px-4 py-3 text-sm text-white focus:outline-none focus:border-red transition-colors appearance-none";
+  "glass-input bg-[#0D0A09] px-4 py-3 text-sm text-white focus:outline-none appearance-none";
 
 const labelClass = "text-xs font-bold uppercase tracking-widest opacity-50";
 
@@ -81,7 +81,7 @@ export function IntakeForm() {
 
   if (status === "success") {
     return (
-      <div className="flex flex-col gap-5">
+      <div className="flex flex-col gap-5 glass-card-static p-8 rounded-lg">
         <p className="text-amber font-bold text-lg">We&apos;ve got it.</p>
         <p className="text-sm leading-relaxed opacity-70">
           Your answers are in. The scheduling page should have opened in a new
@@ -93,7 +93,7 @@ export function IntakeForm() {
             href={CALENDAR_URL}
             target="_blank"
             rel="noopener noreferrer"
-            className="underline underline-offset-2 hover:text-amber transition-colors"
+            className="underline underline-offset-2 hover:text-amber transition-colors duration-300"
           >
             click here to book your call
           </a>
@@ -301,7 +301,7 @@ export function IntakeForm() {
       <button
         type="submit"
         disabled={status === "sending"}
-        className="self-start bg-red text-white font-bold px-8 py-4 text-sm tracking-wide hover:bg-red/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+        className="self-start bg-red text-white font-bold px-8 py-4 text-sm tracking-wide transition-all duration-300 hover:bg-red/90 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-red/20 disabled:opacity-50 disabled:cursor-not-allowed"
       >
         {status === "sending" ? "Sending…" : "Book Your Strategy Call"}
       </button>

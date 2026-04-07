@@ -58,7 +58,7 @@ export default function RootLayout({
       <body className="bg-soft-black text-white font-body">
         <LocalBusinessJsonLd />
         <Header />
-        <main className="pt-[72px]">{children}</main>
+        <main className="pt-[72px] perspective-wrap">{children}</main>
         <Footer />
         <Analytics />
       </body>

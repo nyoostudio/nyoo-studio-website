@@ -31,19 +31,177 @@
   --color-red:        #C41230;
   --color-cobalt:     #1B44D8;
 
-  /* Typography
-     font-title    → HelveticaWorldBold     (h1, h2, h3)
-     font-body     → HelveticaWorldRegular  (paragraphs, UI)
-     font-subtitle → IBM Plex Serif Regular (subtitles, section labels)
-     font-quote    → IBM Plex Serif         (blockquotes — pair with italic + font-bold)
-  */
+  /* Typography */
   --font-title:    "Helvetica World", "Helvetica Neue", Arial, sans-serif;
   --font-body:     "Helvetica World", "Helvetica Neue", Arial, sans-serif;
   --font-subtitle: var(--font-ibm-plex-serif), Georgia, serif;
   --font-quote:    var(--font-ibm-plex-serif), Georgia, serif;
 }
 
-/* Base */
+/* ─── Base ────────────────────────────────────────────────────────────────── */
+html {
+  scroll-behavior: smooth;
+}
+
 body {
   font-family: var(--font-body);
+}
+
+/* ─── Glassmorphism Tokens ────────────────────────────────────────────────── */
+:root {
+  --glass-bg: rgba(255, 255, 255, 0.04);
+  --glass-bg-strong: rgba(255, 255, 255, 0.08);
+  --glass-border: rgba(255, 255, 255, 0.10);
+  --glass-border-hover: rgba(255, 255, 255, 0.20);
+  --glass-blur: 12px;
+  --glass-blur-strong: 20px;
+  --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  --glass-shadow-hover: 0 20px 40px rgba(0, 0, 0, 0.4);
+}
+
+/* ─── Perspective wrapper ─────────────────────────────────────────────────── */
+.perspective-wrap {
+  perspective: 1200px;
+  perspective-origin: 50% 50%;
+}
+
+/* ─── GPU-accelerated animation utility ───────────────────────────────────── */
+.will-animate {
+  will-change: transform, opacity;
+}
+
+/* ─── Scroll-reveal initial state (set by JS, hidden before animation) ───── */
+.sr-hidden {
+  opacity: 0;
+  transform: translateY(40px);
+}
+
+/* ─── Floating ambient orbs ───────────────────────────────────────────────── */
+.orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  pointer-events: none;
+  will-change: transform;
+}
+
+.orb-cobalt {
+  background: radial-gradient(circle, rgba(27, 68, 216, 0.25) 0%, transparent 70%);
+}
+
+.orb-red {
+  background: radial-gradient(circle, rgba(196, 18, 48, 0.15) 0%, transparent 70%);
+}
+
+.orb-purple {
+  background: radial-gradient(circle, rgba(139, 92, 246, 0.18) 0%, transparent 70%);
+}
+
+/* ─── Ambient float keyframes ─────────────────────────────────────────────── */
+@keyframes float-slow {
+  0%, 100% { transform: translateY(0) translateX(0); }
+  25%  { transform: translateY(-20px) translateX(10px); }
+  50%  { transform: translateY(-10px) translateX(-5px); }
+  75%  { transform: translateY(-25px) translateX(8px); }
+}
+
+@keyframes float-medium {
+  0%, 100% { transform: translateY(0) translateX(0); }
+  33%  { transform: translateY(-15px) translateX(-12px); }
+  66%  { transform: translateY(-8px) translateX(6px); }
+}
+
+@keyframes pulse-glow {
+  0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(196, 18, 48, 0.4); }
+  50%      { opacity: 0.95; box-shadow: 0 0 20px 4px rgba(196, 18, 48, 0.15); }
+}
+
+@keyframes gradient-shift {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+@keyframes line-extend {
+  from { transform: scaleX(0); }
+  to   { transform: scaleX(1); }
+}
+
+/* ─── Glass utility classes ───────────────────────────────────────────────── */
+.glass-card {
+  background: var(--glass-bg);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  border: 1px solid var(--glass-border);
+  transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.glass-card:hover {
+  background: var(--glass-bg-strong);
+  border-color: var(--glass-border-hover);
+  box-shadow: var(--glass-shadow-hover);
+  transform: translateY(-4px);
+}
+
+.glass-card-static {
+  background: var(--glass-bg);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  border: 1px solid var(--glass-border);
+}
+
+.glass-input {
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid var(--glass-border);
+  transition: all 0.3s ease-out;
+}
+
+.glass-input:focus {
+  border-color: #C41230;
+  box-shadow: 0 0 0 3px rgba(196, 18, 48, 0.15);
+  background: rgba(255, 255, 255, 0.06);
+}
+
+/* ─── Hover lift utility ──────────────────────────────────────────────────── */
+.hover-lift {
+  transition: transform 0.3s ease-out, box-shadow 0.3s ease-out;
+}
+
+.hover-lift:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
+}
+
+/* ─── Reduced motion ──────────────────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  .sr-hidden {
+    opacity: 1;
+    transform: none;
+  }
+
+  .glass-card:hover {
+    transform: none;
+  }
+
+  .hover-lift:hover {
+    transform: none;
+  }
+
+  .orb {
+    animation: none !important;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }

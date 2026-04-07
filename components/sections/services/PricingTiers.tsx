@@ -1,6 +1,9 @@
+"use client";
+
 import { PricingCard } from "@/components/ui/PricingCard";
 import { SectionLabel } from "@/components/ui/SectionLabel";
 import Link from "next/link";
+import { useScrollReveal } from "@/lib/useScrollReveal";
 
 const tiers = [
   {
@@ -55,15 +58,26 @@ const tiers = [
 ];
 
 export function PricingTiers() {
+  const headingRef = useScrollReveal<HTMLDivElement>({ y: 40, duration: 0.8 });
+  const cardsRef = useScrollReveal<HTMLDivElement>({
+    staggerChildren: true,
+    stagger: 0.15,
+    y: 50,
+    duration: 0.7,
+  });
+  const guaranteeRef = useScrollReveal<HTMLDivElement>({ y: 30, duration: 0.6, delay: 0.3 });
+
   return (
     <section className="relative bg-soft-black text-white px-6 py-14 md:py-16">
       <div className="relative mx-auto max-w-[1200px]">
-        <SectionLabel>Packages</SectionLabel>
-        <h2 className="mt-4 font-title text-4xl md:text-5xl font-bold leading-tight max-w-2xl">
-          Pick the one that fits where you are. Switch when you grow.
-        </h2>
+        <div ref={headingRef}>
+          <SectionLabel>Packages</SectionLabel>
+          <h2 className="mt-4 font-title text-4xl md:text-5xl font-bold leading-tight max-w-2xl">
+            Pick the one that fits where you are. Switch when you grow.
+          </h2>
+        </div>
 
-        <div className="mt-16 grid md:grid-cols-3 gap-px bg-white/10 border border-white/10">
+        <div ref={cardsRef} className="mt-16 grid md:grid-cols-3 gap-6">
           {tiers.map((tier) => (
             <PricingCard
               key={tier.name}
@@ -73,13 +87,12 @@ export function PricingTiers() {
               description={tier.description}
               features={tier.features}
               badge={tier.badge}
-              className="border-0"
             />
           ))}
         </div>
 
         {/* Performance guarantee */}
-        <div className="mt-8 border border-white/10 p-6 md:p-8 flex flex-col md:flex-row gap-4 md:items-center">
+        <div ref={guaranteeRef} className="mt-8 glass-card-static p-6 md:p-8 flex flex-col md:flex-row gap-4 md:items-center">
           <span className="text-amber font-bold uppercase tracking-widest text-xs shrink-0">
             Performance Guarantee
           </span>

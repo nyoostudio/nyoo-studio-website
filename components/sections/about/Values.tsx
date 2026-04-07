@@ -1,4 +1,7 @@
+"use client";
+
 import { GrainOverlay } from "@/components/ui/GrainOverlay";
+import { useScrollReveal } from "@/lib/useScrollReveal";
 
 const values = [
   {
@@ -16,13 +19,20 @@ const values = [
 ];
 
 export function Values() {
+  const cardsRef = useScrollReveal<HTMLDivElement>({
+    staggerChildren: true,
+    stagger: 0.15,
+    y: 40,
+    duration: 0.7,
+  });
+
   return (
     <section className="relative bg-soft-black text-white px-6 py-24 md:py-32">
       <GrainOverlay />
       <div className="relative mx-auto max-w-[1200px]">
-        <div className="grid gap-px bg-white/10 border border-white/10">
+        <div ref={cardsRef} className="grid gap-6">
           {values.map((value, i) => (
-            <div key={i} className="bg-soft-black p-10 md:p-16 grid md:grid-cols-2 gap-8 md:gap-24">
+            <div key={i} className="glass-card p-10 md:p-16 grid md:grid-cols-2 gap-8 md:gap-24">
               <h3 className="font-title text-2xl md:text-3xl font-bold leading-snug">
                 {value.statement}
               </h3>
