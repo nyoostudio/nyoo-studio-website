@@ -304,7 +304,11 @@ These are intentional gaps — do not fabricate content for these:
 - Site speed target: under 3 seconds on mobile
 - SSL required (handled by Vercel)
 - Sitemap + robots.txt to be generated and submitted to Google Search Console post-launch
-- **Turbopack disabled** — `next dev` only, never `--turbopack`. Turbopack writes a persistence DB and crashes on Windows paths with spaces. Already removed from `package.json`.
+- **Turbopack** — if `npm run dev` fails with `Failed to open database` / `invalid digit found in string`, the Turbopack persistence cache is corrupt. Fix: delete `.next` and restart.
+  ```powershell
+  Remove-Item -Recurse -Force .next
+  npm run dev
+  ```
 - **Favicon** — `app/icon.svg` is auto-served by Next.js App Router as the site favicon. Do NOT add an `icons` field to `metadata` in `layout.tsx` — it points to `/public/` and breaks it.
 - **Grid flush-edge spacing** — For multi-column grids, use `px-8` on all columns + `md:pl-0` on the first + `md:pr-0` on the last. This gives equal visual weight without bleeding past the content boundary.
 

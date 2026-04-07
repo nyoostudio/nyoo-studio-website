@@ -1,13 +1,51 @@
 import { SectionLabel } from "@/components/ui/SectionLabel";
 
 const addons = [
-  { name: "Additional social platform", price: "$300/mo" },
-  { name: "Extra short-form video scripts (4-pack)", price: "$400/mo" },
-  { name: "Extra email newsletter send", price: "$200/ea" },
-  { name: "Paid ad creative — additional set (2 ads)", price: "$350/mo" },
-  { name: "Blog / long-form content (per piece)", price: "$250/ea" },
-  { name: "Brand photography direction brief", price: "$500/project" },
-  { name: "Social media audit + strategy report", price: "$750/project" },
+  {
+    name: "Video shoot day ★",
+    price: "$499–$799",
+    note: "Half-day on-site (3–4 hrs) at $499; full-day at $799.",
+  },
+  {
+    name: "ManyChat automation",
+    price: "$299–$449/mo",
+    note: "Up to 3 active flows · keyword triggers · DM sequences · monthly review.",
+  },
+  {
+    name: "Community engagement",
+    price: "$399–$549/mo",
+    note: "30 min/day M–F · comment replies · proactive outreach · DM triage.",
+  },
+  {
+    name: "Paid social ad management",
+    price: "$499–$799/mo",
+    note: "Campaign setup, creative, targeting, and reporting. Ad spend billed separately.",
+  },
+  {
+    name: "Google Business Profile",
+    price: "$199/mo",
+    note: "Posts, Q&A, photos, review responses — monthly.",
+  },
+  {
+    name: "Email newsletter",
+    price: "$249/mo",
+    note: "1× monthly email coordinated with social content calendar.",
+  },
+  {
+    name: "Influencer outreach",
+    price: "$349–$499/mo",
+    note: "Identify, pitch, and manage local micro-influencers.",
+  },
+  {
+    name: "Extra platform (Foundation only)",
+    price: "$500/mo",
+    note: "Add a second channel without upgrading to Growth Engine.",
+  },
+  {
+    name: "Analytics deep-dive",
+    price: "$350 one-time",
+    note: "UTM audit, post performance, and funnel drop-off — delivered as a PDF report.",
+  },
 ];
 
 export function AddOns() {
@@ -27,12 +65,17 @@ export function AddOns() {
           {addons.map((addon, i) => (
             <div
               key={addon.name}
-              className={`flex items-center justify-between px-6 py-5 ${
+              className={`flex items-start justify-between px-6 py-5 gap-8 ${
                 i !== addons.length - 1 ? "border-b border-white/10" : ""
               }`}
             >
-              <span className="text-sm leading-snug opacity-80">{addon.name}</span>
-              <span className="text-sm font-bold text-amber shrink-0 ml-8">
+              <div className="flex flex-col gap-0.5">
+                <span className="text-sm leading-snug opacity-80">{addon.name}</span>
+                {addon.note && (
+                  <span className="text-xs opacity-40 leading-relaxed">{addon.note}</span>
+                )}
+              </div>
+              <span className="text-sm font-bold text-amber shrink-0 text-right">
                 {addon.price}
               </span>
             </div>

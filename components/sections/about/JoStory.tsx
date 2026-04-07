@@ -10,7 +10,7 @@ export function JoStory() {
         <div>
           <SectionLabel>Johanna Yoo</SectionLabel>
           <h2 className="mt-4 font-title text-4xl md:text-5xl font-bold leading-tight">
-            She's spent 12 years building brands. Now she builds them for people who earn it.
+            She's spent 12 years building big name brands. Now she builds them for people who earn it.
           </h2>
         </div>
         <div className="flex flex-col gap-6 text-base leading-relaxed opacity-70">
