@@ -16,8 +16,8 @@ export default function AboutPage() {
   return (
     <>
       <Hero
-        headline="Small businesses deserve better than small thinking."
-        subhead="We're Jin and Jo Yoo. We built Nyoo Studio because we were tired of watching good businesses get bad marketing."
+        headline="We built Nyoo Studio because social media should generate revenue — and most agencies treat it like a posting schedule."
+        subhead="We're Jin and Jo Yoo. We started this agency because we saw too many good businesses paying for marketing that couldn't prove its own value."
       />
       <JoStory />
       <JinStory />

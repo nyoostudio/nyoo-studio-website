@@ -22,7 +22,7 @@ export function JinStory() {
         </div>
         <div ref={bodyRef} className="flex flex-col gap-6 text-base leading-relaxed opacity-70">
           <p>
-            Jin spent 15 years in federal product and technology — working inside systems that had to work. You ship something for the federal government, it either works or it doesn't. He learned to build things that hold, and buid processes that break through bureacracy.
+            Jin spent 15 years in federal product and technology — working inside systems that had to work. You ship something for the federal government, it either works or it doesn't. He learned to build things that hold, and build processes that break through bureaucracy.
           </p>
           <p>
             At Nyoo Studio, he handles strategy, automation, and the infrastructure behind how the work gets done. The systems that make it possible to do great work at speed, without dropping anything.

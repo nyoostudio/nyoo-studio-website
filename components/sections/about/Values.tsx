@@ -9,8 +9,8 @@ const values = [
     body: "Selectivity isn't arrogance — it's how we protect the quality of what we do. We'd rather work with fewer clients and do it right than spread thin and do it okay.",
   },
   {
-    statement: "The work should speak before we do.",
-    body: "We're not here to pitch you. We're here to show you. Every piece of content we produce is something we'd stand behind with our name on it.",
+    statement: "Social media is a lead generation channel. We treat it like one.",
+    body: "Most agencies measure success in engagement. We measure it in qualified leads. Your content should do more than get noticed — it should start conversations that end in revenue.",
   },
   {
     statement: "Small businesses deserve the same firepower as big ones.",

@@ -10,19 +10,19 @@ const steps = [
     number: "01",
     title: "Strategy Call",
     description:
-      "A 30-minute conversation about your business. We listen more than we talk.",
+      "A 30-minute conversation about your business, your sales cycle, and where leads are coming from today. We listen more than we talk.",
   },
   {
     number: "02",
-    title: "Custom Plan",
+    title: "Lead Generation Plan",
     description:
-      "We build a content strategy tailored to your voice, your goals, and your audience. You review it. We adjust.",
+      "We build a content strategy mapped to your sales funnel — tailored to your voice, your ideal client, and the platforms where they're most reachable. You review it. We adjust.",
   },
   {
     number: "03",
-    title: "We Get to Work",
+    title: "We Build Your Pipeline",
     description:
-      "Drafts in your inbox. Captions ready to approve. Calendar filled. You stay focused on running your business.",
+      "Content goes live. Lead flows get activated. Reporting starts tracking what matters — not impressions, but inquiries. You stay focused on running your business.",
   },
 ];
 
