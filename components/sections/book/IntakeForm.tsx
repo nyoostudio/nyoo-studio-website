@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { CalendlyWidget } from "./CalendlyWidget";
 
 const REVENUE_OPTIONS = [
   "Under $10K/mo",
@@ -43,6 +44,10 @@ export function IntakeForm() {
   const [status, setStatus] = useState<
     "idle" | "sending" | "success" | "error"
   >("idle");
+  const [userData, setUserData] = useState<{ name: string; email: string }>({
+    name: "",
+    email: "",
+  });
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -68,9 +73,12 @@ export function IntakeForm() {
       ]);
 
       if (formspreeRes.ok) {
+        setUserData({
+          name: payload.name as string,
+          email: payload.email as string,
+        });
         setStatus("success");
         form.reset();
-        window.open(CALENDAR_URL, "_blank", "noopener,noreferrer");
       } else {
         setStatus("error");
       }
@@ -81,24 +89,14 @@ export function IntakeForm() {
 
   if (status === "success") {
     return (
-      <div className="flex flex-col gap-5 glass-card-static p-8 rounded-lg">
-        <p className="text-amber font-bold text-lg">We&apos;ve got it.</p>
-        <p className="text-sm leading-relaxed opacity-70">
-          Your answers are in. The scheduling page should have opened in a new
-          tab — pick whatever time works best for you.
-        </p>
-        <p className="text-sm leading-relaxed opacity-70">
-          If the tab didn&apos;t open,{" "}
-          <a
-            href={CALENDAR_URL}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="underline underline-offset-2 hover:text-amber transition-colors duration-300"
-          >
-            click here to book your call
-          </a>
-          .
-        </p>
+      <div className="flex flex-col gap-6">
+        <div className="flex flex-col gap-2">
+          <p className="text-amber font-bold text-lg">We&apos;ve got it.</p>
+          <p className="text-sm leading-relaxed opacity-70">
+            Your answers are in. Pick a time below that works best for your strategy call.
+          </p>
+        </div>
+        <CalendlyWidget name={userData.name} email={userData.email} />
       </div>
     );
   }
