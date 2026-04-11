@@ -30,7 +30,7 @@ const faqCategories = [
       {
         question: "Are you a full-service marketing agency?",
         answer:
-          "No. We do two things: social media management and content strategy for lead generation. We do them at a high level. We're not the right fit if you need website development, SEO audits, or paid search campaigns — those require a different kind of agency.",
+          "We're a lead generation agency that works through social media and content. That's our lane and we're deep in it. We don't do website development, SEO audits, or paid search — those require a different kind of agency. What we do is build social media systems that produce qualified leads, and we do it at a level most small businesses have never had access to.",
       },
       {
         question: "Why DC Metro? Do you work with businesses outside the area?",
@@ -56,6 +56,11 @@ const faqCategories = [
         question: "What does 'content strategy for lead generation' mean?",
         answer:
           "It means your content is built to attract the right people and move them toward working with you — not just to get likes. That includes email newsletters, short-form video scripts, and long-form content (depending on tier), all mapped to your sales cycle. Vanity metrics don't pay the bills.",
+      },
+      {
+        question: "How do you actually generate leads through social media?",
+        answer:
+          "We build content systems where every post has a purpose in your sales funnel. Some content attracts — it gets the right people to notice you. Some content qualifies — it helps prospects self-identify as a fit for your business. And some content converts — it gives them a clear, low-friction way to reach out. On the backend, we set up automated flows (DM sequences, lead capture, intake forms) that route interested people directly into your pipeline. We don't just hope people reach out after seeing a post. We build the path from impression to inquiry.",
       },
       {
         question: "Do I have to approve everything before it's published?",

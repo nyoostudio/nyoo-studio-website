@@ -30,8 +30,8 @@ export default function HomePage() {
     <>
       <Hero
         gradient={true}
-        headline="Bridge the gap between where your business is and where your brand should be."
-        subhead="We help established small businesses in DC Metro grow through social media management and content strategy built for lead generation."
+        headline="Your social media should be bringing in clients. Not just followers."
+        subhead="Nyoo Studio builds social media systems that generate qualified leads for established small businesses in DC Metro. Not vanity metrics. Not vague brand awareness. Leads."
         cta={
           <>
             <Link
@@ -44,7 +44,7 @@ export default function HomePage() {
               href="/services"
               className="inline-flex items-center justify-center border border-white bg-transparent text-white px-8 py-4 text-base font-bold tracking-wide transition-colors hover:bg-white/10"
             >
-              See Our Services
+              See How It Works
             </Link>
           </>
         }
@@ -55,7 +55,11 @@ export default function HomePage() {
       <SocialProofSection />
       <FoundersTeaser />
       <FAQTeaser />
-      <CTASection variant="transparent" />
+      <CTASection
+        variant="transparent"
+        headline="Ready to know exactly where your next client is coming from?"
+        ctaLabel="Book Your Strategy Call"
+      />
     </>
   );
 }

@@ -10,13 +10,13 @@ const tiers = [
     name: "Foundation",
     price: "$1,299",
     description:
-      "Built for businesses ready to show up consistently. A real presence, handled properly.",
+      "Build the base your leads will come from. A consistent, strategic social media presence designed to attract your ideal clients. We lay the groundwork — the messaging, the content system, the tracking — so that when leads start coming in, you know exactly what's working.",
     features: [
       "8 social posts/month (2 platforms)",
       "Monthly content strategy session",
       "Caption writing + hashtag research",
       "Community management (comments + DMs)",
-      "Monthly performance report",
+      "Monthly lead source report — know where every inquiry came from",
     ],
     badge: undefined,
   },
@@ -24,7 +24,7 @@ const tiers = [
     name: "Growth Engine",
     price: "$2,499",
     description:
-      "For businesses ready to move from presence to pipeline. More output, more reach, more results.",
+      "From presence to pipeline. More content, more channels, more touchpoints — all mapped to your lead generation funnel. Video scripts, email newsletters, and paid ad creative work together to move people from seeing your brand to contacting your business.",
     features: [
       "16 social posts/month (3 platforms)",
       "2× content strategy sessions/month",
@@ -32,7 +32,7 @@ const tiers = [
       "Email newsletter (2/month)",
       "Paid social ad creative (2 ads/month)",
       "Community management (comments + DMs)",
-      "Bi-weekly performance report",
+      "Bi-weekly lead attribution report with funnel analysis",
     ],
     badge: "Most Popular",
   },
@@ -41,7 +41,7 @@ const tiers = [
     price: "$3,499",
     priceSuffix: "/mo",
     description:
-      "Full-output mode for businesses ready to dominate their market segment.",
+      "Full-channel lead generation on autopilot. Maximum output across every channel, with a dedicated strategist who owns your pipeline. Weekly optimization, full reporting, and the systems to handle the volume of leads that come with this level of visibility.",
     features: [
       "24+ social posts/month (4 platforms)",
       "Weekly content strategy sessions",
@@ -50,8 +50,8 @@ const tiers = [
       "Paid social ad creative (4 ads/month)",
       "Blog / long-form content (2/month)",
       "Community management (comments + DMs)",
-      "Weekly performance report",
       "Dedicated account strategist",
+      "Weekly pipeline report with lead scoring and conversion tracking",
     ],
     badge: undefined,
   },

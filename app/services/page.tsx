@@ -100,8 +100,8 @@ export default function ServicesPage() {
       />
       <Hero
         gradient={true}
-        headline="What we do. What it costs. No surprises."
-        subhead="Two services. Three tiers. Everything laid out so you can make the right call before we even get on the phone."
+        headline="Lead generation packages built for small businesses. Pick the level that fits."
+        subhead="Every package is built around the same goal: turning your social media into a reliable source of qualified leads. The tiers scale the volume, the channels, and the speed. The strategy stays the same."
       />
       <PricingTiers />
       <CommitDiscounts />

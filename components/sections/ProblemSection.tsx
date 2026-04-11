@@ -7,16 +7,16 @@ import { useParallax } from "@/lib/useParallax";
 
 const symptoms = [
   {
-    heading: "You post when there's time.",
-    body: "There's never time. So nothing builds, nothing compounds, and the algorithm moves on without you.",
+    heading: "You have engagement but no pipeline.",
+    body: "Likes, comments, shares — none of it is connected to how people actually become your clients. The content looks good. It just doesn't lead anywhere.",
   },
   {
-    heading: "You've tried things.",
-    body: "A boosted post. A rebrand. A content push that lasted two weeks. Nothing wrong with the effort — the problem was the system.",
+    heading: "You've invested in marketing that can't prove its value.",
+    body: "You've tried agencies, freelancers, maybe even hired someone. They sent you reports full of impressions and reach. You still can't point to a single client that came from social media.",
   },
   {
-    heading: "Your customers know you're good.",
-    body: "Strangers don't. And strangers are the ones you need to reach. Referrals keep the lights on. They don't grow the business.",
+    heading: "Referrals keep the lights on. They don't scale the business.",
+    body: "Your best clients came from word of mouth. Great. But you can't control when the next one shows up. You need a system that generates leads on a schedule, not on luck.",
   },
 ];
 
@@ -41,11 +41,8 @@ export function ProblemSection() {
         <div ref={headingRef}>
           <SectionLabel>The gap</SectionLabel>
           <h2 className="mt-4 font-title text-4xl md:text-6xl font-bold leading-tight max-w-3xl">
-            Most small businesses don't have a marketing problem. They have a visibility problem.
+            You&apos;re posting. You&apos;re getting likes. But your phone isn&apos;t ringing.
           </h2>
-          <p className="mt-8 text-lg leading-relaxed opacity-90 max-w-2xl">
-            The businesses outranking you aren&apos;t better. They&apos;re just more visible.
-          </p>
         </div>
 
         <div
