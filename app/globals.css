@@ -49,6 +49,13 @@ body {
 
 /* ─── Glassmorphism Tokens ────────────────────────────────────────────────── */
 :root {
+  /* ─── Editorial redesign tokens ─────────────────────────────────────────── */
+  --black:  #080808;
+  --amber:  #C17F3A;
+  --muted:  rgba(240,235,225,0.4);
+  --rule:   rgba(240,235,225,0.09);
+  --px:     clamp(20px, 5vw, 60px);
+
   --glass-bg: rgba(255, 255, 255, 0.04);
   --glass-bg-strong: rgba(255, 255, 255, 0.08);
   --glass-border: rgba(255, 255, 255, 0.10);
@@ -93,9 +100,6 @@ body {
   background: radial-gradient(circle, rgba(196, 18, 48, 0.15) 0%, transparent 70%);
 }
 
-.orb-purple {
-  background: radial-gradient(circle, rgba(139, 92, 246, 0.18) 0%, transparent 70%);
-}
 
 /* ─── Ambient float keyframes ─────────────────────────────────────────────── */
 @keyframes float-slow {
@@ -125,6 +129,22 @@ body {
 @keyframes line-extend {
   from { transform: scaleX(0); }
   to   { transform: scaleX(1); }
+}
+
+@keyframes slideup {
+  from { transform: translateY(105%); }
+  to   { transform: translateY(0); }
+}
+
+@keyframes fadein {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ─── Responsive page-padding ─────────────────────────────────────────────── */
+.section-px {
+  padding-left: var(--px);
+  padding-right: var(--px);
 }
 
 /* ─── Glass utility classes ───────────────────────────────────────────────── */
@@ -195,6 +215,17 @@ body {
 
   .orb {
     animation: none !important;
+  }
+
+  .hero-line-inner {
+    animation: none !important;
+    transform: translateY(0) !important;
+  }
+
+  .hero-meta-bar,
+  .hero-foot {
+    animation: none !important;
+    opacity: 1 !important;
   }
 
   *,
