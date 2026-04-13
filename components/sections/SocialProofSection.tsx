@@ -1,27 +1,105 @@
 "use client";
 
-import { GrainOverlay } from "@/components/ui/GrainOverlay";
-import { useParallax } from "@/lib/useParallax";
+import { useScrollReveal } from "@/lib/useScrollReveal";
+
+const stats = [
+  { number: "27", unit: "yr", label: "Combined experience in brand, content & systems" },
+  { number: "DC", unit: "", label: "Metro focused. We know this market." },
+  { number: "$0", unit: "", label: "Lock-in. Month-to-month by default, always." },
+  { number: "2", unit: "", label: "Founders. Every client gets both of us." },
+];
 
 export function SocialProofSection() {
-  const bgRef = useParallax<HTMLDivElement>({ speed: 0.2 });
+  const gridRef = useScrollReveal<HTMLDivElement>({
+    staggerChildren: true,
+    stagger: 0.1,
+    y: 16,
+    duration: 0.5,
+    start: "top 80%",
+  });
 
   return (
-    <section className="relative bg-red text-soft-black px-6 py-24 md:py-32 overflow-hidden">
-      {/* Parallax gradient accent */}
-      <div ref={bgRef} className="absolute inset-0 pointer-events-none" aria-hidden>
-        <div className="absolute inset-0 bg-gradient-to-br from-red via-red to-red/80" />
-      </div>
-      <GrainOverlay opacity={0.08} />
-      <div className="relative mx-auto max-w-[1200px]">
-        {/* <figure className="max-w-3xl">
-          <blockquote className="font-quote italic font-bold text-2xl md:text-4xl leading-snug">
-            &ldquo;[CLIENT_QUOTE]&rdquo;
-          </blockquote>
-          <figcaption className="mt-8 text-sm opacity-60 tracking-wide">
-            — Client name, Business name
-          </figcaption>
-        </figure> */}
+    <section
+      className="relative overflow-hidden"
+      style={{
+        background: "var(--cream, #F0EBE1)",
+        padding: `clamp(60px, 10vw, 120px) var(--px)`,
+        position: "relative",
+        zIndex: 2,
+      }}
+    >
+      {/* Grain — multiply blend for cream bg */}
+      <span
+        aria-hidden
+        className="pointer-events-none absolute inset-0"
+        style={{
+          opacity: 0.25,
+          mixBlendMode: "multiply",
+          backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E")`,
+          backgroundSize: "200px 200px",
+        }}
+      />
+
+      {/* Eyebrow */}
+      <p
+        className="relative"
+        style={{
+          fontSize: "10px",
+          fontWeight: 700,
+          letterSpacing: "0.22em",
+          textTransform: "uppercase",
+          color: "var(--red)",
+          marginBottom: "clamp(36px, 6vw, 72px)",
+        }}
+      >
+        Why Nyoo Studio
+      </p>
+
+      {/* Stats grid */}
+      <div
+        ref={gridRef}
+        className="relative grid"
+        style={{
+          gridTemplateColumns: "1fr 1fr",
+          borderTop: "1px solid rgba(8,8,8,0.1)",
+        }}
+      >
+        {stats.map(({ number, unit, label }, i) => (
+          <div
+            key={number}
+            style={{
+              padding: `clamp(24px, 4vw, 48px) clamp(16px, 3vw, 40px) clamp(24px, 4vw, 48px) ${i % 2 === 0 ? "0" : "clamp(16px, 3vw, 40px)"}`,
+              borderRight: i % 2 === 0 ? "1px solid rgba(8,8,8,0.1)" : "none",
+              borderBottom: "1px solid rgba(8,8,8,0.1)",
+            }}
+          >
+            <span
+              className="block"
+              style={{
+                fontSize: "clamp(56px, 9vw, 120px)",
+                fontWeight: 700,
+                letterSpacing: "-0.05em",
+                lineHeight: 1,
+                color: "#080808",
+              }}
+            >
+              {number}
+              {unit && (
+                <span style={{ fontSize: "0.45em" }}>{unit}</span>
+              )}
+            </span>
+            <p
+              style={{
+                fontSize: "clamp(12px, 1.3vw, 14px)",
+                lineHeight: 1.5,
+                color: "rgba(8,8,8,0.5)",
+                marginTop: "clamp(6px, 1vw, 12px)",
+              }}
+            >
+              {label}
+            </p>
+          </div>
+        ))}
       </div>
     </section>
   );
