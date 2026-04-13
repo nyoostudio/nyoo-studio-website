@@ -58,20 +58,21 @@ export function SocialProofSection() {
       {/* Stats grid */}
       <div
         ref={gridRef}
-        className="relative grid"
+        className="relative grid grid-cols-2 md:grid-cols-4"
         style={{
-          gridTemplateColumns: "1fr 1fr",
           borderTop: "1px solid rgba(8,8,8,0.1)",
         }}
       >
         {stats.map(({ number, unit, label }, i) => (
           <div
             key={number}
-            style={{
-              padding: `clamp(24px, 4vw, 48px) clamp(16px, 3vw, 40px) clamp(24px, 4vw, 48px) ${i % 2 === 0 ? "0" : "clamp(16px, 3vw, 40px)"}`,
-              borderRight: i % 2 === 0 ? "1px solid rgba(8,8,8,0.1)" : "none",
-              borderBottom: "1px solid rgba(8,8,8,0.1)",
-            }}
+            className={`
+              relative py-[clamp(24px,4vw,48px)] border-b border-black/10 last:border-b-0
+              ${i % 2 === 0 ? "pr-[clamp(16px,3vw,40px)] border-r" : "pl-[clamp(16px,3vw,40px)] border-r-0"}
+              md:border-b-0 md:border-r md:last:border-r-0
+              md:first:pl-0 md:pl-[clamp(16px,3vw,40px)] md:pr-[clamp(16px,3vw,40px)]
+              md:last:pr-0
+            `}
           >
             <span
               className="block"

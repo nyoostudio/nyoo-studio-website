@@ -52,10 +52,10 @@ export function FAQTeaser() {
 
       <div className="faq-grid-wrapper">
         {/* Left: sticky title + link */}
-        <div className="faq-sticky-left">
+        <div className="faq-sticky-left pb-10">
           <h2
             style={{
-              fontSize: "clamp(30px, 5.5vw, 72px)",
+              fontSize: "clamp(30px, 5.5vw, 76px)",
               fontWeight: 700,
               letterSpacing: "-0.04em",
               lineHeight: 0.95,
@@ -63,7 +63,7 @@ export function FAQTeaser() {
               marginBottom: "20px",
             }}
           >
-            Common<br />questions.
+            Founders<br />are for<br />questions.
           </h2>
           <p
             style={{
@@ -71,9 +71,10 @@ export function FAQTeaser() {
               lineHeight: 1.7,
               color: "rgba(8,8,8,0.5)",
               marginBottom: "24px",
+              maxWidth: "280px",
             }}
           >
-            Answers to what people ask most before booking a call.
+            Jin or Jo. You&apos;ll work with both of us. No account managers or interns doing the heavy lifting.
           </p>
           <Link
             href="/faq"

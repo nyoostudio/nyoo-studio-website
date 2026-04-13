@@ -9,21 +9,21 @@ gsap.registerPlugin(ScrollTrigger);
 const steps = [
   {
     label: "STEP 01",
-    title: "Strategy Call",
+    title: "Discovery",
     description:
       "A 30-minute conversation about your business, your sales cycle, and where leads are coming from today. We listen more than we talk.",
   },
   {
     label: "STEP 02",
-    title: "Lead Generation Plan",
+    title: "Strategy",
     description:
-      "We build a content strategy mapped to your sales funnel — tailored to your voice, your ideal client, and the platforms where they're most reachable. You review it. We adjust.",
+      "We build a content strategy mapped to your sales funnel — tailored to your voice, your ideal client, and the platforms where they seek advice.",
   },
   {
     label: "STEP 03",
-    title: "We Build Your Pipeline",
+    title: "Launch",
     description:
-      "Content goes live. Lead flows get activated. Reporting starts tracking what matters — not impressions, but inquiries. You stay focused on running your business.",
+      "Content goes live. Lead flows get activated. Reporting starts tracking inquiries, not just impressions. You stay focused on running your business.",
   },
 ];
 
@@ -123,9 +123,8 @@ export function HowItWorksSection() {
 
       {/* Two-column header */}
       <div
-        className="grid"
+        className="grid md:grid-cols-2"
         style={{
-          gridTemplateColumns: "1fr",
           gap: "clamp(16px, 3vw, 32px)",
           marginBottom: "clamp(48px, 7vw, 80px)",
           alignItems: "end",
@@ -137,17 +136,19 @@ export function HowItWorksSection() {
             fontWeight: 700,
             letterSpacing: "-0.04em",
             lineHeight: 0.92,
-            color: "var(--cream, #F0EBE1)",
+            color: "var(--cream)",
           }}
         >
-          No onboarding decks.<br />No 12-week<br />discovery phases.
+          The process.<br />
+          Simple.<br />
+          Fast.
         </h2>
         <p
+          className="md:pt-2"
           style={{
             fontSize: "clamp(14px, 1.5vw, 16px)",
             lineHeight: 1.7,
             color: "var(--muted)",
-            maxWidth: "480px",
           }}
         >
           We move fast. Three steps from first conversation to live content.

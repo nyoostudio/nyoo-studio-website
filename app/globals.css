@@ -27,15 +27,15 @@
 @theme {
   /* Colors */
   --color-soft-black: #0D0A09;
-  --color-paper:      #F2EDE4;
-  --color-red:        #C41230;
-  --color-cobalt:     #1B44D8;
+  --color-paper: #F2EDE4;
+  --color-red: #C41230;
+  --color-cobalt: #1B44D8;
 
   /* Typography */
-  --font-title:    "Helvetica World", "Helvetica Neue", Arial, sans-serif;
-  --font-body:     "Helvetica World", "Helvetica Neue", Arial, sans-serif;
+  --font-title: "Helvetica World", "Helvetica Neue", Arial, sans-serif;
+  --font-body: "Helvetica World", "Helvetica Neue", Arial, sans-serif;
   --font-subtitle: var(--font-ibm-plex-serif), Georgia, serif;
-  --font-quote:    var(--font-ibm-plex-serif), Georgia, serif;
+  --font-quote: var(--font-ibm-plex-serif), Georgia, serif;
 }
 
 /* ─── Base ────────────────────────────────────────────────────────────────── */
@@ -49,12 +49,15 @@ body {
 
 /* ─── Glassmorphism Tokens ────────────────────────────────────────────────── */
 :root {
-  /* ─── Editorial redesign tokens ─────────────────────────────────────────── */
-  --black:  #080808;
-  --amber:  #C17F3A;
-  --muted:  rgba(240,235,225,0.4);
-  --rule:   rgba(240,235,225,0.09);
-  --px:     clamp(20px, 5vw, 60px);
+  /* ─── FTP v2 redesign tokens ─────────────────────────────────────────── */
+  --black: #080808;
+  --cream: #F0EBE1;
+  --red: #C41230;
+  --amber: #C17F3A;
+  --cobalt: #1B44D8;
+  --muted: rgba(240, 235, 225, 0.4);
+  --rule: rgba(240, 235, 225, 0.09);
+  --px: clamp(20px, 5vw, 60px);
 
   --glass-bg: rgba(255, 255, 255, 0.04);
   --glass-bg-strong: rgba(255, 255, 255, 0.08);
@@ -106,42 +109,99 @@ body {
 
 /* ─── Ambient float keyframes ─────────────────────────────────────────────── */
 @keyframes float-slow {
-  0%, 100% { transform: translateY(0) translateX(0); }
-  25%  { transform: translateY(-20px) translateX(10px); }
-  50%  { transform: translateY(-10px) translateX(-5px); }
-  75%  { transform: translateY(-25px) translateX(8px); }
+
+  0%,
+  100% {
+    transform: translateY(0) translateX(0);
+  }
+
+  25% {
+    transform: translateY(-20px) translateX(10px);
+  }
+
+  50% {
+    transform: translateY(-10px) translateX(-5px);
+  }
+
+  75% {
+    transform: translateY(-25px) translateX(8px);
+  }
 }
 
 @keyframes float-medium {
-  0%, 100% { transform: translateY(0) translateX(0); }
-  33%  { transform: translateY(-15px) translateX(-12px); }
-  66%  { transform: translateY(-8px) translateX(6px); }
+
+  0%,
+  100% {
+    transform: translateY(0) translateX(0);
+  }
+
+  33% {
+    transform: translateY(-15px) translateX(-12px);
+  }
+
+  66% {
+    transform: translateY(-8px) translateX(6px);
+  }
 }
 
 @keyframes pulse-glow {
-  0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(196, 18, 48, 0.4); }
-  50%      { opacity: 0.95; box-shadow: 0 0 20px 4px rgba(196, 18, 48, 0.15); }
+
+  0%,
+  100% {
+    opacity: 1;
+    box-shadow: 0 0 0 0 rgba(196, 18, 48, 0.4);
+  }
+
+  50% {
+    opacity: 0.95;
+    box-shadow: 0 0 20px 4px rgba(196, 18, 48, 0.15);
+  }
 }
 
 @keyframes gradient-shift {
-  0%   { background-position: 0% 50%; }
-  50%  { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
+  0% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+
+  100% {
+    background-position: 0% 50%;
+  }
 }
 
 @keyframes line-extend {
-  from { transform: scaleX(0); }
-  to   { transform: scaleX(1); }
+  from {
+    transform: scaleX(0);
+  }
+
+  to {
+    transform: scaleX(1);
+  }
 }
 
 @keyframes slideup {
-  from { transform: translateY(105%); }
-  to   { transform: translateY(0); }
+  from {
+    transform: translateY(105%);
+  }
+
+  to {
+    transform: translateY(0);
+  }
 }
 
 @keyframes fadein {
-  from { opacity: 0; transform: translateY(12px); }
-  to   { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 /* ─── Responsive page-padding ─────────────────────────────────────────────── */

@@ -6,12 +6,12 @@ import { GrainOverlay } from "@/components/ui/GrainOverlay";
 export function HeroHome() {
   return (
     <section
-      className="relative overflow-hidden flex flex-col"
+      className="relative overflow-hidden flex flex-col h-[100svh]"
       style={{
-        minHeight: "100svh",
         background: "var(--black)",
         position: "relative",
         zIndex: 2,
+        paddingBottom: "80px",
       }}
     >
       {/* Red top stripe */}
@@ -35,9 +35,7 @@ export function HeroHome() {
       <div
         className="hero-meta-bar relative flex justify-between items-center"
         style={{
-          paddingTop: "80px",
-          paddingLeft: "var(--px)",
-          paddingRight: "var(--px)",
+          padding: "80px var(--px) 0",
           zIndex: 2,
           opacity: 0,
           animation: "fadein 0.6s ease forwards 0.3s",
@@ -52,10 +50,9 @@ export function HeroHome() {
             color: "var(--muted)",
           }}
         >
-          Washington, DC Metro
         </span>
         <span style={{ fontSize: "11px", letterSpacing: "0.1em", color: "var(--muted)" }}>
-          Est. 2024
+          Est. 2026
         </span>
       </div>
 
@@ -72,20 +69,20 @@ export function HeroHome() {
           (line, i) => (
             <span
               key={line}
-              className="block"
+              className={`block hl${i + 1}`}
               style={{ overflow: "hidden", lineHeight: "0.88", marginBottom: "clamp(4px, 0.5vw, 8px)" }}
             >
               <span
                 className="block"
                 style={{
-                  fontSize: "clamp(52px, 13.5vw, 200px)",
+                  fontSize: "clamp(42px, 13.5vw, 200px)",
                   fontWeight: 700,
                   letterSpacing: "-0.04em",
-                  color: i === 3 ? "var(--red)" : "var(--cream, #F0EBE1)",
+                  color: i === 3 ? "var(--red)" : "var(--cream)",
                   transform: "translateY(105%)",
                   animation: "slideup 0.85s cubic-bezier(0.16,1,0.3,1) forwards",
                   animationFillMode: "both",
-                  animationDelay: `${0.5 + i * 0.18}s`,
+                  animationDelay: `${0.5 + (i === 0 ? 0 : i === 1 ? 0.18 : i === 2 ? 0.36 : 0.54)}s`,
                 }}
               >
                 {line}
@@ -97,9 +94,8 @@ export function HeroHome() {
 
       {/* Footer row */}
       <div
-        className="hero-foot relative grid gap-5"
+        className="hero-foot relative grid gap-5 sm:grid-cols-[1fr_auto] sm:items-end sm:gap-10"
         style={{
-          gridTemplateColumns: "1fr",
           padding: `clamp(24px, 4vw, 48px) var(--px) clamp(28px, 5vw, 56px)`,
           borderTop: "1px solid var(--rule)",
           marginTop: "clamp(20px, 3vw, 40px)",
@@ -118,9 +114,9 @@ export function HeroHome() {
           }}
         >
           Nyoo Studio builds social media systems that generate qualified leads for
-          established small businesses in DC Metro. Not vanity metrics. Leads.
+          established small businesses in DC Metro. Not vanity metrics. Not vague brand awareness. Clients.
         </p>
-        <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:gap-4">
+        <div className="flex flex-col gap-2 items-start sm:items-end">
           <Link
             href="/book"
             className="inline-flex items-center gap-3 font-bold whitespace-nowrap transition-opacity hover:opacity-80"
@@ -136,9 +132,9 @@ export function HeroHome() {
           </Link>
           <Link
             href="/services"
-            className="inline-flex items-center gap-1.5 transition-colors whitespace-nowrap"
+            className="flex items-center gap-1.5 transition-colors whitespace-nowrap"
             style={{ fontSize: "12px", color: "var(--muted)", letterSpacing: "0.08em" }}
-            onMouseEnter={(e) => (e.currentTarget.style.color = "var(--cream, #F0EBE1)")}
+            onMouseEnter={(e) => (e.currentTarget.style.color = "var(--cream)")}
             onMouseLeave={(e) => (e.currentTarget.style.color = "var(--muted)")}
           >
             See how it works →

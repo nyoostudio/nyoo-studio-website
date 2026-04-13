@@ -53,16 +53,16 @@ export function FoundersTeaser() {
             fontWeight: 700,
             letterSpacing: "-0.04em",
             lineHeight: 0.92,
-            color: "var(--cream, #F0EBE1)",
+            color: "var(--cream)",
           }}
         >
-          Not a /<br />faceless /<br />agency.
+          Not a<br />faceless<br />agency.
         </h2>
         <Link
           href="/about"
           className="flex items-center gap-2 self-end transition-colors whitespace-nowrap"
-          style={{ fontSize: "13px", fontWeight: 700, color: "var(--muted)", letterSpacing: "0.06em" }}
-          onMouseEnter={(e) => (e.currentTarget.style.color = "var(--cream, #F0EBE1)")}
+          style={{ fontSize: "12px", fontWeight: 700, color: "var(--muted)", letterSpacing: "0.06em" }}
+          onMouseEnter={(e) => (e.currentTarget.style.color = "var(--cream)")}
           onMouseLeave={(e) => (e.currentTarget.style.color = "var(--muted)")}
         >
           Read our story{" "}

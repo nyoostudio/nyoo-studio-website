@@ -94,7 +94,7 @@ export function CTASectionHome() {
         />
 
         {/* Content — animates in when cta-active class is added */}
-        <div className="cta-inner relative">
+        <div className="cta-inner relative flex-1 flex flex-col justify-center">
           {/* Headline with dim/bright contrast */}
           <h2
             style={{
@@ -109,7 +109,7 @@ export function CTASectionHome() {
             <br />
             <span style={{ color: "var(--muted)" }}>WHERE YOUR</span>
             <br />
-            <span style={{ color: "var(--cream, #F0EBE1)" }}>NEXT CLIENT</span>
+            <span style={{ color: "var(--cream)" }}>NEXT CLIENT</span>
             <br />
             <span style={{ color: "var(--red)" }}>COMES FROM?</span>
           </h2>
@@ -126,20 +126,47 @@ export function CTASectionHome() {
               Book a free 30-minute strategy call. No pitch, no pressure — just an
               honest conversation about your marketing.
             </p>
-            <Link
-              href="/book"
-              className="inline-flex items-center gap-3 font-bold whitespace-nowrap flex-shrink-0 transition-opacity hover:opacity-80"
-              style={{
-                fontSize: "clamp(13px, 1.4vw, 15px)",
-                letterSpacing: "0.07em",
-                background: "var(--red)",
-                color: "white",
-                padding: "clamp(14px, 2vw, 18px) clamp(22px, 3vw, 32px)",
-              }}
-            >
-              Book Your Strategy Call →
-            </Link>
+            <div className="flex flex-col gap-4 items-start sm:items-end">
+              <Link
+                href="/book"
+                className="inline-flex items-center gap-3 font-bold whitespace-nowrap flex-shrink-0 transition-opacity hover:opacity-80"
+                style={{
+                  fontSize: "clamp(13px, 1.4vw, 15px)",
+                  letterSpacing: "0.07em",
+                  background: "var(--red)",
+                  color: "white",
+                  padding: "clamp(14px, 2vw, 18px) clamp(22px, 3vw, 32px)",
+                }}
+              >
+                Book Your Strategy Call →
+              </Link>
+              <Link
+                href="/services"
+                className="flex items-center gap-1.5 transition-colors whitespace-nowrap"
+                style={{ fontSize: "12px", color: "var(--muted)", letterSpacing: "0.08em" }}
+                onMouseEnter={(e) => (e.currentTarget.style.color = "var(--cream)")}
+                onMouseLeave={(e) => (e.currentTarget.style.color = "var(--muted)")}
+              >
+                See our services →
+              </Link>
+            </div>
           </div>
+        </div>
+
+        {/* Final footer meta */}
+        <div
+          className="cta-inner flex justify-between items-center opacity-0 translate-y-8 transition-all"
+          style={{
+            marginTop: "auto",
+            paddingTop: "24px",
+            fontSize: "10px",
+            letterSpacing: "0.14em",
+            textTransform: "uppercase",
+            color: "var(--muted)",
+          }}
+        >
+          <span>DC Metro</span>
+          <span>© 2024 Nyoo Studio</span>
         </div>
       </section>
     </>
