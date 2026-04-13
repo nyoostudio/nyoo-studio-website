@@ -1,35 +1,22 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useCallback } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { Nav } from "./Nav";
 
 export function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
-
-  useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 20);
-    window.addEventListener("scroll", onScroll, { passive: true });
-    onScroll();
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
 
   const closeMenu = useCallback(() => setMenuOpen(false), []);
 
   return (
     <header
-      className={`fixed top-0 left-0 right-0 z-50 text-white transition-all duration-500 ease-out ${
-        scrolled
-          ? "bg-soft-black/70 backdrop-blur-xl border-b border-white/10 shadow-lg shadow-black/20"
-          : "bg-soft-black/0 backdrop-blur-none border-b border-transparent"
-      }`}
+      className="fixed top-0 left-0 right-0 z-[100] text-white"
+      style={{ background: 'rgba(8,8,8,0.88)', backdropFilter: 'blur(12px)', WebkitBackdropFilter: 'blur(12px)', borderBottom: '1px solid var(--rule)' }}
     >
       <div
-        className={`mx-auto flex max-w-[1200px] items-center justify-between px-6 transition-all duration-500 ${
-          scrolled ? "py-3" : "py-4"
-        }`}
+        className="mx-auto flex max-w-[1200px] items-center justify-between px-6 py-4"
       >
         {/* Logo */}
         <Link href="/" className="hover:opacity-80 transition-opacity duration-300">
@@ -39,7 +26,7 @@ export function Header() {
             width={150}
             height={150}
             priority
-            className={`transition-all duration-500 ${scrolled ? "scale-90 origin-left" : ""}`}
+            className="transition-opacity duration-300"
           />
         </Link>
 
