@@ -29,7 +29,7 @@ export function HeroHome() {
       />
 
       {/* Film grain */}
-      <GrainOverlay opacity={0.4} />
+      <GrainOverlay opacity={0.12} />
 
       {/* Meta bar */}
       <div
@@ -60,11 +60,12 @@ export function HeroHome() {
       </div>
 
       {/* Viewport-filling headline */}
-      <div
+      <h1
         className="relative flex flex-col justify-center flex-1"
         style={{
           padding: `clamp(16px, 3vw, 40px) var(--px) 0`,
           zIndex: 2,
+          fontFamily: "inherit",
         }}
       >
         {(["YOUR SOCIAL", "MEDIA SHOULD", "BE CLOSING", "DEALS."] as const).map(
@@ -92,7 +93,7 @@ export function HeroHome() {
             </span>
           )
         )}
-      </div>
+      </h1>
 
       {/* Footer row */}
       <div

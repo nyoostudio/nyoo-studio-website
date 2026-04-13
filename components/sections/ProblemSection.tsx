@@ -31,7 +31,7 @@ export function ProblemSection() {
 
   return (
     <section
-      className="relative overflow-hidden section-px"
+      className="relative overflow-hidden"
       style={{
         padding: `clamp(60px, 10vw, 140px) var(--px)`,
         background: "var(--black)",

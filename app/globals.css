@@ -100,6 +100,9 @@ body {
   background: radial-gradient(circle, rgba(196, 18, 48, 0.15) 0%, transparent 70%);
 }
 
+.orb-purple {
+  background: radial-gradient(circle, rgba(139, 92, 246, 0.18) 0%, transparent 70%);
+}
 
 /* ─── Ambient float keyframes ─────────────────────────────────────────────── */
 @keyframes float-slow {
@@ -215,11 +218,6 @@ body {
 
   .orb {
     animation: none !important;
-  }
-
-  .hero-line-inner {
-    animation: none !important;
-    transform: translateY(0) !important;
   }
 
   .hero-meta-bar,
