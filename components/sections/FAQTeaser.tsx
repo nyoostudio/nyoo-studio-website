@@ -63,7 +63,7 @@ export function FAQTeaser() {
               marginBottom: "20px",
             }}
           >
-            Founders<br />are for<br />questions.
+            Frequently<br />Asked<br />Questions.
           </h2>
           <p
             style={{

@@ -68,7 +68,7 @@ export function CTASectionHome() {
           bottom: 0,
           left: 0,
           right: 0,
-          minHeight: "100svh",
+          height: "100svh",
           zIndex: 1,
           background: "var(--black)",
           overflow: "hidden",
@@ -98,7 +98,7 @@ export function CTASectionHome() {
           {/* Headline with dim/bright contrast */}
           <h2
             style={{
-              fontSize: "clamp(48px, 11vw, 160px)",
+              fontSize: "clamp(48px, min(11vw, 9vh), 160px)",
               fontWeight: 700,
               letterSpacing: "-0.05em",
               lineHeight: 0.9,

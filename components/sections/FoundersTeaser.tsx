@@ -76,8 +76,9 @@ export function FoundersTeaser() {
         className="grid"
         style={{
           gridTemplateColumns: "1fr 1fr",
-          gap: "2px",
-          margin: "0 calc(var(--px) * -1)",
+          gap: "clamp(8px, 1.5vw, 16px)",
+          maxWidth: "960px",
+          margin: "0 auto",
         }}
       >
         {founders.map(({ name, role, number, photo }) => (
@@ -100,7 +101,7 @@ export function FoundersTeaser() {
               fill
               className="object-cover object-top transition-all duration-500 group-hover:scale-[1.04]"
               style={{ filter: "grayscale(25%)" }}
-              sizes="(max-width: 768px) 50vw, 600px"
+              sizes="(max-width: 768px) 75vw, 600px"
             />
             {/* Caption overlay */}
             <div

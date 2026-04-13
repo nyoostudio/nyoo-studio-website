@@ -6,12 +6,12 @@ import { GrainOverlay } from "@/components/ui/GrainOverlay";
 export function HeroHome() {
   return (
     <section
-      className="relative overflow-hidden flex flex-col h-[100svh]"
+      className="relative overflow-hidden flex flex-col"
       style={{
         background: "var(--black)",
         position: "relative",
         zIndex: 2,
-        paddingBottom: "80px",
+        height: "calc(100svh - 72px)",
       }}
     >
       {/* Red top stripe */}
@@ -75,7 +75,7 @@ export function HeroHome() {
               <span
                 className="block"
                 style={{
-                  fontSize: "clamp(42px, 13.5vw, 200px)",
+                  fontSize: "clamp(42px, min(13.5vw, 11.5vh), 200px)",
                   fontWeight: 700,
                   letterSpacing: "-0.04em",
                   color: i === 3 ? "var(--red)" : "var(--cream)",
