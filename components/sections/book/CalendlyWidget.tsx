@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useRef, useCallback } from "react";
-import Script from "next/script";
 
 // Extend Window interface for TypeScript
 declare global {
@@ -20,12 +19,12 @@ declare global {
   }
 }
 
+const CALENDLY_SCRIPT_SRC = "https://assets.calendly.com/assets/external/widget.js";
+
 export function CalendlyWidget({ name, email }: { name?: string; email?: string }) {
   const containerRef = useRef<HTMLDivElement>(null);
   const baseUrl = "https://calendly.com/jin-nyoostudio/30min?background_color=000000&text_color=ffffff";
 
-  // Stable reference so both useEffect and Script callbacks always use
-  // the latest name/email values without stale closures.
   const initCalendly = useCallback(() => {
     if (window.Calendly && containerRef.current) {
       containerRef.current.innerHTML = "";
@@ -38,12 +37,27 @@ export function CalendlyWidget({ name, email }: { name?: string; email?: string 
   }, [name, email, baseUrl]);
 
   useEffect(() => {
-    // Handles two cases:
-    // 1. Script already loaded from a previous visit (cached) — onLoad won't fire again.
-    // 2. Re-renders when name/email change after initial load.
+    // Case 1: Calendly already loaded (returning visitor / already in memory)
     if (window.Calendly) {
       initCalendly();
+      return;
     }
+
+    // Case 2: Script tag already in DOM but still loading (e.g. concurrent renders)
+    const existingScript = document.querySelector<HTMLScriptElement>(
+      `script[src="${CALENDLY_SCRIPT_SRC}"]`
+    );
+    if (existingScript) {
+      existingScript.addEventListener("load", initCalendly);
+      return () => existingScript.removeEventListener("load", initCalendly);
+    }
+
+    // Case 3: First load — inject the script manually
+    const script = document.createElement("script");
+    script.src = CALENDLY_SCRIPT_SRC;
+    script.async = true;
+    script.onload = () => initCalendly();
+    document.head.appendChild(script);
   }, [initCalendly]);
 
   return (
@@ -52,11 +66,6 @@ export function CalendlyWidget({ name, email }: { name?: string; email?: string 
         ref={containerRef}
         className="calendly-inline-widget"
         style={{ minWidth: "320px", height: "700px" }}
-      />
-      <Script
-        src="https://assets.calendly.com/assets/external/widget.js"
-        strategy="afterInteractive"
-        onLoad={initCalendly}
       />
     </div>
   );
