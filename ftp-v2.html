@@ -1,0 +1,931 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nyoo Studio — FTP v2</title>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --black:  #080808;
+  --cream:  #F0EBE1;
+  --red:    #C41230;
+  --amber:  #C17F3A;
+  --cobalt: #1B44D8;
+  --muted:  rgba(240,235,225,0.4);
+  --rule:   rgba(240,235,225,0.09);
+  --px: clamp(20px, 5vw, 60px);
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif;
+  background: var(--black);
+  color: var(--cream);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── grain mixin ── */
+.grain::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.45;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+  background-size: 200px 200px;
+  mix-blend-mode: overlay;
+}
+
+/* ══════════════════════════════════
+   NAV
+══════════════════════════════════ */
+.nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  padding: 18px var(--px);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: rgba(8,8,8,0.88);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--rule);
+}
+.nav-logo {
+  font-size: clamp(12px, 1.5vw, 16px);
+  letter-spacing: 0.22em;
+  font-weight: 300;
+  color: var(--cream);
+  text-decoration: none;
+}
+.nav-logo em { color: var(--red); font-style: normal; font-weight: 700; }
+.nav-right { display: flex; align-items: center; gap: clamp(16px, 3vw, 40px); }
+.nav-link { font-size: 12px; letter-spacing: 0.06em; color: var(--muted); text-decoration: none; display: none; }
+@media (min-width: 768px) { .nav-link { display: block; } }
+.nav-cta {
+  font-size: 11px; font-weight: 700; letter-spacing: 0.1em;
+  border: 1px solid rgba(240,235,225,0.3);
+  color: var(--cream); padding: 8px 16px; text-decoration: none;
+  white-space: nowrap;
+  transition: background .2s, color .2s, border-color .2s;
+}
+.nav-cta:hover { background: var(--cream); color: var(--black); border-color: var(--cream); }
+
+/* ══════════════════════════════════
+   HERO — viewport-filling type
+══════════════════════════════════ */
+.hero {
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+  position: relative;
+  overflow: hidden;
+  background: var(--black);
+}
+
+/* thin red top stripe */
+.hero-stripe {
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: var(--red);
+  z-index: 2;
+}
+
+/* grain */
+.hero-grain {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.4;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+  background-size: 200px 200px;
+  mix-blend-mode: overlay;
+}
+
+/* Meta bar — very top */
+.hero-meta-bar {
+  padding: 80px var(--px) 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+  z-index: 2;
+  opacity: 0;
+  animation: fadein 0.6s ease forwards 0.3s;
+}
+.hero-location {
+  font-size: clamp(10px, 1.2vw, 13px);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.hero-year { font-size: 11px; letter-spacing: 0.1em; color: var(--muted); }
+
+/* MASSIVE headline — fills viewport */
+.hero-type {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: clamp(16px, 3vw, 40px) var(--px) 0;
+  position: relative;
+  z-index: 2;
+}
+
+.hero-line {
+  display: block;
+  overflow: hidden;
+  line-height: 0.88;
+  margin-bottom: clamp(4px, 0.5vw, 8px);
+}
+.hero-line-inner {
+  display: block;
+  font-size: clamp(52px, 13.5vw, 200px);
+  font-weight: 700;
+  letter-spacing: -0.04em;
+  color: var(--cream);
+  transform: translateY(105%);
+  animation: slideup 0.85s cubic-bezier(0.16,1,0.3,1) forwards;
+  animation-fill-mode: both;
+}
+.hl1 .hero-line-inner { animation-delay: 0.5s; }
+.hl2 .hero-line-inner { animation-delay: 0.68s; }
+.hl3 .hero-line-inner { animation-delay: 0.86s; }
+.hl4 .hero-line-inner { animation-delay: 1.04s; color: var(--red); }
+
+/* hero footer */
+.hero-foot {
+  padding: clamp(24px, 4vw, 48px) var(--px) clamp(28px, 5vw, 56px);
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 20px;
+  border-top: 1px solid var(--rule);
+  margin-top: clamp(20px, 3vw, 40px);
+  position: relative;
+  z-index: 2;
+  opacity: 0;
+  animation: fadein 0.7s ease forwards 1.4s;
+}
+@media (min-width: 640px) {
+  .hero-foot {
+    grid-template-columns: 1fr auto;
+    align-items: end;
+    gap: 40px;
+  }
+}
+.hero-sub {
+  font-size: clamp(14px, 1.8vw, 18px);
+  line-height: 1.7;
+  color: var(--muted);
+  max-width: 560px;
+}
+.hero-btns {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: flex-start;
+}
+@media (min-width: 640px) { .hero-btns { align-items: flex-end; } }
+
+.btn-red {
+  display: inline-flex; align-items: center; gap: 12px;
+  font-size: clamp(12px, 1.3vw, 14px); font-weight: 700; letter-spacing: 0.07em;
+  background: var(--red); color: white;
+  padding: clamp(12px, 1.5vw, 16px) clamp(18px, 2.5vw, 28px);
+  text-decoration: none; white-space: nowrap;
+  transition: opacity .2s;
+}
+.btn-red:hover { opacity: 0.88; }
+.btn-ghost {
+  font-size: 12px; color: var(--muted); letter-spacing: 0.08em;
+  text-decoration: none; display: flex; align-items: center; gap: 6px;
+  transition: color .2s; white-space: nowrap;
+}
+.btn-ghost:hover { color: var(--cream); }
+
+/* ══════════════════════════════════
+   MARQUEE
+══════════════════════════════════ */
+.marquee-wrap {
+  overflow: hidden;
+  border-top: 1px solid var(--rule);
+  border-bottom: 1px solid var(--rule);
+  padding: 12px 0;
+  background: var(--black);
+}
+.marquee-track {
+  display: flex;
+  width: max-content;
+  animation: marquee 24s linear infinite;
+}
+.marquee-item {
+  display: flex; align-items: center; gap: 20px;
+  padding: 0 24px;
+  font-size: 11px; font-weight: 700; letter-spacing: 0.2em;
+  text-transform: uppercase; color: var(--muted); white-space: nowrap;
+}
+.mdot { width: 4px; height: 4px; border-radius: 50%; background: var(--red); flex-shrink: 0; }
+
+/* ══════════════════════════════════
+   PROBLEM — large type + list
+══════════════════════════════════ */
+.section-problem {
+  padding: clamp(60px, 10vw, 140px) var(--px);
+  background: var(--black);
+  position: relative;
+}
+.problem-eyebrow {
+  font-size: 10px; font-weight: 700;
+  letter-spacing: 0.22em; text-transform: uppercase;
+  color: var(--amber); margin-bottom: clamp(20px, 3vw, 36px);
+  display: flex; align-items: center; gap: 12px;
+}
+.problem-eyebrow::before { content: ''; width: 28px; height: 1px; background: var(--amber); }
+
+/* Big statement that fills viewport width */
+.problem-statement {
+  font-size: clamp(36px, 9vw, 130px);
+  font-weight: 700;
+  letter-spacing: -0.04em;
+  line-height: 0.92;
+  color: var(--cream);
+  margin-bottom: clamp(48px, 8vw, 100px);
+}
+.problem-statement .strike {
+  position: relative;
+  display: inline;
+}
+.problem-statement .strike::after {
+  content: '';
+  position: absolute;
+  bottom: 8%;
+  left: 0; right: 0;
+  height: clamp(2px, 0.4vw, 5px);
+  background: var(--red);
+}
+
+/* Items: clean numbered list, full width */
+.problem-list {
+  border-top: 1px solid var(--rule);
+}
+.problem-row {
+  display: grid;
+  grid-template-columns: clamp(32px, 5vw, 64px) 1fr;
+  gap: clamp(16px, 3vw, 40px);
+  padding: clamp(20px, 3vw, 36px) 0;
+  border-bottom: 1px solid var(--rule);
+  align-items: start;
+  opacity: 0; transform: translateY(20px);
+  transition: opacity .55s ease, transform .55s ease;
+}
+.problem-row.visible { opacity: 1; transform: translateY(0); }
+.problem-row:nth-child(2) { transition-delay: .1s; }
+.problem-row:nth-child(3) { transition-delay: .2s; }
+.p-num { font-size: clamp(11px, 1.2vw, 13px); font-weight: 700; color: var(--cobalt); letter-spacing: .1em; padding-top: 4px; }
+.p-body {}
+.p-title { font-size: clamp(18px, 2.5vw, 28px); font-weight: 700; letter-spacing: -.02em; color: var(--cream); margin-bottom: clamp(6px,1vw,12px); line-height: 1.1; }
+.p-text  { font-size: clamp(13px, 1.4vw, 15px); line-height: 1.75; color: var(--muted); }
+
+/* ══════════════════════════════════
+   SERVICES — each service fills width
+══════════════════════════════════ */
+.section-services {
+  padding: clamp(60px,10vw,140px) var(--px);
+  border-top: 1px solid var(--rule);
+}
+.services-intro {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: clamp(16px, 3vw, 32px);
+  margin-bottom: clamp(48px, 7vw, 80px);
+  align-items: end;
+}
+@media (min-width: 768px) {
+  .services-intro { grid-template-columns: 1fr 1fr; }
+}
+.services-headline {
+  font-size: clamp(36px, 7.5vw, 110px);
+  font-weight: 700;
+  letter-spacing: -.04em;
+  line-height: .92;
+  color: var(--cream);
+}
+.services-headline .red { color: var(--red); }
+.services-intro-p { font-size: clamp(14px, 1.5vw, 16px); line-height: 1.7; color: var(--muted); }
+@media (min-width: 768px) { .services-intro-p { padding-top: 8px; } }
+
+.svc-list { border-top: 1px solid var(--rule); }
+.svc-row {
+  display: grid;
+  grid-template-columns: clamp(32px,5vw,64px) 1fr;
+  gap: clamp(16px,3vw,40px);
+  padding: clamp(24px, 4vw, 48px) 0;
+  border-bottom: 1px solid var(--rule);
+  opacity: 0; transform: translateY(20px);
+  transition: opacity .55s ease, transform .55s ease;
+  cursor: default;
+}
+.svc-row.visible { opacity: 1; transform: translateY(0); }
+.svc-row:nth-child(2) { transition-delay: .1s; }
+.svc-row:nth-child(3) { transition-delay: .2s; }
+.svc-n { font-size: 13px; font-weight: 700; color: var(--amber); letter-spacing: .1em; padding-top: 6px; }
+.svc-body {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: clamp(8px, 2vw, 24px);
+}
+@media (min-width: 768px) { .svc-body { grid-template-columns: 1fr 1fr; align-items: start; } }
+.svc-name { font-size: clamp(22px, 3.5vw, 44px); font-weight: 700; letter-spacing: -.03em; line-height: 1.0; color: var(--cream); }
+.svc-desc { font-size: clamp(13px,1.4vw,15px); line-height: 1.75; color: var(--muted); }
+@media (min-width: 768px) { .svc-desc { padding-top: 6px; } }
+
+/* ══════════════════════════════════
+   STATS — cream, numbers fill width
+══════════════════════════════════ */
+.section-stats {
+  background: var(--cream);
+  padding: clamp(60px,10vw,120px) var(--px);
+  position: relative; overflow: hidden;
+}
+.stats-grain {
+  position: absolute; inset: 0; pointer-events: none; opacity: .25;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+  background-size: 200px 200px; mix-blend-mode: multiply;
+}
+.stats-eyebrow { font-size: 10px; font-weight: 700; letter-spacing: .22em; text-transform: uppercase; color: var(--red); margin-bottom: clamp(36px,6vw,72px); position: relative; }
+.stats-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0;
+  border-top: 1px solid rgba(8,8,8,.1);
+  position: relative;
+}
+@media (min-width: 768px) { .stats-grid { grid-template-columns: repeat(4,1fr); } }
+.stat-cell {
+  padding: clamp(24px,4vw,48px) clamp(16px,3vw,40px) clamp(24px,4vw,48px) 0;
+  border-right: 1px solid rgba(8,8,8,.1);
+  border-bottom: 1px solid rgba(8,8,8,.1);
+  opacity: 0; transform: translateY(16px);
+  transition: opacity .5s ease, transform .5s ease;
+}
+.stat-cell.visible { opacity: 1; transform: translateY(0); }
+.stat-cell:last-child { border-right: none; }
+.stat-cell:nth-child(2n) { padding-left: clamp(16px,3vw,40px); }
+@media (min-width: 768px) {
+  .stat-cell:nth-child(n) { padding-left: clamp(16px,3vw,40px); border-bottom: none; }
+  .stat-cell:first-child  { padding-left: 0; }
+  .stat-cell:last-child   { border-right: none; }
+}
+.stat-n {
+  font-size: clamp(56px, 9vw, 120px);
+  font-weight: 700;
+  letter-spacing: -.05em;
+  line-height: 1;
+  color: var(--black);
+  display: block;
+}
+.stat-n .unit { font-size: .45em; }
+.stat-lbl { font-size: clamp(12px,1.3vw,14px); line-height: 1.5; color: rgba(8,8,8,.5); margin-top: clamp(6px,1vw,12px); }
+
+/* ══════════════════════════════════
+   FOUNDERS — photo-first, full bleed
+══════════════════════════════════ */
+.section-founders {
+  padding: clamp(60px,10vw,140px) var(--px);
+  background: var(--black);
+}
+.founders-top {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(12px, 2vw, 20px);
+  margin-bottom: clamp(36px, 6vw, 64px);
+  border-bottom: 1px solid var(--rule);
+  padding-bottom: clamp(28px, 4vw, 48px);
+}
+@media (min-width: 640px) {
+  .founders-top { flex-direction: row; justify-content: space-between; align-items: baseline; }
+}
+.founders-title {
+  font-size: clamp(36px, 7.5vw, 110px);
+  font-weight: 700; letter-spacing: -.04em; line-height: .92; color: var(--cream);
+}
+.founders-cta-link { font-size: 13px; font-weight: 700; color: var(--muted); text-decoration: none; letter-spacing: .06em; display: flex; align-items: center; gap: 8px; white-space: nowrap; align-self: flex-end; transition: color .2s; }
+.founders-cta-link:hover { color: var(--cream); }
+.founders-cta-link .arr { color: var(--amber); }
+
+/* Edge-to-edge photo grid — NO side padding */
+.founders-photos {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2px;
+  /* intentionally extend past padding */
+  margin: 0 calc(var(--px) * -1);
+}
+.founder-photo-block {
+  position: relative;
+  aspect-ratio: 3/4;
+  overflow: hidden;
+  background: #111;
+  opacity: 0; transform: translateY(24px);
+  transition: opacity .65s ease, transform .65s ease;
+}
+.founder-photo-block.visible { opacity: 1; transform: translateY(0); }
+.founder-photo-block:nth-child(2) { transition-delay: .12s; }
+.founder-img {
+  width: 100%; height: 100%;
+  object-fit: cover; object-position: top;
+  display: block;
+  filter: grayscale(25%);
+  transition: transform .6s ease, filter .4s ease;
+}
+.founder-photo-block:hover .founder-img { transform: scale(1.04); filter: grayscale(0%); }
+.founder-caption {
+  position: absolute; bottom: 0; left: 0; right: 0;
+  padding: clamp(20px, 4vw, 40px);
+  background: linear-gradient(to top, rgba(8,8,8,.92) 0%, transparent 100%);
+  display: flex; justify-content: space-between; align-items: flex-end;
+}
+.founder-name-big { font-size: clamp(18px,3vw,36px); font-weight: 700; letter-spacing: -.02em; color: var(--cream); }
+.founder-role-label { font-size: 10px; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; color: var(--amber); margin-top: 4px; }
+.founder-ghost-num { font-size: clamp(22px,3.5vw,40px); font-weight: 700; letter-spacing: -.04em; color: rgba(240,235,225,.18); line-height: 1; }
+
+/* ══════════════════════════════════
+   PROCESS — horizontal steps
+══════════════════════════════════ */
+.section-process {
+  padding: clamp(60px,10vw,140px) var(--px);
+  border-top: 1px solid var(--rule);
+  background: var(--black); /* explicit — prevents CTA bleeding through */
+}
+.process-top {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: clamp(16px,3vw,32px);
+  margin-bottom: clamp(48px,7vw,80px);
+  align-items: end;
+}
+@media (min-width: 768px) { .process-top { grid-template-columns: 1fr 1fr; } }
+.process-title { font-size: clamp(32px,7vw,100px); font-weight: 700; letter-spacing: -.04em; line-height: .92; color: var(--cream); }
+.process-intro { font-size: clamp(14px,1.5vw,16px); line-height: 1.7; color: var(--muted); }
+
+.process-steps {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0;
+  border-top: 1px solid var(--rule);
+}
+@media (min-width: 768px) { .process-steps { grid-template-columns: repeat(3,1fr); } }
+.p-step {
+  padding: clamp(28px,4vw,48px) 0;
+  border-bottom: 1px solid var(--rule);
+  opacity: 0; transform: translateY(16px);
+  transition: opacity .55s ease, transform .55s ease;
+  position: relative;
+}
+@media (min-width: 768px) {
+  .p-step { border-bottom: none; padding: clamp(28px,4vw,48px); }
+  .p-step:first-child { padding-left: 0; }
+  .p-step:last-child  { padding-right: 0; }
+  .p-step + .p-step   { border-left: 1px solid var(--rule); }
+}
+.p-step.visible { opacity: 1; transform: translateY(0); }
+.p-step:nth-child(2) { transition-delay: .1s; }
+.p-step:nth-child(3) { transition-delay: .2s; }
+/* red bar that draws in */
+.p-step::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  height: 3px; width: 0;
+  background: var(--red);
+  transition: width .5s ease .15s;
+}
+@media (min-width: 768px) {
+  .p-step:first-child::before { left: 0; }
+  .p-step:nth-child(2)::before { left: 0; }
+  .p-step:last-child::before  { left: 0; }
+}
+.p-step.visible::before { width: 40px; }
+.step-n { font-size: 11px; font-weight: 700; letter-spacing: .14em; color: var(--muted); margin-bottom: clamp(16px,2.5vw,28px); }
+.step-title { font-size: clamp(20px,2.5vw,30px); font-weight: 700; letter-spacing: -.02em; color: var(--cream); margin-bottom: clamp(10px,1.5vw,16px); line-height: 1.1; }
+.step-text { font-size: clamp(13px,1.3vw,14px); line-height: 1.75; color: var(--muted); }
+
+/* ══════════════════════════════════
+   FAQ — cream, sticky left
+══════════════════════════════════ */
+.section-faq {
+  background: var(--cream);
+  padding: clamp(60px,10vw,120px) var(--px);
+}
+.faq-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: clamp(36px,6vw,80px);
+  align-items: start;
+}
+@media (min-width: 768px) { .faq-grid { grid-template-columns: 320px 1fr; } }
+.faq-left {}
+@media (min-width: 768px) { .faq-left { position: sticky; top: 80px; } }
+.faq-title { font-size: clamp(30px,5.5vw,72px); font-weight: 700; letter-spacing: -.04em; line-height: .95; color: var(--black); margin-bottom: 20px; }
+.faq-intro { font-size: 14px; line-height: 1.7; color: rgba(8,8,8,.5); margin-bottom: 24px; }
+.faq-all-link { font-size: 12px; font-weight: 700; color: var(--black); text-decoration: none; letter-spacing: .08em; display: flex; align-items: center; gap: 8px; }
+.faq-all-link .arr { color: var(--red); }
+
+.faq-items { border-top: 1px solid rgba(8,8,8,.12); }
+.faq-item { padding: clamp(18px,2.5vw,28px) 0; border-bottom: 1px solid rgba(8,8,8,.12); }
+.faq-q { font-size: clamp(15px,1.8vw,18px); font-weight: 700; letter-spacing: -.01em; color: var(--black); margin-bottom: 10px; display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; cursor: pointer; line-height: 1.2; }
+.faq-icon { font-size: 22px; font-weight: 300; color: var(--red); line-height: 1; flex-shrink: 0; }
+.faq-a { font-size: clamp(13px,1.4vw,15px); line-height: 1.75; color: rgba(8,8,8,.6); }
+
+/* ══════════════════════════════════
+   ALL SECTIONS — must sit above the fixed CTA
+══════════════════════════════════ */
+.hero,
+.section-problem,
+.section-services,
+.section-stats,
+.section-founders,
+.section-process,
+.section-faq {
+  position: relative;
+  z-index: 2;
+}
+
+/* spacer — same height as CTA, transparent so the fixed CTA shows through */
+.cta-spacer {
+  height: 100svh;
+  position: relative;
+  z-index: 2;
+  background: transparent;
+  pointer-events: none;
+}
+
+/* ══════════════════════════════════
+   FINAL CTA — fixed "floor" underlay
+   Sections above scroll over it and
+   peel away to reveal it underneath.
+══════════════════════════════════ */
+.section-cta {
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  min-height: 100svh;
+  z-index: 1;
+  background: var(--black);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: clamp(80px,12vw,160px) var(--px);
+}
+
+/* subtle red glow — atmosphere */
+.section-cta::before {
+  content: '';
+  position: absolute;
+  bottom: -80px; left: 50%;
+  transform: translateX(-50%);
+  width: 70%; height: 320px;
+  background: radial-gradient(ellipse, rgba(196,18,48,0.13) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+/* CTA content — slides up slightly when revealed */
+.cta-inner {
+  transition: opacity .8s ease, transform .8s cubic-bezier(0.16,1,0.3,1);
+  opacity: 0;
+  transform: translateY(32px);
+}
+.section-cta.active .cta-inner {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.cta-big {
+  font-size: clamp(48px,11vw,160px);
+  font-weight: 700; letter-spacing: -.05em; line-height: .9;
+  color: var(--cream); margin-bottom: clamp(36px,5vw,64px);
+}
+.cta-big .dim { color: var(--muted); }
+.cta-big .red { color: var(--red); }
+
+.cta-foot {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  border-top: 1px solid var(--rule);
+  padding-top: clamp(28px,4vw,48px);
+}
+@media (min-width: 640px) {
+  .cta-foot { flex-direction: row; justify-content: space-between; align-items: center; }
+}
+.cta-foot-text { font-size: clamp(14px,1.5vw,16px); line-height: 1.65; color: var(--muted); max-width: 400px; }
+.btn-red-lg {
+  display: inline-flex; align-items: center; gap: 14px;
+  font-size: clamp(13px,1.4vw,15px); font-weight: 700; letter-spacing: .07em;
+  background: var(--red); color: white;
+  padding: clamp(14px,2vw,18px) clamp(22px,3vw,32px);
+  text-decoration: none; white-space: nowrap; flex-shrink: 0;
+  transition: opacity .2s;
+}
+.btn-red-lg:hover { opacity: .88; }
+
+/* ══════════════════════════════════
+   ANIMATIONS
+══════════════════════════════════ */
+@keyframes slideup {
+  from { transform: translateY(105%); }
+  to   { transform: translateY(0); }
+}
+@keyframes fadein {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+  .hero-line-inner, .hero-meta-bar, .hero-foot { opacity: 1 !important; transform: none !important; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+  <a href="/" class="nav-logo">nyoo<em>.</em>studio</a>
+  <div class="nav-right">
+    <a href="/about" class="nav-link">About</a>
+    <a href="/services" class="nav-link">Services</a>
+    <a href="/faq" class="nav-link">FAQ</a>
+    <a href="/book" class="nav-cta">Book a Call</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-stripe"></div>
+  <div class="hero-grain"></div>
+
+  <div class="hero-meta-bar">
+    <span class="hero-location">DC Metro · Small Business Marketing</span>
+    <span class="hero-year">Est. 2024</span>
+  </div>
+
+  <div class="hero-type">
+    <span class="hero-line hl1"><span class="hero-line-inner">YOUR SOCIAL</span></span>
+    <span class="hero-line hl2"><span class="hero-line-inner">MEDIA SHOULD</span></span>
+    <span class="hero-line hl3"><span class="hero-line-inner">BE CLOSING</span></span>
+    <span class="hero-line hl4"><span class="hero-line-inner">DEALS.</span></span>
+  </div>
+
+  <div class="hero-foot">
+    <p class="hero-sub">Nyoo Studio builds social media systems that generate qualified leads for established small businesses in DC Metro. Not vanity metrics. Not vague brand awareness. Clients.</p>
+    <div class="hero-btns">
+      <a href="/book" class="btn-red">Book Your Strategy Call →</a>
+      <a href="/services" class="btn-ghost">See how it works →</a>
+    </div>
+  </div>
+</section>
+
+<!-- PROBLEM -->
+<section class="section-problem" id="problem">
+  <div class="problem-eyebrow">The gap</div>
+  <h2 class="problem-statement">
+    Posting.<br>Getting likes.<br>Phone not <span class="strike">ringing.</span>
+  </h2>
+  <div class="problem-list">
+    <div class="problem-row">
+      <span class="p-num">01</span>
+      <div class="p-body">
+        <h3 class="p-title">Engagement with no pipeline</h3>
+        <p class="p-text">Likes and comments don't pay rent. None of it connects to how people actually become your clients. The content looks good. It just doesn't lead anywhere.</p>
+      </div>
+    </div>
+    <div class="problem-row">
+      <span class="p-num">02</span>
+      <div class="p-body">
+        <h3 class="p-title">Marketing spend you can't trace</h3>
+        <p class="p-text">You've paid agencies and freelancers. They sent reports full of impressions. You still can't name a single client who came from social media.</p>
+      </div>
+    </div>
+    <div class="problem-row">
+      <span class="p-num">03</span>
+      <div class="p-body">
+        <h3 class="p-title">Referrals don't scale</h3>
+        <p class="p-text">Word of mouth keeps the lights on. It won't build a business. You need a system that generates leads on a schedule, not on luck.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section class="section-services">
+  <div class="services-intro">
+    <h2 class="services-headline">What we do.<br><span class="red">What moves<br>the needle.</span></h2>
+    <p class="services-intro-p">Everything is built around one outcome — turning your social presence into a reliable source of qualified leads. We don't post for the sake of posting.</p>
+  </div>
+  <div class="svc-list">
+    <div class="svc-row">
+      <span class="svc-n">01</span>
+      <div class="svc-body">
+        <h3 class="svc-name">Lead-First Content Strategy</h3>
+        <p class="svc-desc">Content mapped to your sales cycle. Every post, caption, and video is built to attract prospects already looking for what you offer — and give them a clear next step.</p>
+      </div>
+    </div>
+    <div class="svc-row">
+      <span class="svc-n">02</span>
+      <div class="svc-body">
+        <h3 class="svc-name">Social Media That Converts</h3>
+        <p class="svc-desc">Consistent, high-quality presence across the platforms where your customers spend time. Content calendar, captions, scheduling — all tied to lead generation goals, not vanity metrics.</p>
+      </div>
+    </div>
+    <div class="svc-row">
+      <span class="svc-n">03</span>
+      <div class="svc-body">
+        <h3 class="svc-name">Pipeline Infrastructure</h3>
+        <p class="svc-desc">The backend systems that capture, qualify, and route leads from social. Built once, running always. You stay focused on running your business.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STATS -->
+<section class="section-stats">
+  <div class="stats-grain"></div>
+  <p class="stats-eyebrow">Why Nyoo Studio</p>
+  <div class="stats-grid">
+    <div class="stat-cell">
+      <span class="stat-n">27<span class="unit">yr</span></span>
+      <p class="stat-lbl">Combined experience in brand, content &amp; systems</p>
+    </div>
+    <div class="stat-cell">
+      <span class="stat-n">DC</span>
+      <p class="stat-lbl">Metro focused. We know this market.</p>
+    </div>
+    <div class="stat-cell">
+      <span class="stat-n">$0</span>
+      <p class="stat-lbl">Lock-in. Month-to-month by default, always.</p>
+    </div>
+    <div class="stat-cell">
+      <span class="stat-n">2</span>
+      <p class="stat-lbl">Founders. Every client gets both of us.</p>
+    </div>
+  </div>
+</section>
+
+<!-- FOUNDERS -->
+<section class="section-founders">
+  <div class="founders-top">
+    <h2 class="founders-title">Not a<br>faceless<br>agency.</h2>
+    <a href="/about" class="founders-cta-link">Read our story <span class="arr">→</span></a>
+  </div>
+  <div class="founders-photos">
+    <div class="founder-photo-block">
+      <img src="/images/JO_HEADSHOT.jpg" alt="Jo Yoo" class="founder-img"
+           onerror="this.parentElement.style.background='linear-gradient(160deg,#1a1410,#0c0908)'">
+      <div class="founder-caption">
+        <div>
+          <div class="founder-name-big">Jo Yoo</div>
+          <div class="founder-role-label">Content &amp; Client Lead</div>
+        </div>
+        <div class="founder-ghost-num">01</div>
+      </div>
+    </div>
+    <div class="founder-photo-block">
+      <img src="/images/JIN_HEADSHOT.jpg" alt="Jin Yoo" class="founder-img"
+           onerror="this.parentElement.style.background='linear-gradient(160deg,#0c0d14,#080808)'">
+      <div class="founder-caption">
+        <div>
+          <div class="founder-name-big">Jin Yoo</div>
+          <div class="founder-role-label">Strategy &amp; Systems</div>
+        </div>
+        <div class="founder-ghost-num">02</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROCESS -->
+<section class="section-process">
+  <div class="process-top">
+    <h2 class="process-title">No decks.<br>No 12-week<br>discovery.</h2>
+    <p class="process-intro">A 30-minute call is all it takes to start. We move fast because your business already is.</p>
+  </div>
+  <div class="process-steps">
+    <div class="p-step">
+      <p class="step-n">STEP 01</p>
+      <h3 class="step-title">Strategy Call</h3>
+      <p class="step-text">30 minutes about your business, your sales cycle, and where leads come from today. We listen more than we talk.</p>
+    </div>
+    <div class="p-step">
+      <p class="step-n">STEP 02</p>
+      <h3 class="step-title">Lead Generation Plan</h3>
+      <p class="step-text">A content strategy mapped to your funnel. Tailored to your voice, your ideal client, the platforms where they're reachable.</p>
+    </div>
+    <div class="p-step">
+      <p class="step-n">STEP 03</p>
+      <h3 class="step-title">We Build Your Pipeline</h3>
+      <p class="step-text">Content goes live. Lead flows activate. Reporting tracks inquiries, not impressions. You stay focused on running your business.</p>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="section-faq">
+  <div class="faq-grid">
+    <div class="faq-left">
+      <h2 class="faq-title">Things people usually ask.</h2>
+      <p class="faq-intro">Straight answers. No fluff.</p>
+      <a href="/faq" class="faq-all-link">See all FAQs <span class="arr">→</span></a>
+    </div>
+    <div class="faq-right">
+      <div class="faq-items">
+        <div class="faq-item">
+          <div class="faq-q">Who do you work with? <span class="faq-icon">+</span></div>
+          <p class="faq-a">Established small businesses in DC Metro — typically 2–20 employees with consistent revenue and a need for professional marketing they don't have time to do themselves.</p>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q">What does a sprint look like? <span class="faq-icon">+</span></div>
+          <p class="faq-a">We plan a month of content at a time. You review and approve everything before it goes out. No surprises, no last-minute changes.</p>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q">Are contracts month-to-month? <span class="faq-icon">+</span></div>
+          <p class="faq-a">Yes. All packages are month-to-month by default — no lock-in. Commit to 3 or 6 months for a discount (10% and 15%). You're never stuck.</p>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q">How quickly can you start? <span class="faq-icon">+</span></div>
+          <p class="faq-a">After the strategy call and plan approval, we can have content live within two weeks. We don't do 12-week onboardings.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FINAL CTA — fixed underlay, revealed as sections above scroll off -->
+<section class="section-cta" id="cta-section">
+  <div class="cta-inner">
+    <h2 class="cta-big">
+      <span class="dim">READY TO KNOW</span><br>
+      <span class="dim">WHERE YOUR</span><br>
+      NEXT CLIENT<br>
+      <span class="red">COMES FROM?</span>
+    </h2>
+    <div class="cta-foot">
+      <p class="cta-foot-text">Book a free 30-minute strategy call. No pitch, no pressure — just an honest conversation about your marketing.</p>
+      <a href="/book" class="btn-red-lg">Book Your Strategy Call →</a>
+    </div>
+  </div>
+</section>
+
+<!-- Spacer — transparent, lets the fixed CTA show through as you scroll here -->
+<div class="cta-spacer" id="cta-spacer"></div>
+
+<script>
+// ── Scroll reveal (sections above CTA) ──
+const io = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.12 });
+
+document.querySelectorAll(
+  '.problem-row, .svc-row, .stat-cell, .founder-photo-block, .p-step'
+).forEach(el => io.observe(el));
+
+document.querySelectorAll('.stat-cell').forEach((el,i) => el.style.transitionDelay = (i*.1)+'s');
+document.querySelectorAll('.svc-row').forEach((el,i)  => el.style.transitionDelay = (i*.08)+'s');
+
+// ── CTA underlay reveal ──
+// The CTA section is position: fixed — it's always sitting underneath everything.
+// When the transparent spacer div scrolls into view, the CTA appears "revealed"
+// because the opaque sections above have scrolled off-screen.
+// We also animate the CTA content in when the spacer first appears.
+const cta    = document.querySelector('.section-cta');
+const spacer = document.querySelector('#cta-spacer');
+
+if (cta && spacer) {
+  const revealObserver = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      // Add/remove 'active' to drive the content entrance animation
+      if (e.isIntersecting) {
+        cta.classList.add('active');
+      } else {
+        // Reset when scrolled back above — so animation replays on re-entry
+        cta.classList.remove('active');
+      }
+    });
+  }, { threshold: 0.05 });
+
+  revealObserver.observe(spacer);
+}
+</script>
+
+</body>
+</html>

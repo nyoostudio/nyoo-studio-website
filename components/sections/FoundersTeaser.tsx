@@ -2,71 +2,154 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { SectionLabel } from "@/components/ui/SectionLabel";
-import { GrainOverlay } from "@/components/ui/GrainOverlay";
 import { useScrollReveal } from "@/lib/useScrollReveal";
-import { useParallax } from "@/lib/useParallax";
 
 const founders = [
   {
     name: "Jo Yoo",
-    bio: "Jo spent 12 years supporting brand growth for national and regional clients before co-founding Nyoo Studio. She runs every client relationship and leads content production.",
+    role: "Client Relations & Content",
+    number: "01",
     photo: "/images/JO_HEADSHOT.jpg",
   },
   {
     name: "Jin Yoo",
-    bio: "Jin launched products for the federal government and built the systems that power how we work. He handles business strategy, automation, and everything that runs in the background.",
+    role: "Strategy & Systems",
+    number: "02",
     photo: "/images/JIN_HEADSHOT.jpg",
   },
 ];
 
 export function FoundersTeaser() {
-  const headingRef = useScrollReveal<HTMLDivElement>({ y: 40, duration: 0.8 });
-  const bgParallax = useParallax<HTMLDivElement>({ speed: 0.2 });
-  const cardsRef = useScrollReveal<HTMLDivElement>({
+  const photosRef = useScrollReveal<HTMLDivElement>({
     staggerChildren: true,
-    stagger: 0.2,
-    y: 50,
-    duration: 0.7,
+    stagger: 0.12,
+    y: 24,
+    duration: 0.65,
+    start: "top 80%",
   });
 
   return (
-    <section className="relative bg-soft-black text-white px-6 py-24 md:py-32 overflow-hidden">
-      {/* Parallax background orb */}
-      <div ref={bgParallax} className="absolute inset-0 pointer-events-none" aria-hidden>
-        <div className="orb orb-purple w-[450px] h-[450px] top-1/4 -right-32 opacity-30" />
-      </div>
-      <GrainOverlay />
-      <div className="relative mx-auto max-w-[1200px]">
-        <div ref={headingRef}>
-          <SectionLabel>The Team</SectionLabel>
-          <h2 className="font-title text-4xl md:text-6xl font-bold leading-tight">
-            Meet the team.
-          </h2>
-        </div>
-        <div ref={cardsRef} className="mt-16 grid gap-8 md:grid-cols-2">
-          {founders.map((founder) => (
-            <div key={founder.name} className="glass-card p-8 flex flex-col gap-6 group">
-              <div className="h-48 w-48 overflow-hidden rounded-lg ring-1 ring-white/10 transition-all duration-500 group-hover:ring-white/20 group-hover:shadow-xl group-hover:shadow-black/30">
-                <Image
-                  src={founder.photo}
-                  alt={founder.name}
-                  width={192}
-                  height={192}
-                  className="h-full w-full object-cover object-top transition-transform duration-700 group-hover:scale-105"
-                />
-              </div>
-              <h3 className="font-title text-2xl font-bold">{founder.name}</h3>
-              <p className="text-base leading-relaxed opacity-70">{founder.bio}</p>
-            </div>
-          ))}
-        </div>
+    <section
+      className="relative overflow-hidden"
+      style={{
+        padding: `clamp(60px, 10vw, 140px) var(--px)`,
+        background: "var(--black)",
+        position: "relative",
+        zIndex: 2,
+      }}
+    >
+      {/* Header row: headline + link */}
+      <div
+        className="flex flex-col gap-3 sm:flex-row sm:justify-between sm:items-baseline"
+        style={{
+          marginBottom: "clamp(36px, 6vw, 64px)",
+          borderBottom: "1px solid var(--rule)",
+          paddingBottom: "clamp(28px, 4vw, 48px)",
+        }}
+      >
+        <h2
+          style={{
+            fontSize: "clamp(36px, 7.5vw, 110px)",
+            fontWeight: 700,
+            letterSpacing: "-0.04em",
+            lineHeight: 0.92,
+            color: "var(--cream)",
+          }}
+        >
+          Not a<br />faceless<br />agency.
+        </h2>
         <Link
           href="/about"
-          className="mt-12 inline-flex items-center gap-2 font-bold text-base transition-all duration-300 hover:opacity-60 hover:gap-3 group"
+          className="flex items-center gap-2 self-end transition-colors whitespace-nowrap"
+          style={{ fontSize: "12px", fontWeight: 700, color: "var(--muted)", letterSpacing: "0.06em" }}
+          onMouseEnter={(e) => (e.currentTarget.style.color = "var(--cream)")}
+          onMouseLeave={(e) => (e.currentTarget.style.color = "var(--muted)")}
         >
-          Read our story <span aria-hidden className="transition-transform duration-300 group-hover:translate-x-1">→</span>
+          Read our story{" "}
+          <span style={{ color: "var(--amber)" }}>→</span>
         </Link>
+      </div>
+
+      {/* Edge-to-edge photo grid — negative margin removes section padding */}
+      <div
+        ref={photosRef}
+        className="grid"
+        style={{
+          gridTemplateColumns: "1fr 1fr",
+          gap: "clamp(8px, 1.5vw, 16px)",
+          maxWidth: "960px",
+          margin: "0 auto",
+        }}
+      >
+        {founders.map(({ name, role, number, photo }) => (
+          <div
+            key={name}
+            className="relative overflow-hidden group"
+            style={{ aspectRatio: "3/4", background: "#111" }}
+            onMouseEnter={(e) => {
+              const img = e.currentTarget.querySelector("img");
+              if (img) img.style.filter = "grayscale(0%)";
+            }}
+            onMouseLeave={(e) => {
+              const img = e.currentTarget.querySelector("img");
+              if (img) img.style.filter = "grayscale(25%)";
+            }}
+          >
+            <Image
+              src={photo}
+              alt={name}
+              fill
+              className="object-cover object-top transition-all duration-500 group-hover:scale-[1.04]"
+              style={{ filter: "grayscale(25%)" }}
+              sizes="(max-width: 768px) 75vw, 600px"
+            />
+            {/* Caption overlay */}
+            <div
+              className="absolute bottom-0 left-0 right-0 flex justify-between items-end"
+              style={{
+                padding: "clamp(20px, 4vw, 40px)",
+                background: "linear-gradient(to top, rgba(8,8,8,0.92) 0%, transparent 100%)",
+              }}
+            >
+              <div>
+                <p
+                  style={{
+                    fontSize: "clamp(18px, 3vw, 36px)",
+                    fontWeight: 700,
+                    letterSpacing: "-0.02em",
+                    color: "var(--cream, #F0EBE1)",
+                  }}
+                >
+                  {name}
+                </p>
+                <p
+                  style={{
+                    fontSize: "10px",
+                    fontWeight: 700,
+                    letterSpacing: "0.18em",
+                    textTransform: "uppercase",
+                    color: "var(--amber)",
+                    marginTop: "4px",
+                  }}
+                >
+                  {role}
+                </p>
+              </div>
+              <span
+                aria-hidden
+                style={{
+                  fontSize: "clamp(22px, 3.5vw, 40px)",
+                  fontWeight: 700,
+                  letterSpacing: "-0.04em",
+                  color: "rgba(240,235,225,0.18)",
+                  lineHeight: 1,
+                }}
+              >
+                {number}
+              </span>
+            </div>
+          </div>
+        ))}
       </div>
     </section>
   );

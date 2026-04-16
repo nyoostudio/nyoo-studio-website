@@ -2,9 +2,6 @@
 
 import Link from "next/link";
 import { Accordion } from "@/components/ui/Accordion";
-import { SectionLabel } from "@/components/ui/SectionLabel";
-import { GrainOverlay } from "@/components/ui/GrainOverlay";
-import { useScrollReveal } from "@/lib/useScrollReveal";
 
 const teaserItems = [
   {
@@ -20,33 +17,78 @@ const teaserItems = [
   {
     question: "Are your contracts month-to-month?",
     answer:
-      "Yes. All packages are month-to-month by default — no lock-in. If you want to commit to a 3- or 6-month term upfront, you get a discount (10% and 15% respectively). Either way, you're never stuck in a contract you didn't choose.",
+      "Yes. All packages are month-to-month by default — no lock-in. If you want to commit to a 3- or 6-month term upfront, you get a discount (10% and 15% respectively).",
+  },
+  {
+    question: "How long until we see results?",
+    answer:
+      "Most clients see a meaningful uptick in qualified inquiries within the first 60–90 days. We track real lead metrics, not vanity numbers, so you always know exactly where things stand.",
   },
 ];
 
 export function FAQTeaser() {
-  const headingRef = useScrollReveal<HTMLDivElement>({ y: 40, duration: 0.8 });
-  const contentRef = useScrollReveal<HTMLDivElement>({ y: 30, duration: 0.7, delay: 0.2 });
-
   return (
-    <section className="relative bg-soft-black text-white px-6 py-24 md:py-32">
-      <GrainOverlay />
-      <div className="relative mx-auto max-w-[1200px]">
-        <div ref={headingRef}>
-          <SectionLabel>Common questions</SectionLabel>
-          <h2 className="mt-4 font-title text-4xl md:text-5xl font-bold leading-tight max-w-xl">
-            A few things people usually ask.
+    <section
+      className="relative overflow-hidden"
+      style={{
+        background: "var(--cream, #F0EBE1)",
+        padding: `clamp(60px, 10vw, 120px) var(--px)`,
+        position: "relative",
+        zIndex: 2,
+      }}
+    >
+      <style>{`
+        .faq-grid-wrapper {
+          display: grid;
+          grid-template-columns: 1fr;
+          gap: clamp(36px, 6vw, 80px);
+          align-items: start;
+        }
+        @media (min-width: 768px) {
+          .faq-grid-wrapper { grid-template-columns: 320px 1fr; }
+          .faq-sticky-left  { position: sticky; top: 80px; }
+        }
+      `}</style>
+
+      <div className="faq-grid-wrapper">
+        {/* Left: sticky title + link */}
+        <div className="faq-sticky-left pb-10">
+          <h2
+            style={{
+              fontSize: "clamp(30px, 5.5vw, 76px)",
+              fontWeight: 700,
+              letterSpacing: "-0.04em",
+              lineHeight: 0.95,
+              color: "#080808",
+              marginBottom: "20px",
+            }}
+          >
+            Frequently<br />Asked<br />Questions.
           </h2>
+          <p
+            style={{
+              fontSize: "14px",
+              lineHeight: 1.7,
+              color: "rgba(8,8,8,0.5)",
+              marginBottom: "24px",
+              maxWidth: "280px",
+            }}
+          >
+            Jin or Jo. You&apos;ll work with both of us. No account managers or interns doing the heavy lifting.
+          </p>
+          <Link
+            href="/faq"
+            className="inline-flex items-center gap-2 font-bold transition-opacity hover:opacity-60"
+            style={{ fontSize: "12px", color: "#080808", letterSpacing: "0.08em" }}
+          >
+            See all FAQs <span style={{ color: "var(--red)" }}>→</span>
+          </Link>
         </div>
-        <div ref={contentRef} className="mt-12 max-w-2xl">
-          <Accordion items={teaserItems} />
+
+        {/* Right: accordion */}
+        <div style={{ borderTop: "1px solid rgba(8,8,8,0.12)" }}>
+          <Accordion items={teaserItems} theme="light" />
         </div>
-        <Link
-          href="/faq"
-          className="mt-10 inline-flex items-center gap-2 font-bold text-base transition-all duration-300 hover:opacity-60 hover:gap-3 group"
-        >
-          See all FAQs <span aria-hidden className="transition-transform duration-300 group-hover:translate-x-1">→</span>
-        </Link>
       </div>
     </section>
   );
