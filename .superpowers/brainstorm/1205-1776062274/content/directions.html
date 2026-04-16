@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nyoo Studio — Landing Page Directions</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif;
+    background: #111;
+    color: #f2ede4;
+    padding: 40px 24px 80px;
+  }
+
+  .page-title {
+    text-align: center;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: #C17F3A;
+    margin-bottom: 10px;
+  }
+  .page-headline {
+    text-align: center;
+    font-size: 32px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin-bottom: 8px;
+    color: #f2ede4;
+  }
+  .page-sub {
+    text-align: center;
+    font-size: 15px;
+    color: rgba(242,237,228,0.55);
+    margin-bottom: 56px;
+  }
+
+  .directions {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    max-width: 1200px;
+    margin: 0 auto 60px;
+  }
+
+  .direction-card {
+    cursor: pointer;
+    border: 2px solid rgba(242,237,228,0.1);
+    border-radius: 4px;
+    overflow: hidden;
+    transition: border-color 0.2s, transform 0.2s;
+    position: relative;
+  }
+  .direction-card:hover { border-color: rgba(242,237,228,0.3); transform: translateY(-2px); }
+  .direction-card.selected { border-color: #C41230; }
+  .direction-card.selected::after {
+    content: '✓ Selected';
+    position: absolute;
+    top: 12px; right: 12px;
+    background: #C41230;
+    color: white;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    padding: 4px 10px;
+    border-radius: 2px;
+  }
+
+  /* ── MOCKUP PREVIEWS ── */
+  .mockup { width: 100%; aspect-ratio: 9/14; position: relative; overflow: hidden; }
+
+  /* ══ Direction A: After Hours Editorial ══ */
+  .mock-a {
+    background: #0D0A09;
+    display: flex;
+    flex-direction: column;
+  }
+  .mock-a .nav-bar {
+    padding: 14px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid rgba(242,237,228,0.08);
+  }
+  .mock-a .logo { font-size: 10px; letter-spacing: 0.22em; font-weight: 300; color: #f2ede4; }
+  .mock-a .logo span { color: #C41230; font-weight: 700; }
+  .mock-a .nav-cta { font-size: 9px; background: #C41230; color: white; padding: 5px 10px; font-weight: 700; letter-spacing: 0.08em; }
+  .mock-a .hero {
+    flex: 1;
+    padding: 28px 20px 24px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    background: linear-gradient(160deg, #0D0A09 60%, rgba(27,68,216,0.08) 100%);
+  }
+  .mock-a .eyebrow {
+    font-size: 8px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: #C17F3A;
+    margin-bottom: 14px;
+  }
+  .mock-a .hero-headline {
+    font-size: 22px;
+    font-weight: 700;
+    line-height: 1.05;
+    letter-spacing: -0.03em;
+    color: #f2ede4;
+    margin-bottom: 12px;
+  }
+  .mock-a .hero-headline em {
+    font-style: italic;
+    font-weight: 300;
+    color: rgba(242,237,228,0.6);
+  }
+  .mock-a .hero-sub {
+    font-size: 9px;
+    line-height: 1.7;
+    color: rgba(242,237,228,0.55);
+    max-width: 80%;
+    margin-bottom: 20px;
+  }
+  .mock-a .hero-btns { display: flex; gap: 8px; }
+  .mock-a .btn-primary { font-size: 8px; font-weight: 700; background: #C41230; color: white; padding: 7px 12px; letter-spacing: 0.08em; }
+  .mock-a .btn-ghost { font-size: 8px; font-weight: 700; border: 1px solid rgba(242,237,228,0.3); color: #f2ede4; padding: 7px 12px; letter-spacing: 0.08em; }
+  .mock-a .divider-section {
+    background: #f2ede4;
+    padding: 18px 20px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  .mock-a .stat { text-align: center; }
+  .mock-a .stat-num { font-size: 18px; font-weight: 700; color: #0D0A09; letter-spacing: -0.03em; line-height: 1; }
+  .mock-a .stat-label { font-size: 7px; text-transform: uppercase; letter-spacing: 0.15em; color: rgba(13,10,9,0.5); margin-top: 3px; }
+  .mock-a .stat-div { width: 1px; height: 28px; background: rgba(13,10,9,0.15); }
+  .mock-a .problem-section {
+    background: #0D0A09;
+    padding: 20px;
+    border-top: 1px solid rgba(242,237,228,0.06);
+  }
+  .mock-a .section-label { font-size: 7px; letter-spacing: 0.2em; text-transform: uppercase; color: #C17F3A; margin-bottom: 8px; }
+  .mock-a .section-h { font-size: 13px; font-weight: 700; letter-spacing: -0.02em; line-height: 1.2; color: #f2ede4; margin-bottom: 14px; max-width: 90%; }
+  .mock-a .problem-cards { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 6px; }
+  .mock-a .p-card { background: rgba(242,237,228,0.03); border: 1px solid rgba(242,237,228,0.07); padding: 8px; }
+  .mock-a .p-card-title { font-size: 7.5px; font-weight: 700; color: #f2ede4; line-height: 1.3; margin-bottom: 4px; }
+  .mock-a .p-card-body { font-size: 6.5px; color: rgba(242,237,228,0.45); line-height: 1.5; }
+
+  /* ══ Direction B: Sharp Intelligence ══ */
+  .mock-b {
+    background: #0D0A09;
+    display: flex;
+    flex-direction: column;
+  }
+  .mock-b .nav-bar {
+    padding: 14px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid rgba(242,237,228,0.08);
+  }
+  .mock-b .logo { font-size: 10px; letter-spacing: 0.22em; font-weight: 300; color: #f2ede4; }
+  .mock-b .logo span { color: #C41230; font-weight: 700; }
+  .mock-b .nav-cta { font-size: 9px; background: #C41230; color: white; padding: 5px 10px; font-weight: 700; letter-spacing: 0.08em; }
+  .mock-b .hero {
+    flex: 1;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+  .mock-b .hero-left {
+    padding: 24px 16px 24px 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    border-right: 1px solid rgba(242,237,228,0.08);
+  }
+  .mock-b .hero-right {
+    padding: 20px 16px;
+    background: rgba(27,68,216,0.06);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 12px;
+  }
+  .mock-b .eyebrow { font-size: 8px; letter-spacing: 0.2em; text-transform: uppercase; color: #C17F3A; margin-bottom: 10px; }
+  .mock-b .hero-headline { font-size: 18px; font-weight: 700; line-height: 1.05; letter-spacing: -0.03em; color: #f2ede4; margin-bottom: 10px; }
+  .mock-b .hero-headline .accent { color: #C41230; }
+  .mock-b .hero-sub { font-size: 8px; line-height: 1.65; color: rgba(242,237,228,0.55); margin-bottom: 14px; }
+  .mock-b .btn-primary { font-size: 8px; font-weight: 700; background: #C41230; color: white; padding: 7px 12px; letter-spacing: 0.08em; display: inline-block; }
+  .mock-b .metric-block { border-left: 2px solid #1B44D8; padding-left: 10px; }
+  .mock-b .metric-num { font-size: 20px; font-weight: 700; color: #f2ede4; letter-spacing: -0.03em; line-height: 1; }
+  .mock-b .metric-label { font-size: 7px; color: rgba(242,237,228,0.45); margin-top: 3px; letter-spacing: 0.05em; }
+  .mock-b .rule { height: 1px; background: rgba(242,237,228,0.08); margin: 4px 0; }
+  .mock-b .problem-section { padding: 16px 20px; border-top: 1px solid rgba(242,237,228,0.06); }
+  .mock-b .section-label { font-size: 7px; letter-spacing: 0.2em; text-transform: uppercase; color: #C17F3A; margin-bottom: 6px; }
+  .mock-b .section-h { font-size: 12px; font-weight: 700; letter-spacing: -0.02em; line-height: 1.25; color: #f2ede4; margin-bottom: 10px; }
+  .mock-b .list-item { display: flex; align-items: flex-start; gap: 8px; margin-bottom: 8px; padding-bottom: 8px; border-bottom: 1px solid rgba(242,237,228,0.05); }
+  .mock-b .list-num { font-size: 9px; font-weight: 700; color: #1B44D8; min-width: 16px; line-height: 1.4; }
+  .mock-b .list-text { font-size: 7.5px; color: rgba(242,237,228,0.6); line-height: 1.5; }
+  .mock-b .list-title { font-size: 8px; font-weight: 700; color: #f2ede4; margin-bottom: 2px; }
+
+  /* ══ Direction C: Cinematic Immersion ══ */
+  .mock-c {
+    background: #0D0A09;
+    display: flex;
+    flex-direction: column;
+  }
+  .mock-c .nav-bar {
+    padding: 14px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+    z-index: 2;
+  }
+  .mock-c .logo { font-size: 10px; letter-spacing: 0.22em; font-weight: 300; color: #f2ede4; }
+  .mock-c .logo span { color: #C41230; font-weight: 700; }
+  .mock-c .nav-cta { font-size: 9px; background: #C41230; color: white; padding: 5px 10px; font-weight: 700; letter-spacing: 0.08em; }
+  .mock-c .hero {
+    flex: 1;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+  }
+  .mock-c .hero-bg {
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(to bottom, rgba(13,10,9,0.3) 0%, rgba(13,10,9,0.7) 60%, #0D0A09 100%),
+      linear-gradient(135deg, rgba(196,18,48,0.12) 0%, transparent 40%),
+      linear-gradient(225deg, rgba(27,68,216,0.15) 0%, transparent 40%),
+      repeating-linear-gradient(
+        -45deg,
+        rgba(242,237,228,0.015) 0px,
+        rgba(242,237,228,0.015) 1px,
+        transparent 1px,
+        transparent 8px
+      );
+  }
+  .mock-c .hero-content {
+    position: relative;
+    z-index: 1;
+    padding: 20px 20px 0;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding-bottom: 20px;
+  }
+  .mock-c .eyebrow { font-size: 7px; letter-spacing: 0.25em; text-transform: uppercase; color: #C17F3A; margin-bottom: 10px; display: flex; align-items: center; gap: 6px; }
+  .mock-c .eyebrow::before { content: ''; display: inline-block; width: 20px; height: 1px; background: #C17F3A; }
+  .mock-c .hero-headline { font-size: 28px; font-weight: 700; line-height: 0.98; letter-spacing: -0.04em; color: #f2ede4; margin-bottom: 14px; }
+  .mock-c .hero-headline .word-dim { opacity: 0.35; }
+  .mock-c .hero-meta { display: flex; align-items: center; gap: 16px; margin-bottom: 16px; }
+  .mock-c .hero-sub { font-size: 8px; line-height: 1.65; color: rgba(242,237,228,0.6); max-width: 75%; }
+  .mock-c .hero-btns { display: flex; gap: 8px; align-items: center; }
+  .mock-c .btn-primary { font-size: 8px; font-weight: 700; background: #C41230; color: white; padding: 7px 14px; letter-spacing: 0.08em; }
+  .mock-c .btn-text { font-size: 8px; font-weight: 600; color: rgba(242,237,228,0.6); letter-spacing: 0.05em; display: flex; align-items: center; gap: 4px; }
+  .mock-c .scroll-hint { position: absolute; bottom: 20px; right: 20px; display: flex; flex-direction: column; align-items: center; gap: 4px; }
+  .mock-c .scroll-line { width: 1px; height: 28px; background: linear-gradient(to bottom, transparent, rgba(242,237,228,0.4)); }
+  .mock-c .scroll-text { font-size: 6px; letter-spacing: 0.15em; text-transform: uppercase; color: rgba(242,237,228,0.35); writing-mode: vertical-rl; }
+  .mock-c .problem-alt {
+    background: linear-gradient(to right, #f2ede4 0%, #e8e2d8 100%);
+    padding: 18px 20px;
+  }
+  .mock-c .alt-label { font-size: 7px; letter-spacing: 0.2em; text-transform: uppercase; color: #C17F3A; margin-bottom: 8px; }
+  .mock-c .alt-headline { font-size: 14px; font-weight: 700; letter-spacing: -0.02em; line-height: 1.2; color: #0D0A09; margin-bottom: 12px; }
+  .mock-c .alt-cards { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 6px; }
+  .mock-c .alt-card { background: rgba(13,10,9,0.06); padding: 8px; border-top: 2px solid rgba(13,10,9,0.12); }
+  .mock-c .alt-card-title { font-size: 7.5px; font-weight: 700; color: #0D0A09; line-height: 1.3; margin-bottom: 3px; }
+  .mock-c .alt-card-body { font-size: 6.5px; color: rgba(13,10,9,0.5); line-height: 1.5; }
+
+  /* ── Card info ── */
+  .card-info {
+    padding: 20px;
+    background: rgba(242,237,228,0.03);
+  }
+  .card-letter {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    color: #C17F3A;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .card-name {
+    font-size: 16px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: #f2ede4;
+    margin-bottom: 6px;
+  }
+  .card-desc {
+    font-size: 13px;
+    line-height: 1.6;
+    color: rgba(242,237,228,0.6);
+    margin-bottom: 14px;
+  }
+  .card-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+  .tag {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    color: rgba(242,237,228,0.5);
+    border: 1px solid rgba(242,237,228,0.12);
+    padding: 3px 8px;
+  }
+
+  /* ── Select hint ── */
+  .select-hint {
+    text-align: center;
+    font-size: 12px;
+    color: rgba(242,237,228,0.4);
+    margin-top: -20px;
+    margin-bottom: 40px;
+  }
+</style>
+<script>
+  function selectDirection(el) {
+    document.querySelectorAll('.direction-card').forEach(c => c.classList.remove('selected'));
+    el.classList.add('selected');
+    // Dispatch selection event for the companion
+    if (window.__companion) {
+      window.__companion.select(el.dataset.choice, el.querySelector('.card-name').textContent);
+    }
+  }
+</script>
+</head>
+<body>
+
+<p class="page-title">Nyoo Studio — Landing Page</p>
+<h1 class="page-headline">Three design directions</h1>
+<p class="page-sub">Click a direction to select it. These are scaled-down mockups — focus on the feel, not pixel details.</p>
+
+<div class="directions">
+
+  <!-- Direction A -->
+  <div class="direction-card" data-choice="a" onclick="selectDirection(this)">
+    <div class="mockup mock-a">
+      <!-- Nav -->
+      <div class="nav-bar">
+        <span class="logo">nyoo<span>.</span>studio</span>
+        <span class="nav-cta">Book a Call</span>
+      </div>
+      <!-- Hero -->
+      <div class="hero">
+        <div>
+          <div class="eyebrow">DC Metro · Lead Generation</div>
+          <div class="hero-headline">Social media<br>that brings in<br><em>actual clients.</em></div>
+          <div class="hero-sub">Nyoo Studio builds lead-generation systems for established small businesses. Not vanity metrics. Clients.</div>
+          <div class="hero-btns">
+            <div class="btn-primary">Book Your Strategy Call</div>
+            <div class="btn-ghost">See How It Works</div>
+          </div>
+        </div>
+      </div>
+      <!-- Cream stats divider -->
+      <div class="divider-section">
+        <div class="stat">
+          <div class="stat-num">27</div>
+          <div class="stat-label">Yrs combined</div>
+        </div>
+        <div class="stat-div"></div>
+        <div class="stat">
+          <div class="stat-num">DC</div>
+          <div class="stat-label">Metro based</div>
+        </div>
+        <div class="stat-div"></div>
+        <div class="stat">
+          <div class="stat-num">0</div>
+          <div class="stat-label">Lock-in contracts</div>
+        </div>
+      </div>
+      <!-- Problem section -->
+      <div class="problem-section">
+        <div class="section-label">The gap</div>
+        <div class="section-h">You're posting. Getting likes. But your phone isn't ringing.</div>
+        <div class="problem-cards">
+          <div class="p-card">
+            <div class="p-card-title">Engagement but no pipeline</div>
+            <div class="p-card-body">None of it connects to how people become clients.</div>
+          </div>
+          <div class="p-card">
+            <div class="p-card-title">Marketing that can't prove its value</div>
+            <div class="p-card-body">Reports full of reach. You can't name a single client.</div>
+          </div>
+          <div class="p-card">
+            <div class="p-card-title">Referrals don't scale</div>
+            <div class="p-card-body">Can't control when the next one arrives.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card-info">
+      <div class="card-letter">Direction A</div>
+      <div class="card-name">After Hours Editorial</div>
+      <div class="card-desc">A cream stats bar breaks the all-dark monotony and adds credibility anchors right below the hero. Typography mixes bold headlines with light italic subtext for contrast. Sections alternate between midnight and cream for a magazine-quality rhythm.</div>
+      <div class="card-tags">
+        <span class="tag">Cream contrast breaks</span>
+        <span class="tag">Stats bar</span>
+        <span class="tag">Italic accent type</span>
+        <span class="tag">Editorial rhythm</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Direction B -->
+  <div class="direction-card" data-choice="b" onclick="selectDirection(this)">
+    <div class="mockup mock-b">
+      <!-- Nav -->
+      <div class="nav-bar">
+        <span class="logo">nyoo<span>.</span>studio</span>
+        <span class="nav-cta">Book a Call</span>
+      </div>
+      <!-- Hero: split layout -->
+      <div class="hero">
+        <div class="hero-left">
+          <div>
+            <div class="eyebrow">DC Metro Lead Generation</div>
+            <div class="hero-headline">Social media that <span class="accent">converts.</span></div>
+            <div class="hero-sub">We build systems that turn your social presence into a predictable source of qualified leads. No vanity metrics. No fluff.</div>
+            <div class="btn-primary">Book Your Strategy Call</div>
+          </div>
+        </div>
+        <div class="hero-right">
+          <div class="metric-block">
+            <div class="metric-num">27</div>
+            <div class="metric-label">Years combined experience</div>
+          </div>
+          <div class="rule"></div>
+          <div class="metric-block">
+            <div class="metric-num">0</div>
+            <div class="metric-label">Lock-in contracts</div>
+          </div>
+          <div class="rule"></div>
+          <div class="metric-block">
+            <div class="metric-num">DC</div>
+            <div class="metric-label">Metro small businesses only</div>
+          </div>
+        </div>
+      </div>
+      <!-- Problem: list style -->
+      <div class="problem-section">
+        <div class="section-label">The gap</div>
+        <div class="section-h">Three reasons your social media isn't generating leads</div>
+        <div class="list-item">
+          <div class="list-num">01</div>
+          <div>
+            <div class="list-title">Engagement without a pipeline</div>
+            <div class="list-text">Likes and comments don't convert. You need content with a destination.</div>
+          </div>
+        </div>
+        <div class="list-item">
+          <div class="list-num">02</div>
+          <div>
+            <div class="list-title">Marketing that can't prove ROI</div>
+            <div class="list-text">You've paid for reports. You still can't name a client who came from social.</div>
+          </div>
+        </div>
+        <div class="list-item" style="border:none; margin:0; padding:0;">
+          <div class="list-num">03</div>
+          <div>
+            <div class="list-title">Referrals don't scale</div>
+            <div class="list-text">Word of mouth keeps lights on. It doesn't build a business.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card-info">
+      <div class="card-letter">Direction B</div>
+      <div class="card-name">Sharp Intelligence</div>
+      <div class="card-desc">The hero splits into text-left / data-right. Problem points become a numbered list instead of identical cards — more scannable, more assertive. Cobalt metrics on the right create visual contrast. The whole page feels like a precision instrument.</div>
+      <div class="card-tags">
+        <span class="tag">Split hero layout</span>
+        <span class="tag">Cobalt data column</span>
+        <span class="tag">Numbered list sections</span>
+        <span class="tag">Precision feel</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Direction C -->
+  <div class="direction-card" data-choice="c" onclick="selectDirection(this)">
+    <div class="mockup mock-c">
+      <!-- Nav -->
+      <div class="nav-bar">
+        <span class="logo">nyoo<span>.</span>studio</span>
+        <span class="nav-cta">Book a Call</span>
+      </div>
+      <!-- Full-bleed hero -->
+      <div class="hero">
+        <div class="hero-bg"></div>
+        <div class="hero-content">
+          <div class="eyebrow">DC Metro Marketing Agency</div>
+          <div class="hero-headline">
+            <span class="word-dim">Your</span> social<br>
+            <span class="word-dim">should be</span><br>
+            closing deals.
+          </div>
+          <div class="hero-sub">Nyoo Studio builds social media systems that generate qualified leads for small businesses in DC Metro. Not followers. Clients.</div>
+          <div class="hero-btns">
+            <div class="btn-primary">Book Your Strategy Call</div>
+            <div class="btn-text">See how it works →</div>
+          </div>
+        </div>
+      </div>
+      <!-- Cream contrast break -->
+      <div class="problem-alt">
+        <div class="alt-label">The gap</div>
+        <div class="alt-headline">You're posting. Your phone isn't ringing.</div>
+        <div class="alt-cards">
+          <div class="alt-card">
+            <div class="alt-card-title">Engagement, no pipeline</div>
+            <div class="alt-card-body">Likes don't become clients.</div>
+          </div>
+          <div class="alt-card">
+            <div class="alt-card-title">Untracked spend</div>
+            <div class="alt-card-body">Reports with no revenue link.</div>
+          </div>
+          <div class="alt-card">
+            <div class="alt-card-title">Referrals don't scale</div>
+            <div class="alt-card-body">You need a system, not luck.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card-info">
+      <div class="card-letter">Direction C</div>
+      <div class="card-name">Cinematic Immersion</div>
+      <div class="card-desc">The hero is full-bleed and atmospheric — dim/bright type contrast makes "closing deals" land like a punch. The first contrast break is a cream section immediately below (dark → light → dark rhythm). Fewer elements on screen at once; each one hits harder.</div>
+      <div class="card-tags">
+        <span class="tag">Full-bleed hero</span>
+        <span class="tag">Dim/bright type contrast</span>
+        <span class="tag">Immediate cream break</span>
+        <span class="tag">Cinematic atmosphere</span>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<p class="select-hint">Click a direction to select it — or just tell me in the terminal.</p>
+
+<script>
+  // Wire up to companion if present
+  document.addEventListener('DOMContentLoaded', function() {
+    var cards = document.querySelectorAll('.direction-card');
+    cards.forEach(function(card) {
+      card.addEventListener('click', function() {
+        if (window.toggleSelect) {
+          // Re-use built-in selection
+        }
+        try {
+          if (window.__companion) window.__companion.select(card.dataset.choice, card.querySelector('.card-name').textContent);
+        } catch(e) {}
+      });
+    });
+  });
+</script>
+</body>
+</html>

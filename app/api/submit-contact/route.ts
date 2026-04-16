@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 
 const SCORE_THRESHOLD = 0.5;
 // NOTE: Replace YOUR_FORM_ID with the real Formspree ID once the contact form is created at formspree.io
-const FORMSPREE_URL = "https://formspree.io/f/YOUR_FORM_ID";
+const FORMSPREE_URL = "https://formspree.io/f/mqewpeda";
 
 async function verifyRecaptchaToken(token: string): Promise<boolean> {
   const secret = process.env.RECAPTCHA_SECRET_KEY;

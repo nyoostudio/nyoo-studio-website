@@ -114,7 +114,7 @@ import { NextRequest, NextResponse } from "next/server";
 const RECAPTCHA_SECRET = process.env.RECAPTCHA_SECRET_KEY!;
 const SCORE_THRESHOLD = 0.5;
 // NOTE: Replace YOUR_FORM_ID with the real Formspree ID once the contact form is created at formspree.io
-const FORMSPREE_URL = "https://formspree.io/f/YOUR_FORM_ID";
+const FORMSPREE_URL = "https://formspree.io/f/xaqlbrap";
 
 async function verifyRecaptchaToken(token: string): Promise<boolean> {
   const res = await fetch("https://www.google.com/recaptcha/api/siteverify", {

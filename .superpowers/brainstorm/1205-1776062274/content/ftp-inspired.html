@@ -1,0 +1,1056 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nyoo Studio — FTP-Inspired</title>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+/* ── Reset / Base ── */
+:root {
+  --black:  #080808;
+  --cream:  #F0EBE1;
+  --red:    #C41230;
+  --amber:  #C17F3A;
+  --cobalt: #1B44D8;
+  --muted:  rgba(240,235,225,0.38);
+  --rule:   rgba(240,235,225,0.1);
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif;
+  background: var(--black);
+  color: var(--cream);
+  overflow-x: hidden;
+}
+
+/* ── TYPOGRAPHY SCALE ── */
+.t-label {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--amber);
+}
+.t-body {
+  font-size: 15px;
+  line-height: 1.75;
+  color: var(--muted);
+}
+
+/* ── NAV ── */
+.nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  padding: 22px 40px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  mix-blend-mode: difference;
+}
+.nav-logo {
+  font-size: 14px;
+  letter-spacing: 0.24em;
+  font-weight: 300;
+  color: white;
+  text-decoration: none;
+}
+.nav-logo em { color: var(--red); font-style: normal; font-weight: 700; }
+.nav-links { display: flex; gap: 32px; align-items: center; }
+.nav-link { font-size: 12px; letter-spacing: 0.06em; color: rgba(255,255,255,0.6); text-decoration: none; }
+.nav-cta {
+  font-size: 11px; font-weight: 700; letter-spacing: 0.08em;
+  border: 1px solid rgba(255,255,255,0.4);
+  color: white;
+  padding: 8px 18px;
+  text-decoration: none;
+  transition: background .2s, color .2s;
+}
+.nav-cta:hover { background: white; color: var(--black); }
+
+/* ════════════════════
+   HERO
+   ════════════════════ */
+.hero {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 0 40px 48px;
+  position: relative;
+  overflow: hidden;
+  background: var(--black);
+}
+
+/* Subtle grain */
+.hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.45;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+  background-size: 200px 200px;
+  mix-blend-mode: overlay;
+}
+
+/* Red top border */
+.hero::after {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: var(--red);
+}
+
+/* Meta row */
+.hero-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 32px;
+  padding-bottom: 28px;
+  border-bottom: 1px solid var(--rule);
+  position: relative;
+  z-index: 2;
+
+  /* Reveal animation */
+  opacity: 0;
+  transform: translateY(16px);
+  animation: fadeup 0.7s cubic-bezier(0.16,1,0.3,1) forwards;
+  animation-delay: 0.2s;
+}
+.hero-location { font-size: 11px; letter-spacing: 0.14em; color: var(--muted); }
+.hero-scroll-hint { font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted); display: flex; align-items: center; gap: 10px; }
+.hero-scroll-hint::after { content: ''; display: block; width: 32px; height: 1px; background: var(--muted); }
+
+/* ── MAIN HEADLINE ── */
+.hero-headline {
+  position: relative;
+  z-index: 2;
+  margin-bottom: 40px;
+}
+
+.headline-line {
+  display: block;
+  overflow: hidden;
+  line-height: 0.92;
+}
+.headline-line-inner {
+  display: block;
+  font-size: clamp(60px, 9.5vw, 130px);
+  font-weight: 700;
+  letter-spacing: -0.04em;
+  color: var(--cream);
+  transform: translateY(110%);
+  animation: line-up 0.9s cubic-bezier(0.16,1,0.3,1) forwards;
+  animation-fill-mode: both;
+  padding-bottom: 6px;
+}
+.hl1 .headline-line-inner { animation-delay: 0.5s; }
+.hl2 .headline-line-inner { animation-delay: 0.7s; }
+.hl3 .headline-line-inner { animation-delay: 0.9s; }
+.hl4 .headline-line-inner { animation-delay: 1.1s; color: var(--red); }
+
+@keyframes line-up {
+  from { transform: translateY(110%); }
+  to   { transform: translateY(0); }
+}
+@keyframes fadeup {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Hero bottom row */
+.hero-bottom {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 32px;
+  align-items: end;
+  position: relative;
+  z-index: 2;
+  opacity: 0;
+  animation: fadeup 0.7s cubic-bezier(0.16,1,0.3,1) forwards;
+  animation-delay: 1.4s;
+}
+.hero-sub {
+  font-size: 14px;
+  line-height: 1.7;
+  color: var(--muted);
+  grid-column: 1 / 3;
+  max-width: 520px;
+}
+.hero-cta {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 12px;
+}
+.cta-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  background: var(--red);
+  color: white;
+  padding: 14px 24px;
+  text-decoration: none;
+  position: relative;
+  overflow: hidden;
+}
+.cta-btn::after {
+  content: '';
+  position: absolute;
+  left: -100%;
+  top: 0; bottom: 0;
+  width: 100%;
+  background: rgba(255,255,255,0.1);
+  transition: left 0.3s ease;
+}
+.cta-btn:hover::after { left: 100%; }
+.cta-arrow { font-size: 16px; }
+.cta-ghost {
+  font-size: 12px;
+  color: var(--muted);
+  text-decoration: none;
+  letter-spacing: 0.08em;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: color .2s;
+}
+.cta-ghost:hover { color: var(--cream); }
+
+/* ════════════════════
+   MARQUEE DIVIDER
+   ════════════════════ */
+.marquee-section {
+  border-top: 1px solid var(--rule);
+  border-bottom: 1px solid var(--rule);
+  overflow: hidden;
+  padding: 14px 0;
+  background: var(--black);
+}
+.marquee-track {
+  display: flex;
+  width: max-content;
+  animation: marquee 22s linear infinite;
+}
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+.marquee-item {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  padding: 0 28px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--muted);
+  white-space: nowrap;
+}
+.marquee-dot { width: 4px; height: 4px; border-radius: 50%; background: var(--red); flex-shrink: 0; }
+
+/* ════════════════════
+   PROBLEM — TYPOGRAPHIC
+   ════════════════════ */
+.section-problem {
+  padding: 120px 40px;
+  position: relative;
+}
+.problem-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  gap: 80px;
+  align-items: start;
+}
+.problem-left {
+  position: sticky;
+  top: 120px;
+}
+.problem-right {}
+
+.problem-statement {
+  font-size: clamp(36px, 4.5vw, 58px);
+  font-weight: 700;
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+  color: var(--cream);
+  margin-bottom: 32px;
+}
+.problem-statement .underline-red {
+  position: relative;
+  display: inline;
+}
+.problem-statement .underline-red::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 0; right: 0;
+  height: 3px;
+  background: var(--red);
+}
+
+.problem-items { display: flex; flex-direction: column; }
+.problem-item {
+  padding: 32px 0;
+  border-top: 1px solid var(--rule);
+  display: grid;
+  grid-template-columns: 48px 1fr;
+  gap: 24px;
+  align-items: start;
+
+  /* scroll reveal */
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+.problem-item.visible { opacity: 1; transform: translateY(0); }
+.problem-item:last-child { border-bottom: 1px solid var(--rule); }
+.problem-n {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--cobalt);
+  letter-spacing: 0.1em;
+  padding-top: 4px;
+}
+.problem-title {
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--cream);
+  margin-bottom: 10px;
+  line-height: 1.2;
+}
+.problem-text {
+  font-size: 14px;
+  line-height: 1.75;
+  color: var(--muted);
+}
+
+/* ════════════════════
+   SERVICES — LARGE CARDS
+   ════════════════════ */
+.section-services {
+  padding: 0 40px 120px;
+  background: var(--black);
+}
+.services-header {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding-bottom: 48px;
+  border-bottom: 1px solid var(--rule);
+  margin-bottom: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+.services-title {
+  font-size: clamp(40px, 5vw, 64px);
+  font-weight: 700;
+  letter-spacing: -0.04em;
+  line-height: 1.0;
+  color: var(--cream);
+  max-width: 600px;
+}
+.services-title .red { color: var(--red); }
+.services-sub {
+  font-size: 14px;
+  line-height: 1.7;
+  color: var(--muted);
+  max-width: 320px;
+}
+
+.services-grid {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+.service-row {
+  display: grid;
+  grid-template-columns: 80px 1fr 1fr;
+  gap: 40px;
+  padding: 40px 0;
+  border-bottom: 1px solid var(--rule);
+  align-items: start;
+
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+.service-row.visible { opacity: 1; transform: translateY(0); }
+.service-n {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--amber);
+  letter-spacing: 0.1em;
+  padding-top: 6px;
+}
+.service-name {
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+  color: var(--cream);
+}
+.service-desc {
+  font-size: 14px;
+  line-height: 1.75;
+  color: var(--muted);
+  padding-top: 4px;
+}
+
+/* ════════════════════
+   STATS — CREAM BREAK
+   ════════════════════ */
+.section-stats {
+  background: var(--cream);
+  padding: 100px 40px;
+  position: relative;
+  overflow: hidden;
+}
+.section-stats::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  opacity: 0.25;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+  background-size: 200px 200px;
+  mix-blend-mode: multiply;
+  pointer-events: none;
+}
+.stats-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  position: relative;
+}
+.stats-label { font-size: 10px; font-weight: 700; letter-spacing: 0.22em; text-transform: uppercase; color: var(--red); margin-bottom: 60px; }
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0;
+}
+.stat-block {
+  padding: 0 40px 0 0;
+  border-right: 1px solid rgba(13,10,9,0.1);
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+.stat-block.visible { opacity: 1; transform: translateY(0); }
+.stat-block:first-child { padding-left: 0; }
+.stat-block:last-child { border-right: none; padding-right: 0; }
+.stat-num {
+  font-size: clamp(56px, 6vw, 80px);
+  font-weight: 700;
+  letter-spacing: -0.05em;
+  line-height: 1;
+  color: var(--black);
+  margin-bottom: 12px;
+}
+.stat-num .unit { font-size: 0.45em; letter-spacing: -0.02em; vertical-align: middle; }
+.stat-label-text {
+  font-size: 13px;
+  line-height: 1.5;
+  color: rgba(8,8,8,0.55);
+}
+
+/* ════════════════════
+   FOUNDERS — EDITORIAL
+   ════════════════════ */
+.section-founders {
+  padding: 120px 40px;
+  background: var(--black);
+}
+.founders-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+.founders-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding-bottom: 48px;
+  border-bottom: 1px solid var(--rule);
+  margin-bottom: 60px;
+}
+.founders-title {
+  font-size: clamp(40px, 5vw, 64px);
+  font-weight: 700;
+  letter-spacing: -0.04em;
+  line-height: 1.0;
+  color: var(--cream);
+}
+.founders-link {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--muted);
+  text-decoration: none;
+  letter-spacing: 0.06em;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: color .2s;
+}
+.founders-link:hover { color: var(--cream); }
+.founders-link .arr { color: var(--amber); }
+
+.founders-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2px;
+}
+.founder-block {
+  position: relative;
+  aspect-ratio: 4/5;
+  overflow: hidden;
+  background: #111;
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+.founder-block.visible { opacity: 1; transform: translateY(0); }
+.founder-block:nth-child(2) { transition-delay: 0.15s; }
+
+.founder-photo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top;
+  display: block;
+  filter: grayscale(20%);
+  transition: filter 0.4s ease, transform 0.6s ease;
+}
+.founder-block:hover .founder-photo { filter: grayscale(0%); transform: scale(1.03); }
+
+.founder-overlay {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  padding: 32px;
+  background: linear-gradient(to top, rgba(8,8,8,0.9) 0%, rgba(8,8,8,0.5) 60%, transparent 100%);
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+.founder-name {
+  font-size: 24px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--cream);
+}
+.founder-role {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--amber);
+  margin-top: 4px;
+}
+.founder-num {
+  font-size: 48px;
+  font-weight: 700;
+  letter-spacing: -0.05em;
+  color: rgba(240,235,225,0.08);
+  line-height: 1;
+}
+
+/* ════════════════════
+   PROCESS — HORIZONTAL
+   ════════════════════ */
+.section-process {
+  padding: 120px 40px;
+  background: var(--black);
+  border-top: 1px solid var(--rule);
+}
+.process-inner { max-width: 1200px; margin: 0 auto; }
+.process-header {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 60px;
+  align-items: end;
+  margin-bottom: 80px;
+}
+.process-title {
+  font-size: clamp(40px, 5vw, 64px);
+  font-weight: 700;
+  letter-spacing: -0.04em;
+  line-height: 1.0;
+  color: var(--cream);
+}
+.process-intro {
+  font-size: 14px;
+  line-height: 1.75;
+  color: var(--muted);
+}
+.process-steps {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0;
+}
+.process-step {
+  padding: 40px 40px 40px 0;
+  border-top: 3px solid var(--rule);
+  position: relative;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+.process-step.visible { opacity: 1; transform: translateY(0); }
+.process-step:nth-child(2) { transition-delay: 0.1s; padding: 40px; border-left: 1px solid var(--rule); }
+.process-step:nth-child(3) { transition-delay: 0.2s; padding: 40px 0 40px 40px; border-left: 1px solid var(--rule); }
+.process-step::before {
+  content: '';
+  position: absolute;
+  top: -3px; left: 0;
+  width: 0;
+  height: 3px;
+  background: var(--red);
+  transition: width 0.5s ease;
+}
+.process-step.visible::before { width: 48px; }
+.process-step-n { font-size: 11px; font-weight: 700; letter-spacing: 0.14em; color: var(--muted); margin-bottom: 20px; }
+.process-step-title { font-size: 22px; font-weight: 700; letter-spacing: -0.02em; color: var(--cream); margin-bottom: 12px; line-height: 1.15; }
+.process-step-text { font-size: 13px; line-height: 1.7; color: var(--muted); }
+
+/* ════════════════════
+   FAQ — CREAM BREAK
+   ════════════════════ */
+.section-faq {
+  background: var(--cream);
+  padding: 100px 40px;
+}
+.faq-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 360px 1fr;
+  gap: 80px;
+  align-items: start;
+}
+.faq-left { position: sticky; top: 100px; }
+.faq-title {
+  font-size: clamp(36px, 4vw, 52px);
+  font-weight: 700;
+  letter-spacing: -0.04em;
+  line-height: 1.05;
+  color: var(--black);
+  margin-bottom: 24px;
+}
+.faq-intro { font-size: 14px; line-height: 1.7; color: rgba(8,8,8,0.55); margin-bottom: 28px; }
+.faq-more-link {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--black);
+  text-decoration: none;
+  letter-spacing: 0.08em;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.faq-more-link .arr { color: var(--red); }
+.faq-items { border-top: 1px solid rgba(8,8,8,0.1); }
+.faq-item {
+  padding: 24px 0;
+  border-bottom: 1px solid rgba(8,8,8,0.1);
+}
+.faq-q {
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--black);
+  margin-bottom: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 20px;
+  cursor: pointer;
+}
+.faq-toggle { font-size: 20px; font-weight: 300; color: var(--red); line-height: 1; flex-shrink: 0; }
+.faq-a { font-size: 14px; line-height: 1.7; color: rgba(8,8,8,0.6); }
+
+/* ════════════════════
+   FINAL CTA
+   ════════════════════ */
+.section-cta {
+  padding: 140px 40px;
+  background: var(--black);
+  position: relative;
+  overflow: hidden;
+}
+.section-cta::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 40px; right: 40px;
+  height: 1px;
+  background: var(--rule);
+}
+.cta-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 48px;
+}
+.cta-big {
+  font-size: clamp(52px, 8vw, 110px);
+  font-weight: 700;
+  letter-spacing: -0.05em;
+  line-height: 0.92;
+  color: var(--cream);
+}
+.cta-big .dim { color: var(--muted); }
+.cta-big .red { color: var(--red); }
+
+/* Animate in on scroll */
+.cta-inner .cta-big {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+.cta-inner.visible .cta-big { opacity: 1; transform: translateY(0); }
+
+.cta-bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 40px;
+  border-top: 1px solid var(--rule);
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+  transition-delay: 0.2s;
+}
+.cta-bottom.visible { opacity: 1; transform: translateY(0); }
+.cta-bottom-text { font-size: 14px; line-height: 1.65; color: var(--muted); max-width: 360px; }
+.cta-btn-large {
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  background: var(--red);
+  color: white;
+  padding: 18px 32px;
+  text-decoration: none;
+}
+.cta-arrow-lg { font-size: 18px; }
+
+/* ════════════════════
+   SCROLL REVEAL
+   ════════════════════ */
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+  <a href="/" class="nav-logo">nyoo<em>.</em>studio</a>
+  <div class="nav-links">
+    <a href="/about" class="nav-link">About</a>
+    <a href="/services" class="nav-link">Services</a>
+    <a href="/faq" class="nav-link">FAQ</a>
+    <a href="/book" class="nav-cta">Book a Call</a>
+  </div>
+</nav>
+
+<!-- ── HERO ── -->
+<section class="hero">
+  <div class="hero-meta">
+    <span class="hero-location">DC Metro · Small Business Marketing Agency</span>
+    <span class="hero-scroll-hint">Scroll to explore</span>
+  </div>
+
+  <div class="hero-headline">
+    <span class="headline-line hl1"><span class="headline-line-inner">YOUR SOCIAL</span></span>
+    <span class="headline-line hl2"><span class="headline-line-inner">MEDIA SHOULD</span></span>
+    <span class="headline-line hl3"><span class="headline-line-inner">BE CLOSING</span></span>
+    <span class="headline-line hl4"><span class="headline-line-inner">DEALS.</span></span>
+  </div>
+
+  <div class="hero-bottom">
+    <p class="hero-sub">
+      Nyoo Studio builds social media systems that generate qualified leads for established small businesses in DC Metro. Not vanity metrics. Not vague brand awareness. Clients.
+    </p>
+    <div></div>
+    <div class="hero-cta">
+      <a href="/book" class="cta-btn">Book Your Strategy Call <span class="cta-arrow">→</span></a>
+      <a href="/services" class="cta-ghost">See how it works →</a>
+    </div>
+  </div>
+</section>
+
+<!-- ── MARQUEE ── -->
+<div class="marquee-section">
+  <div class="marquee-track">
+    <div class="marquee-item"><span class="marquee-dot"></span>Social Media Management</div>
+    <div class="marquee-item"><span class="marquee-dot"></span>Lead Generation Systems</div>
+    <div class="marquee-item"><span class="marquee-dot"></span>Content Strategy</div>
+    <div class="marquee-item"><span class="marquee-dot"></span>Pipeline Infrastructure</div>
+    <div class="marquee-item"><span class="marquee-dot"></span>DC Metro · Small Business</div>
+    <div class="marquee-item"><span class="marquee-dot"></span>Month-to-Month Contracts</div>
+    <div class="marquee-item"><span class="marquee-dot"></span>27 Years Combined</div>
+    <!-- duplicate -->
+    <div class="marquee-item"><span class="marquee-dot"></span>Social Media Management</div>
+    <div class="marquee-item"><span class="marquee-dot"></span>Lead Generation Systems</div>
+    <div class="marquee-item"><span class="marquee-dot"></span>Content Strategy</div>
+    <div class="marquee-item"><span class="marquee-dot"></span>Pipeline Infrastructure</div>
+    <div class="marquee-item"><span class="marquee-dot"></span>DC Metro · Small Business</div>
+    <div class="marquee-item"><span class="marquee-dot"></span>Month-to-Month Contracts</div>
+    <div class="marquee-item"><span class="marquee-dot"></span>27 Years Combined</div>
+  </div>
+</div>
+
+<!-- ── PROBLEM ── -->
+<section class="section-problem">
+  <div class="problem-inner">
+    <div class="problem-left">
+      <p class="t-label" style="margin-bottom: 20px;">The gap</p>
+      <h2 class="problem-statement">
+        You're posting.<br>
+        Getting likes.<br>
+        Your phone isn't<br>
+        <span class="underline-red">ringing.</span>
+      </h2>
+    </div>
+    <div class="problem-right">
+      <div class="problem-items">
+        <div class="problem-item">
+          <span class="problem-n">01</span>
+          <div>
+            <h3 class="problem-title">Engagement with no pipeline</h3>
+            <p class="problem-text">Likes, comments, shares — none of it connects to how people actually become your clients. The content looks good. It just doesn't lead anywhere.</p>
+          </div>
+        </div>
+        <div class="problem-item">
+          <span class="problem-n">02</span>
+          <div>
+            <h3 class="problem-title">Marketing spend you can't trace</h3>
+            <p class="problem-text">You've paid agencies and freelancers. They sent reports full of impressions. You still can't point to a single client who came from social media.</p>
+          </div>
+        </div>
+        <div class="problem-item">
+          <span class="problem-n">03</span>
+          <div>
+            <h3 class="problem-title">Referrals don't scale</h3>
+            <p class="problem-text">Your best clients came from word of mouth. You can't control when the next one shows up. You need a system that generates leads on a schedule, not luck.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── SERVICES ── -->
+<section class="section-services">
+  <div class="services-header">
+    <h2 class="services-title">What we do.<br><span class="red">What moves the needle.</span></h2>
+    <p class="services-sub">Everything is built around one outcome: turning your social presence into a reliable source of qualified leads.</p>
+  </div>
+  <div class="services-grid">
+    <div class="service-row">
+      <span class="service-n">01</span>
+      <h3 class="service-name">Lead-First<br>Content Strategy</h3>
+      <p class="service-desc">We map your content to your sales cycle. Every post, caption, and video is built to attract prospects already looking for what you offer — and give them a clear next step.</p>
+    </div>
+    <div class="service-row">
+      <span class="service-n">02</span>
+      <h3 class="service-name">Social Media<br>That Converts</h3>
+      <p class="service-desc">Consistent, high-quality presence across the platforms where your customers spend time. Content calendar, captions, scheduling — all tied back to lead generation goals.</p>
+    </div>
+    <div class="service-row">
+      <span class="service-n">03</span>
+      <h3 class="service-name">Pipeline<br>Infrastructure</h3>
+      <p class="service-desc">The backend systems that capture, qualify, and route leads from social media into your business. Built once, running always. You stay focused on running your business.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ── STATS (cream break) ── -->
+<section class="section-stats">
+  <div class="stats-inner">
+    <p class="stats-label">Why Nyoo Studio</p>
+    <div class="stats-grid">
+      <div class="stat-block">
+        <div class="stat-num">27<span class="unit">yr</span></div>
+        <p class="stat-label-text">Combined experience in brand, content & systems</p>
+      </div>
+      <div class="stat-block" style="padding-left: 40px;">
+        <div class="stat-num">DC</div>
+        <p class="stat-label-text">Metro focused. We know this market.</p>
+      </div>
+      <div class="stat-block" style="padding-left: 40px;">
+        <div class="stat-num">$0</div>
+        <p class="stat-label-text">Lock-in. Month-to-month by default, always.</p>
+      </div>
+      <div class="stat-block" style="padding-left: 40px;">
+        <div class="stat-num">2</div>
+        <p class="stat-label-text">Founders. Every client gets both of us.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── FOUNDERS ── -->
+<section class="section-founders">
+  <div class="founders-inner">
+    <div class="founders-header">
+      <h2 class="founders-title">Not a<br>faceless agency.</h2>
+      <a href="/about" class="founders-link">Read our story <span class="arr">→</span></a>
+    </div>
+    <div class="founders-grid">
+      <div class="founder-block">
+        <img src="/images/JO_HEADSHOT.jpg" alt="Jo Yoo" class="founder-photo" onerror="this.style.display='none'">
+        <div style="position:absolute;inset:0;background:linear-gradient(135deg,#1a1410,#0c0908);display:flex;align-items:center;justify-content:center;z-index:-1;">
+          <span style="font-size:72px;font-weight:700;letter-spacing:-0.04em;color:rgba(240,235,225,0.06);">JY</span>
+        </div>
+        <div class="founder-overlay">
+          <div>
+            <div class="founder-name">Jo Yoo</div>
+            <div class="founder-role">Content &amp; Client Lead</div>
+          </div>
+          <div class="founder-num">01</div>
+        </div>
+      </div>
+      <div class="founder-block">
+        <img src="/images/JIN_HEADSHOT.jpg" alt="Jin Yoo" class="founder-photo" onerror="this.style.display='none'">
+        <div style="position:absolute;inset:0;background:linear-gradient(135deg,#0c0d14,#080808);display:flex;align-items:center;justify-content:center;z-index:-1;">
+          <span style="font-size:72px;font-weight:700;letter-spacing:-0.04em;color:rgba(240,235,225,0.06);">JY</span>
+        </div>
+        <div class="founder-overlay">
+          <div>
+            <div class="founder-name">Jin Yoo</div>
+            <div class="founder-role">Strategy &amp; Systems</div>
+          </div>
+          <div class="founder-num">02</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── PROCESS ── -->
+<section class="section-process">
+  <div class="process-inner">
+    <div class="process-header">
+      <h2 class="process-title">No onboarding decks.<br>No 12-week discovery.</h2>
+      <p class="process-intro">A 30-minute call is all it takes to start. We move fast because your business already is.</p>
+    </div>
+    <div class="process-steps">
+      <div class="process-step">
+        <p class="process-step-n">STEP 01</p>
+        <h3 class="process-step-title">Strategy Call</h3>
+        <p class="process-step-text">30 minutes about your business, your sales cycle, and where leads come from today. We listen more than we talk.</p>
+      </div>
+      <div class="process-step">
+        <p class="process-step-n">STEP 02</p>
+        <h3 class="process-step-title">Lead Generation Plan</h3>
+        <p class="process-step-text">A content strategy mapped to your funnel. Tailored to your voice, your ideal client, the platforms where they're reachable. You review. We adjust.</p>
+      </div>
+      <div class="process-step">
+        <p class="process-step-n">STEP 03</p>
+        <h3 class="process-step-title">We Build Your Pipeline</h3>
+        <p class="process-step-text">Content goes live. Lead flows activate. Reporting tracks inquiries, not impressions. You stay focused on running your business.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── FAQ (cream) ── -->
+<section class="section-faq">
+  <div class="faq-inner">
+    <div class="faq-left">
+      <h2 class="faq-title">A few things people usually ask.</h2>
+      <p class="faq-intro">Straight answers. No fluff.</p>
+      <a href="/faq" class="faq-more-link">See all FAQs <span class="arr">→</span></a>
+    </div>
+    <div class="faq-right">
+      <div class="faq-items">
+        <div class="faq-item">
+          <div class="faq-q">Who do you work with? <span class="faq-toggle">+</span></div>
+          <p class="faq-a">Established small businesses in DC Metro — typically 2–20 employees with consistent revenue and a need for professional marketing they don't have time to do themselves.</p>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q">What does a typical sprint look like? <span class="faq-toggle">+</span></div>
+          <p class="faq-a">We plan a month of content at a time. You review and approve everything before it goes out. No surprises, no last-minute changes.</p>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q">Are contracts month-to-month? <span class="faq-toggle">+</span></div>
+          <p class="faq-a">Yes. All packages are month-to-month by default — no lock-in. Commit to 3 or 6 months for a discount (10% and 15%). You're never stuck in a contract you didn't choose.</p>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q">How quickly can you start? <span class="faq-toggle">+</span></div>
+          <p class="faq-a">After the strategy call and plan approval, we can have content live within two weeks. We don't do 12-week onboardings.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── FINAL CTA ── -->
+<section class="section-cta">
+  <div class="cta-inner">
+    <h2 class="cta-big">
+      <span class="dim">READY TO KNOW</span><br>
+      <span class="dim">WHERE YOUR</span><br>
+      NEXT CLIENT<br>
+      <span class="red">COMES FROM?</span>
+    </h2>
+    <div class="cta-bottom">
+      <p class="cta-bottom-text">Book a free 30-minute strategy call. No pitch, no pressure — just an honest conversation about your marketing.</p>
+      <a href="/book" class="cta-btn-large">Book Your Strategy Call <span class="cta-arrow-lg">→</span></a>
+    </div>
+  </div>
+</section>
+
+<script>
+// ── Scroll reveal observer ──
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(el => {
+    if (el.isIntersecting) {
+      el.target.classList.add('visible');
+    }
+  });
+}, { threshold: 0.12 });
+
+document.querySelectorAll(
+  '.problem-item, .service-row, .stat-block, .founder-block, .process-step'
+).forEach(el => observer.observe(el));
+
+// CTA section observer (for container children)
+const ctaObserver = new IntersectionObserver((entries) => {
+  entries.forEach(el => {
+    if (el.isIntersecting) {
+      el.target.querySelector('.cta-big').style.opacity = '1';
+      el.target.querySelector('.cta-big').style.transform = 'translateY(0)';
+      setTimeout(() => {
+        const bottom = el.target.querySelector('.cta-bottom');
+        if (bottom) { bottom.style.opacity = '1'; bottom.style.transform = 'translateY(0)'; }
+      }, 200);
+    }
+  });
+}, { threshold: 0.2 });
+document.querySelectorAll('.cta-inner').forEach(el => ctaObserver.observe(el));
+
+// Stagger stat blocks
+document.querySelectorAll('.stat-block').forEach((el, i) => {
+  el.style.transitionDelay = (i * 0.1) + 's';
+});
+// Stagger service rows
+document.querySelectorAll('.service-row').forEach((el, i) => {
+  el.style.transitionDelay = (i * 0.08) + 's';
+});
+</script>
+
+</body>
+</html>

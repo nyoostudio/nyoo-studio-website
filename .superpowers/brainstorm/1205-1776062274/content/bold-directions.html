@@ -1,0 +1,909 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nyoo Studio — Bold Directions</title>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif;
+  background: #0a0a0a;
+  color: #f2ede4;
+  padding: 48px 24px 100px;
+}
+
+.meta-title {
+  text-align: center;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: #C17F3A;
+  margin-bottom: 10px;
+}
+.meta-headline {
+  text-align: center;
+  font-size: 30px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  margin-bottom: 6px;
+}
+.meta-sub {
+  text-align: center;
+  font-size: 13px;
+  color: rgba(242,237,228,0.45);
+  margin-bottom: 64px;
+}
+
+/* ── CARDS GRID ── */
+.dirs {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  max-width: 1280px;
+  margin: 0 auto 56px;
+  align-items: start;
+}
+
+.dir-card {
+  cursor: pointer;
+  border: 2px solid rgba(255,255,255,0.08);
+  border-radius: 3px;
+  overflow: hidden;
+  transition: border-color .25s, transform .25s;
+  position: relative;
+}
+.dir-card:hover { border-color: rgba(255,255,255,0.2); transform: translateY(-3px); }
+.dir-card.selected { border-color: #C41230; }
+.dir-card.selected::before {
+  content: '✓ Selected';
+  position: absolute;
+  top: 10px; right: 10px;
+  z-index: 100;
+  background: #C41230;
+  color: white;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  padding: 4px 10px;
+  border-radius: 2px;
+}
+
+/* ── DEMO WINDOW ── */
+.demo {
+  width: 100%;
+  height: 480px;
+  position: relative;
+  overflow: hidden;
+}
+
+/* ── CARD INFO ── */
+.card-info {
+  padding: 22px 20px;
+  background: rgba(255,255,255,0.03);
+  border-top: 1px solid rgba(255,255,255,0.06);
+}
+.card-letter { font-size: 10px; font-weight: 700; letter-spacing: 0.2em; color: #C17F3A; margin-bottom: 7px; }
+.card-name { font-size: 17px; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 8px; }
+.card-desc { font-size: 12px; line-height: 1.65; color: rgba(242,237,228,0.6); margin-bottom: 14px; }
+.card-tags { display: flex; flex-wrap: wrap; gap: 5px; }
+.tag { font-size: 9px; font-weight: 700; letter-spacing: 0.1em; color: rgba(242,237,228,0.45); border: 1px solid rgba(242,237,228,0.1); padding: 3px 8px; }
+
+/* ════════════════════════════════════
+   DIRECTION A — THE SIGNAL
+   ════════════════════════════════════ */
+.demo-a {
+  background: #080808;
+}
+
+/* Scan line */
+@keyframes scanline {
+  0% { transform: translateY(-100%); }
+  100% { transform: translateY(500px); }
+}
+.scan-line {
+  position: absolute;
+  left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent 0%, rgba(196,18,48,0.6) 20%, rgba(196,18,48,0.9) 50%, rgba(196,18,48,0.6) 80%, transparent 100%);
+  animation: scanline 4s cubic-bezier(0.4,0,0.2,1) infinite;
+  animation-delay: 0.5s;
+  z-index: 10;
+  pointer-events: none;
+  filter: blur(1px);
+}
+.scan-glow {
+  position: absolute;
+  left: 0; right: 0;
+  height: 60px;
+  background: linear-gradient(to bottom, transparent, rgba(196,18,48,0.04), transparent);
+  animation: scanline 4s cubic-bezier(0.4,0,0.2,1) infinite;
+  animation-delay: 0.5s;
+  z-index: 9;
+  pointer-events: none;
+  margin-top: -29px;
+}
+
+/* Grid texture */
+.a-grid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(255,255,255,0.022) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.022) 1px, transparent 1px);
+  background-size: 48px 48px;
+}
+
+/* Noise grain */
+.a-grain {
+  position: absolute;
+  inset: 0;
+  opacity: 0.5;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+  background-size: 200px 200px;
+  mix-blend-mode: overlay;
+  pointer-events: none;
+}
+
+/* Red bleeds */
+.a-bleed-top {
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: #C41230;
+}
+.a-bleed-left {
+  position: absolute;
+  top: 0; left: 0; bottom: 0;
+  width: 3px;
+  background: linear-gradient(to bottom, #C41230, transparent 60%);
+}
+
+/* Nav */
+.a-nav {
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  padding: 16px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 5;
+}
+.a-logo { font-size: 12px; letter-spacing: 0.24em; font-weight: 300; color: #f2ede4; }
+.a-logo em { color: #C41230; font-style: normal; font-weight: 700; }
+.a-cta-pill { font-size: 9px; font-weight: 700; letter-spacing: 0.1em; border: 1px solid #C41230; color: #C41230; padding: 5px 12px; text-transform: uppercase; }
+
+/* Hero content */
+.a-hero {
+  position: absolute;
+  bottom: 90px;
+  left: 0; right: 0;
+  padding: 0 20px;
+  z-index: 5;
+}
+.a-tag {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+.a-tag-line { width: 28px; height: 1px; background: #C41230; }
+.a-tag-text { font-size: 9px; letter-spacing: 0.22em; text-transform: uppercase; color: rgba(255,255,255,0.45); }
+
+/* Type-on animation */
+@keyframes type-reveal {
+  from { clip-path: inset(0 100% 0 0); }
+  to   { clip-path: inset(0 0% 0 0); }
+}
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+.a-headline {
+  font-size: 54px;
+  font-weight: 700;
+  line-height: 0.93;
+  letter-spacing: -0.05em;
+  color: #f2ede4;
+  margin-bottom: 16px;
+  overflow: hidden;
+}
+.a-headline .line {
+  display: block;
+  overflow: hidden;
+  animation: type-reveal 1s cubic-bezier(0.77,0,0.175,1) forwards;
+  animation-fill-mode: both;
+}
+.a-headline .l1 { animation-delay: 0.8s; }
+.a-headline .l2 { animation-delay: 1.3s; }
+.a-headline .l3 { animation-delay: 1.8s; }
+.a-headline .red { color: #C41230; }
+.a-cursor {
+  display: inline-block;
+  width: 3px;
+  height: 0.85em;
+  background: #C41230;
+  vertical-align: middle;
+  animation: blink 0.8s step-end infinite;
+  margin-left: 3px;
+  animation-delay: 3s;
+  opacity: 0;
+}
+.a-cursor.visible { opacity: 1; }
+
+.a-sub {
+  font-size: 11px;
+  line-height: 1.7;
+  color: rgba(255,255,255,0.45);
+  max-width: 280px;
+  margin-bottom: 20px;
+  animation: fadeUp 0.7s ease forwards;
+  animation-delay: 2.4s;
+  opacity: 0;
+}
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.a-btns {
+  display: flex;
+  gap: 10px;
+  animation: fadeUp 0.7s ease forwards;
+  animation-delay: 2.7s;
+  opacity: 0;
+}
+.a-btn-solid { font-size: 10px; font-weight: 700; background: #C41230; color: white; padding: 9px 16px; letter-spacing: 0.08em; text-transform: uppercase; }
+.a-btn-text { font-size: 10px; color: rgba(255,255,255,0.45); letter-spacing: 0.06em; display: flex; align-items: center; gap: 4px; align-self: center; }
+
+/* Marquee */
+.a-marquee-wrap {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  overflow: hidden;
+  border-top: 1px solid rgba(255,255,255,0.08);
+  background: rgba(196,18,48,0.06);
+  padding: 10px 0;
+  z-index: 5;
+}
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+.a-marquee-track {
+  display: flex;
+  white-space: nowrap;
+  animation: marquee 18s linear infinite;
+  width: max-content;
+}
+.a-marquee-item {
+  font-size: 9px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.3);
+  padding: 0 20px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+.a-marquee-item::after { content: '◆'; color: #C41230; font-size: 5px; }
+
+/* Right corner accent */
+.a-corner {
+  position: absolute;
+  top: 60px; right: 20px;
+  z-index: 5;
+  text-align: right;
+}
+.a-corner-num {
+  font-size: 80px;
+  font-weight: 700;
+  letter-spacing: -0.06em;
+  line-height: 1;
+  color: rgba(196,18,48,0.08);
+  pointer-events: none;
+}
+
+/* ════════════════════════════════════
+   DIRECTION B — DEPTH FIELD
+   ════════════════════════════════════ */
+.demo-b {
+  background: #0c0908;
+  perspective: 800px;
+}
+
+/* Layered depth planes */
+.b-plane-back {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 100% 80% at 50% 100%, rgba(193,127,58,0.12) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 40% at 80% 20%, rgba(196,18,48,0.08) 0%, transparent 50%);
+}
+.b-grain {
+  position: absolute;
+  inset: 0;
+  opacity: 0.4;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+  background-size: 200px 200px;
+  mix-blend-mode: overlay;
+  pointer-events: none;
+}
+
+/* Floating 3d cards (midplane) */
+@keyframes float3d {
+  0%, 100% { transform: translateZ(20px) rotateX(2deg) rotateY(-3deg) translateY(0px); }
+  50%       { transform: translateZ(20px) rotateX(-1deg) rotateY(2deg) translateY(-8px); }
+}
+@keyframes float3d-2 {
+  0%, 100% { transform: translateZ(10px) rotateX(-2deg) rotateY(3deg) translateY(0px); }
+  50%       { transform: translateZ(10px) rotateX(2deg) rotateY(-2deg) translateY(-6px); }
+}
+
+.b-card-float {
+  position: absolute;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(193,127,58,0.2);
+  padding: 14px 16px;
+  animation: float3d 8s ease-in-out infinite;
+  transform-style: preserve-3d;
+  backdrop-filter: blur(4px);
+}
+.b-card-1 {
+  top: 80px; right: 18px;
+  width: 130px;
+  animation-delay: 0s;
+}
+.b-card-2 {
+  top: 200px; right: 40px;
+  width: 110px;
+  animation: float3d-2 6s ease-in-out infinite;
+  animation-delay: -2s;
+}
+.b-card-3 {
+  top: 310px; right: 15px;
+  width: 140px;
+  animation-delay: -4s;
+}
+
+.b-card-label { font-size: 7px; letter-spacing: 0.16em; text-transform: uppercase; color: #C17F3A; margin-bottom: 6px; }
+.b-card-val { font-size: 22px; font-weight: 700; letter-spacing: -0.04em; color: #f2ede4; line-height: 1; }
+.b-card-sub { font-size: 8px; color: rgba(242,237,228,0.4); margin-top: 4px; line-height: 1.4; }
+.b-card-bar { height: 2px; background: rgba(193,127,58,0.15); margin-top: 10px; position: relative; overflow: hidden; }
+.b-card-bar::after {
+  content: '';
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  background: #C17F3A;
+  animation: bar-fill 3s ease-in-out infinite;
+}
+@keyframes bar-fill {
+  0%, 100% { width: 70%; }
+  50%       { width: 90%; }
+}
+
+/* Nav */
+.b-nav {
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  padding: 16px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 10;
+}
+.b-logo { font-size: 12px; letter-spacing: 0.24em; font-weight: 300; color: #f2ede4; }
+.b-logo em { color: #C41230; font-style: normal; font-weight: 700; }
+.b-cta-pill {
+  font-size: 9px; font-weight: 700; letter-spacing: 0.1em;
+  background: linear-gradient(135deg, #C41230, #8B0E22);
+  color: white; padding: 6px 14px; border-radius: 1px;
+  text-transform: uppercase;
+  box-shadow: 0 0 20px rgba(196,18,48,0.3);
+}
+
+/* Hero text */
+.b-hero {
+  position: absolute;
+  bottom: 50px; left: 20px;
+  z-index: 5;
+  max-width: 55%;
+}
+.b-eyebrow { font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; color: #C17F3A; margin-bottom: 14px; }
+.b-h1 {
+  font-size: 44px;
+  font-weight: 700;
+  line-height: 0.95;
+  letter-spacing: -0.04em;
+  color: #f2ede4;
+  margin-bottom: 16px;
+}
+
+/* word-by-word float-in */
+@keyframes word-in {
+  from { opacity: 0; filter: blur(8px); transform: translateY(10px); }
+  to   { opacity: 1; filter: blur(0); transform: translateY(0); }
+}
+.b-word {
+  display: inline-block;
+  animation: word-in 0.6s cubic-bezier(0.16,1,0.3,1) forwards;
+  opacity: 0;
+}
+.w1 { animation-delay: 0.4s; }
+.w2 { animation-delay: 0.55s; }
+.w3 { animation-delay: 0.7s; }
+.w4 { animation-delay: 0.85s; color: #C17F3A; }
+.w5 { animation-delay: 1.0s; }
+.w6 { animation-delay: 1.15s; }
+.w7 { animation-delay: 1.3s; }
+
+.b-sub {
+  font-size: 11px;
+  line-height: 1.7;
+  color: rgba(255,255,255,0.45);
+  margin-bottom: 20px;
+  animation: word-in 0.7s ease forwards;
+  animation-delay: 1.6s;
+  opacity: 0;
+}
+.b-btn {
+  font-size: 10px; font-weight: 700;
+  background: transparent;
+  border: 1px solid rgba(242,237,228,0.25);
+  color: #f2ede4; padding: 9px 16px;
+  letter-spacing: 0.08em;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  animation: word-in 0.6s ease forwards;
+  animation-delay: 1.9s;
+  opacity: 0;
+}
+.b-btn-arrow { color: #C17F3A; }
+
+/* Depth lines */
+.b-depth-lines {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 2;
+}
+.b-depth-line {
+  position: absolute;
+  left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(193,127,58,0.08) 30%, rgba(193,127,58,0.08) 70%, transparent);
+  animation: line-pulse 4s ease-in-out infinite;
+}
+.b-dl1 { top: 33%; animation-delay: 0s; }
+.b-dl2 { top: 55%; animation-delay: 1.3s; }
+.b-dl3 { top: 75%; animation-delay: 0.7s; }
+@keyframes line-pulse {
+  0%, 100% { opacity: 0.5; }
+  50% { opacity: 1; }
+}
+
+/* Vertical ticker */
+.b-ticker-wrap {
+  position: absolute;
+  right: 0; top: 60px; bottom: 0;
+  width: 1px;
+  background: rgba(193,127,58,0.15);
+  z-index: 3;
+}
+.b-ticker-dot {
+  position: absolute;
+  right: -3px;
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: #C17F3A;
+  animation: tick-move 6s ease-in-out infinite;
+}
+@keyframes tick-move {
+  0%   { top: 0%; opacity: 0; }
+  10%  { opacity: 1; }
+  90%  { opacity: 1; }
+  100% { top: 100%; opacity: 0; }
+}
+
+/* ════════════════════════════════════
+   DIRECTION C — BRUTALIST VELOCITY
+   ════════════════════════════════════ */
+.demo-c {
+  background: #F5F0E8;
+}
+
+.c-grain {
+  position: absolute;
+  inset: 0;
+  opacity: 0.3;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+  background-size: 200px 200px;
+  mix-blend-mode: multiply;
+  pointer-events: none;
+}
+
+.c-nav {
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  padding: 14px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 10;
+  border-bottom: 2px solid #0D0A09;
+}
+.c-logo { font-size: 12px; letter-spacing: 0.22em; font-weight: 300; color: #0D0A09; }
+.c-logo em { color: #C41230; font-style: normal; font-weight: 700; }
+.c-cta-pill { font-size: 9px; font-weight: 700; letter-spacing: 0.08em; background: #0D0A09; color: #F5F0E8; padding: 6px 12px; }
+
+/* Big type that clips */
+.c-big-text-wrap {
+  position: absolute;
+  top: 60px; left: 0; right: 0;
+  overflow: hidden;
+  z-index: 3;
+  padding: 0 20px;
+}
+.c-big-word {
+  font-size: 100px;
+  font-weight: 700;
+  letter-spacing: -0.06em;
+  line-height: 0.88;
+  color: #0D0A09;
+  display: block;
+  overflow: hidden;
+  transform-origin: left bottom;
+}
+@keyframes stamp-in {
+  from { transform: scaleY(0); transform-origin: bottom; }
+  to   { transform: scaleY(1); transform-origin: bottom; }
+}
+.c-big-word span {
+  display: block;
+  animation: stamp-in 0.5s cubic-bezier(0.16,1,0.3,1) forwards;
+  animation-fill-mode: both;
+}
+.c-big-word.cw1 span { animation-delay: 0.3s; }
+.c-big-word.cw2 span { animation-delay: 0.6s; color: #C41230; }
+.c-big-word.cw3 span { animation-delay: 0.9s; }
+
+/* Diagonal red stripe */
+@keyframes stripe-slide {
+  from { transform: translateX(-100%) rotate(-8deg); }
+  to   { transform: translateX(200%) rotate(-8deg); }
+}
+.c-stripe {
+  position: absolute;
+  top: 40%;
+  left: -20%; right: -20%;
+  height: 3px;
+  background: #C41230;
+  transform: rotate(-8deg);
+  animation: stripe-slide 6s ease-in-out infinite;
+  animation-delay: 1.5s;
+  z-index: 8;
+  opacity: 0.7;
+}
+
+/* Bottom block */
+.c-bottom {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  background: #0D0A09;
+  padding: 16px 20px;
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.c-sub {
+  font-size: 10px;
+  line-height: 1.6;
+  color: rgba(242,237,228,0.6);
+  max-width: 200px;
+}
+.c-btn {
+  font-size: 10px; font-weight: 700;
+  background: #C41230;
+  color: white;
+  padding: 9px 16px;
+  letter-spacing: 0.08em;
+  flex-shrink: 0;
+  margin-left: 16px;
+}
+
+/* Stats band */
+.c-stats-band {
+  position: absolute;
+  bottom: 68px; left: 0; right: 0;
+  z-index: 4;
+  border-top: 2px solid #0D0A09;
+  border-bottom: 2px solid #0D0A09;
+  background: #C41230;
+  display: flex;
+  overflow: hidden;
+}
+@keyframes marquee-b {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+.c-stats-track {
+  display: flex;
+  white-space: nowrap;
+  animation: marquee-b 12s linear infinite;
+  width: max-content;
+}
+.c-stat-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 7px 20px;
+}
+.c-stat-num { font-size: 16px; font-weight: 700; letter-spacing: -0.03em; color: white; }
+.c-stat-label { font-size: 9px; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255,255,255,0.55); }
+.c-stat-div { width: 4px; height: 4px; border-radius: 50%; background: rgba(255,255,255,0.3); }
+
+/* Cross-hatch accent */
+.c-crosshatch {
+  position: absolute;
+  top: 60px; right: 20px;
+  width: 80px; height: 80px;
+  background-image:
+    repeating-linear-gradient(45deg, rgba(13,10,9,0.08) 0px, rgba(13,10,9,0.08) 1px, transparent 1px, transparent 6px),
+    repeating-linear-gradient(-45deg, rgba(13,10,9,0.08) 0px, rgba(13,10,9,0.08) 1px, transparent 1px, transparent 6px);
+  z-index: 2;
+}
+
+/* A select event */
+</style>
+<script>
+function selectDir(el) {
+  document.querySelectorAll('.dir-card').forEach(c => c.classList.remove('selected'));
+  el.classList.add('selected');
+  try {
+    if (window.__companion) {
+      window.__companion.select(el.dataset.choice, el.querySelector('.card-name').textContent);
+    }
+  } catch(e) {}
+}
+
+// Cursor blink after type animation
+setTimeout(function() {
+  var cursor = document.querySelector('.a-cursor');
+  if (cursor) cursor.classList.add('visible');
+}, 3200);
+</script>
+</head>
+<body>
+
+<p class="meta-title">Nyoo Studio — Landing Page</p>
+<h1 class="meta-headline">Three bolder directions</h1>
+<p class="meta-sub">Live animation running in each preview. Click a card to select.</p>
+
+<div class="dirs">
+
+  <!-- ── DIRECTION A ── -->
+  <div class="dir-card" data-choice="a" onclick="selectDir(this)">
+    <div class="demo demo-a">
+      <div class="a-grid"></div>
+      <div class="a-grain"></div>
+      <div class="scan-line"></div>
+      <div class="scan-glow"></div>
+      <div class="a-bleed-top"></div>
+      <div class="a-bleed-left"></div>
+
+      <div class="a-nav">
+        <span class="a-logo">nyoo<em>.</em>studio</span>
+        <span class="a-cta-pill">Book a Call</span>
+      </div>
+
+      <div class="a-corner">
+        <div class="a-corner-num">27</div>
+      </div>
+
+      <div class="a-hero">
+        <div class="a-tag">
+          <div class="a-tag-line"></div>
+          <span class="a-tag-text">DC Metro · Lead Generation</span>
+        </div>
+        <div class="a-headline">
+          <span class="line l1">Social media</span>
+          <span class="line l2">that closes</span>
+          <span class="line l3"><span class="red">deals.</span><span class="a-cursor"></span></span>
+        </div>
+        <p class="a-sub">We build lead-generation systems for DC Metro small businesses. Not followers. Clients.</p>
+        <div class="a-btns">
+          <div class="a-btn-solid">Book Your Strategy Call</div>
+          <div class="a-btn-text">See how it works →</div>
+        </div>
+      </div>
+
+      <div class="a-marquee-wrap">
+        <div class="a-marquee-track">
+          <div class="a-marquee-item">Social Media Management</div>
+          <div class="a-marquee-item">Lead Generation Systems</div>
+          <div class="a-marquee-item">Content Strategy</div>
+          <div class="a-marquee-item">Pipeline Infrastructure</div>
+          <div class="a-marquee-item">DC Metro Focused</div>
+          <div class="a-marquee-item">Month-to-Month</div>
+          <!-- duplicate for seamless loop -->
+          <div class="a-marquee-item">Social Media Management</div>
+          <div class="a-marquee-item">Lead Generation Systems</div>
+          <div class="a-marquee-item">Content Strategy</div>
+          <div class="a-marquee-item">Pipeline Infrastructure</div>
+          <div class="a-marquee-item">DC Metro Focused</div>
+          <div class="a-marquee-item">Month-to-Month</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card-info">
+      <div class="card-letter">Direction A</div>
+      <div class="card-name">The Signal</div>
+      <div class="card-desc">Near-black with a scanning red line that sweeps the hero on load. Type stamps in line-by-line with a blinking cursor. A continuous marquee anchors the base. Sections use a consistent grid texture, depth via cobalt/red light bleed, and a bold top-left red border — like a broadcast going live.</div>
+      <div class="card-tags">
+        <span class="tag">Scanning line animation</span>
+        <span class="tag">Type-on effect</span>
+        <span class="tag">Continuous marquee</span>
+        <span class="tag">Grid texture depth</span>
+        <span class="tag">Near-black palette</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── DIRECTION B ── -->
+  <div class="dir-card" data-choice="b" onclick="selectDir(this)">
+    <div class="demo demo-b">
+      <div class="b-plane-back"></div>
+      <div class="b-grain"></div>
+
+      <div class="b-depth-lines">
+        <div class="b-depth-line b-dl1"></div>
+        <div class="b-depth-line b-dl2"></div>
+        <div class="b-depth-line b-dl3"></div>
+      </div>
+
+      <div class="b-ticker-wrap">
+        <div class="b-ticker-dot"></div>
+      </div>
+
+      <!-- Floating 3D data cards -->
+      <div class="b-card-float b-card-1">
+        <div class="b-card-label">Combined Experience</div>
+        <div class="b-card-val">27yr</div>
+        <div class="b-card-bar"></div>
+      </div>
+      <div class="b-card-float b-card-2">
+        <div class="b-card-label">Active Market</div>
+        <div class="b-card-val">DC</div>
+        <div class="b-card-sub">Metro focused</div>
+      </div>
+      <div class="b-card-float b-card-3">
+        <div class="b-card-label">Lock-in contracts</div>
+        <div class="b-card-val">$0</div>
+        <div class="b-card-sub">Month-to-month always</div>
+        <div class="b-card-bar"></div>
+      </div>
+
+      <div class="b-nav">
+        <span class="b-logo">nyoo<em>.</em>studio</span>
+        <span class="b-cta-pill">Book a Call</span>
+      </div>
+
+      <div class="b-hero">
+        <div class="b-eyebrow">DC Metro Marketing Agency</div>
+        <div class="b-h1">
+          <span class="b-word w1">Your&nbsp;</span><span class="b-word w2">social&nbsp;</span><span class="b-word w3">media</span><br>
+          <span class="b-word w4">should&nbsp;</span><span class="b-word w5">be&nbsp;</span><span class="b-word w6">closing</span><br>
+          <span class="b-word w7">clients.</span>
+        </div>
+        <p class="b-sub">Lead-generation systems for established DC Metro small businesses. Built once. Running always.</p>
+        <div class="b-btn">Book Your Strategy Call <span class="b-btn-arrow">→</span></div>
+      </div>
+    </div>
+
+    <div class="card-info">
+      <div class="card-letter">Direction B</div>
+      <div class="card-name">Depth Field</div>
+      <div class="card-desc">Multiple z-depth planes: text foreground, floating data cards in the midground that continuously drift in 3D, warm amber atmospheric light in the background. Words drift in from blur on load. A vertical amber ticker marks scroll progress. Warm tobacco-black (#0c0908) instead of cold midnight.</div>
+      <div class="card-tags">
+        <span class="tag">3D floating data cards</span>
+        <span class="tag">Blur-to-sharp word reveal</span>
+        <span class="tag">Multi-plane depth</span>
+        <span class="tag">Vertical amber ticker</span>
+        <span class="tag">Warm tobacco palette</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── DIRECTION C ── -->
+  <div class="dir-card" data-choice="c" onclick="selectDir(this)">
+    <div class="demo demo-c">
+      <div class="c-grain"></div>
+      <div class="c-crosshatch"></div>
+
+      <div class="c-nav">
+        <span class="c-logo">nyoo<em>.</em>studio</span>
+        <span class="c-cta-pill">Book a Call</span>
+      </div>
+
+      <div class="c-big-text-wrap">
+        <div class="c-big-word cw1"><span>SOCIAL</span></div>
+        <div class="c-big-word cw2"><span>MEDIA</span></div>
+        <div class="c-big-word cw3"><span>WORKS.</span></div>
+      </div>
+
+      <div class="c-stripe"></div>
+
+      <div class="c-stats-band">
+        <div class="c-stats-track">
+          <div class="c-stat-item">
+            <span class="c-stat-num">27yr</span>
+            <span class="c-stat-label">Combined Experience</span>
+            <span class="c-stat-div"></span>
+          </div>
+          <div class="c-stat-item">
+            <span class="c-stat-num">DC Metro</span>
+            <span class="c-stat-label">Small Business Focus</span>
+            <span class="c-stat-div"></span>
+          </div>
+          <div class="c-stat-item">
+            <span class="c-stat-num">$0</span>
+            <span class="c-stat-label">Lock-in Contracts</span>
+            <span class="c-stat-div"></span>
+          </div>
+          <div class="c-stat-item">
+            <span class="c-stat-num">Month-to-Month</span>
+            <span class="c-stat-label">Always</span>
+            <span class="c-stat-div"></span>
+          </div>
+          <!-- duplicate -->
+          <div class="c-stat-item">
+            <span class="c-stat-num">27yr</span>
+            <span class="c-stat-label">Combined Experience</span>
+            <span class="c-stat-div"></span>
+          </div>
+          <div class="c-stat-item">
+            <span class="c-stat-num">DC Metro</span>
+            <span class="c-stat-label">Small Business Focus</span>
+            <span class="c-stat-div"></span>
+          </div>
+          <div class="c-stat-item">
+            <span class="c-stat-num">$0</span>
+            <span class="c-stat-label">Lock-in Contracts</span>
+            <span class="c-stat-div"></span>
+          </div>
+          <div class="c-stat-item">
+            <span class="c-stat-num">Month-to-Month</span>
+            <span class="c-stat-label">Always</span>
+            <span class="c-stat-div"></span>
+          </div>
+        </div>
+      </div>
+
+      <div class="c-bottom">
+        <p class="c-sub">DC Metro's lead-generation specialists. We turn social media into a client pipeline.</p>
+        <div class="c-btn">Book a Call</div>
+      </div>
+    </div>
+
+    <div class="card-info">
+      <div class="card-letter">Direction C</div>
+      <div class="card-name">Brutalist Velocity</div>
+      <div class="card-desc">Cream/off-white background — the inverse of the expected dark agency look. Giant type stamps in from nothing. A diagonal red stripe slices through the hero. Stats scroll continuously in a red marquee band. Bold black borders. The rest of the page stays dark, making this opening hit like a slap — then you're pulled into the night.</div>
+      <div class="card-tags">
+        <span class="tag">Cream/off-white hero</span>
+        <span class="tag">Oversized stamp-in type</span>
+        <span class="tag">Diagonal red slash</span>
+        <span class="tag">Scrolling stats band</span>
+        <span class="tag">Inversion surprise</span>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+</body>
+</html>

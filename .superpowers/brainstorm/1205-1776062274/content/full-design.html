@@ -1,0 +1,822 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nyoo Studio — Full Page Design</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif;
+  background: #1a1a1a;
+  color: #f2ede4;
+  padding: 40px 24px 80px;
+}
+
+.page-title {
+  text-align: center;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #C17F3A;
+  margin-bottom: 8px;
+}
+.page-headline {
+  text-align: center;
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  margin-bottom: 6px;
+}
+.page-sub {
+  text-align: center;
+  font-size: 13px;
+  color: rgba(242,237,228,0.5);
+  margin-bottom: 48px;
+}
+
+/* ── Site frame ── */
+.site {
+  max-width: 560px;
+  margin: 0 auto;
+  border: 1px solid rgba(242,237,228,0.1);
+  overflow: hidden;
+}
+
+/* ══ HEADER / NAV ══ */
+.s-nav {
+  background: rgba(13,10,9,0.95);
+  padding: 14px 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid rgba(242,237,228,0.07);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  backdrop-filter: blur(8px);
+}
+.s-logo { font-size: 12px; letter-spacing: 0.22em; font-weight: 300; color: #f2ede4; }
+.s-logo span { color: #C41230; font-weight: 700; }
+.s-nav-links { display: flex; gap: 20px; align-items: center; }
+.s-nav-link { font-size: 10px; color: rgba(242,237,228,0.55); letter-spacing: 0.06em; }
+.s-nav-cta { font-size: 10px; background: #C41230; color: white; padding: 6px 14px; font-weight: 700; letter-spacing: 0.08em; }
+
+/* ══ 1. HERO ══ */
+.s-hero {
+  position: relative;
+  min-height: 420px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  overflow: hidden;
+  background: #0D0A09;
+}
+.s-hero-bg {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 80% 60% at 0% 100%, rgba(196,18,48,0.14) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 50% at 100% 0%, rgba(27,68,216,0.12) 0%, transparent 55%),
+    radial-gradient(ellipse 40% 40% at 50% 50%, rgba(193,127,58,0.04) 0%, transparent 70%);
+}
+.s-hero-grid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(242,237,228,0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(242,237,228,0.03) 1px, transparent 1px);
+  background-size: 40px 40px;
+  mask-image: linear-gradient(to bottom, transparent, rgba(0,0,0,0.5) 40%, rgba(0,0,0,0.2) 100%);
+}
+.s-hero-content {
+  position: relative;
+  z-index: 1;
+  padding: 40px 28px 36px;
+}
+.s-eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+.s-eyebrow::before {
+  content: '';
+  display: block;
+  width: 24px;
+  height: 1px;
+  background: #C17F3A;
+  flex-shrink: 0;
+}
+.s-eyebrow-text {
+  font-size: 9px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: #C17F3A;
+}
+.s-hero-h1 {
+  font-size: 52px;
+  font-weight: 700;
+  line-height: 0.96;
+  letter-spacing: -0.04em;
+  color: #f2ede4;
+  margin-bottom: 24px;
+}
+.s-hero-h1 .dim { opacity: 0.22; }
+.s-hero-h1 .accent { color: #C41230; }
+.s-hero-sub {
+  font-size: 12px;
+  line-height: 1.75;
+  color: rgba(242,237,228,0.6);
+  max-width: 340px;
+  margin-bottom: 28px;
+}
+.s-hero-btns { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+.s-btn-red { font-size: 10px; font-weight: 700; background: #C41230; color: white; padding: 10px 18px; letter-spacing: 0.08em; display: inline-block; }
+.s-btn-ghost { font-size: 10px; font-weight: 600; color: rgba(242,237,228,0.65); letter-spacing: 0.06em; display: flex; align-items: center; gap: 5px; }
+.s-scroll-hint {
+  position: absolute;
+  right: 24px;
+  bottom: 28px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+.s-scroll-line { width: 1px; height: 36px; background: linear-gradient(to bottom, transparent, rgba(242,237,228,0.35)); }
+.s-scroll-text { font-size: 7px; letter-spacing: 0.18em; text-transform: uppercase; color: rgba(242,237,228,0.3); writing-mode: vertical-rl; }
+
+/* SECTION LABEL */
+.s-label {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: #C17F3A;
+  margin-bottom: 12px;
+}
+
+/* ══ 2. PROBLEM — DARK, TYPOGRAPHIC ══ */
+.s-problem {
+  background: #0D0A09;
+  padding: 52px 28px;
+  position: relative;
+  overflow: hidden;
+}
+.s-problem-bg {
+  position: absolute;
+  top: -60px; right: -80px;
+  width: 300px; height: 300px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(27,68,216,0.1) 0%, transparent 70%);
+  pointer-events: none;
+}
+.s-problem-h2 {
+  font-size: 28px;
+  font-weight: 700;
+  line-height: 1.08;
+  letter-spacing: -0.03em;
+  color: #f2ede4;
+  max-width: 380px;
+  margin-bottom: 36px;
+}
+.s-problem-items { display: flex; flex-direction: column; gap: 0; }
+.s-problem-item {
+  display: flex;
+  gap: 20px;
+  padding: 18px 0;
+  border-top: 1px solid rgba(242,237,228,0.07);
+}
+.s-problem-item:last-child { border-bottom: 1px solid rgba(242,237,228,0.07); }
+.s-problem-num {
+  font-size: 11px;
+  font-weight: 700;
+  color: #1B44D8;
+  min-width: 24px;
+  padding-top: 1px;
+  letter-spacing: 0.08em;
+}
+.s-problem-body {}
+.s-problem-title { font-size: 13px; font-weight: 700; color: #f2ede4; margin-bottom: 5px; letter-spacing: -0.01em; }
+.s-problem-text { font-size: 10.5px; color: rgba(242,237,228,0.5); line-height: 1.65; }
+
+/* ══ 3. WHAT WE DO — PHOTO BG ══ */
+.s-whatwedo {
+  position: relative;
+  padding: 52px 28px;
+  overflow: hidden;
+  min-height: 320px;
+}
+.s-whatwedo-bg {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(rgba(13,10,9,0.82) 0%, rgba(13,10,9,0.75) 100%),
+    repeating-linear-gradient(
+      -30deg,
+      rgba(242,237,228,0.015) 0px, rgba(242,237,228,0.015) 1px,
+      transparent 1px, transparent 24px
+    );
+  background-color: #0f0c0b;
+}
+.s-whatwedo-content { position: relative; z-index: 1; }
+.s-whatwedo-h2 {
+  font-size: 26px;
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+  color: #f2ede4;
+  max-width: 360px;
+  margin-bottom: 14px;
+}
+.s-whatwedo-sub {
+  font-size: 11px;
+  line-height: 1.7;
+  color: rgba(242,237,228,0.6);
+  max-width: 340px;
+  margin-bottom: 32px;
+}
+.s-service-cards { display: flex; flex-direction: column; gap: 10px; }
+.s-service-card {
+  background: rgba(242,237,228,0.04);
+  border: 1px solid rgba(242,237,228,0.08);
+  padding: 16px 18px;
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+  transition: border-color 0.2s;
+}
+.s-service-num {
+  font-size: 9px;
+  font-weight: 700;
+  color: #C17F3A;
+  letter-spacing: 0.1em;
+  padding-top: 2px;
+  min-width: 22px;
+}
+.s-service-title { font-size: 12px; font-weight: 700; color: #f2ede4; margin-bottom: 4px; letter-spacing: -0.01em; }
+.s-service-text { font-size: 10px; color: rgba(242,237,228,0.55); line-height: 1.6; }
+
+/* ══ 4. HOW IT WORKS — DARK ══ */
+.s-howitworks {
+  background: #0D0A09;
+  padding: 52px 28px;
+  position: relative;
+  overflow: hidden;
+}
+.s-how-bg {
+  position: absolute;
+  bottom: -60px; left: -80px;
+  width: 280px; height: 280px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(196,18,48,0.08) 0%, transparent 70%);
+  pointer-events: none;
+}
+.s-how-h2 {
+  font-size: 26px;
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+  color: #f2ede4;
+  max-width: 320px;
+  margin-bottom: 40px;
+}
+.s-steps { position: relative; display: flex; flex-direction: column; }
+.s-step-line {
+  position: absolute;
+  left: 15px;
+  top: 20px;
+  bottom: 20px;
+  width: 1px;
+  background: linear-gradient(to bottom, rgba(196,18,48,0.4), rgba(196,18,48,0.1));
+}
+.s-step {
+  display: flex;
+  gap: 20px;
+  padding: 0 0 32px;
+  position: relative;
+}
+.s-step:last-child { padding-bottom: 0; }
+.s-step-indicator {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 32px;
+}
+.s-step-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #C41230;
+  border: 2px solid #C41230;
+  margin-top: 4px;
+  flex-shrink: 0;
+  box-shadow: 0 0 8px rgba(196,18,48,0.4);
+}
+.s-step-num {
+  font-size: 8px;
+  font-weight: 700;
+  color: rgba(196,18,48,0.5);
+  letter-spacing: 0.1em;
+  margin-top: 4px;
+}
+.s-step-title { font-size: 14px; font-weight: 700; color: #f2ede4; margin-bottom: 6px; letter-spacing: -0.01em; }
+.s-step-text { font-size: 10.5px; color: rgba(242,237,228,0.5); line-height: 1.65; }
+
+/* ══ 5. STATS — RED ══ */
+.s-stats {
+  background: #C41230;
+  padding: 52px 28px;
+  position: relative;
+  overflow: hidden;
+}
+.s-stats-grain {
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.78' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+  background-size: 300px 300px;
+  opacity: 0.06;
+  mix-blend-mode: overlay;
+  pointer-events: none;
+}
+.s-stats-label { font-size: 9px; font-weight: 700; letter-spacing: 0.22em; text-transform: uppercase; color: rgba(13,10,9,0.5); margin-bottom: 32px; }
+.s-stats-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 28px 20px;
+  position: relative;
+}
+.s-stat-num {
+  font-size: 52px;
+  font-weight: 700;
+  line-height: 0.95;
+  letter-spacing: -0.05em;
+  color: #0D0A09;
+}
+.s-stat-unit { font-size: 22px; letter-spacing: -0.02em; }
+.s-stat-label {
+  font-size: 10px;
+  line-height: 1.5;
+  color: rgba(13,10,9,0.6);
+  margin-top: 6px;
+  font-weight: 500;
+}
+
+/* ══ 6. FOUNDERS — DARK ══ */
+.s-founders {
+  background: #0D0A09;
+  padding: 52px 28px;
+  position: relative;
+  overflow: hidden;
+}
+.s-founders-bg {
+  position: absolute;
+  top: 0; right: -60px;
+  width: 260px; height: 260px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(193,127,58,0.07) 0%, transparent 70%);
+  pointer-events: none;
+}
+.s-founders-h2 {
+  font-size: 26px;
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+  color: #f2ede4;
+  margin-bottom: 8px;
+}
+.s-founders-sub {
+  font-size: 11px;
+  color: rgba(242,237,228,0.5);
+  line-height: 1.65;
+  max-width: 340px;
+  margin-bottom: 32px;
+}
+.s-founder-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 24px; }
+.s-founder-card {
+  position: relative;
+  overflow: hidden;
+  aspect-ratio: 3/4;
+  background: #1a1612;
+}
+.s-founder-photo-bg {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, transparent 40%, rgba(13,10,9,0.95) 100%);
+}
+.s-founder-photo-fill {
+  width: 100%;
+  height: 100%;
+  background: #1e1a16;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.s-founder-photo-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: rgba(242,237,228,0.06);
+  border: 1px solid rgba(242,237,228,0.1);
+}
+.s-founder-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 14px;
+  background: linear-gradient(to top, rgba(13,10,9,0.95) 0%, transparent 100%);
+}
+.s-founder-name { font-size: 13px; font-weight: 700; color: #f2ede4; margin-bottom: 3px; }
+.s-founder-role { font-size: 9px; color: #C17F3A; letter-spacing: 0.1em; text-transform: uppercase; }
+.s-founder-bio-strip {
+  font-size: 10px;
+  color: rgba(242,237,228,0.5);
+  line-height: 1.6;
+}
+.s-link { font-size: 11px; font-weight: 700; color: #f2ede4; display: flex; align-items: center; gap: 5px; margin-top: 20px; }
+.s-link .arr { color: #C17F3A; }
+
+/* ══ 7. FAQ TEASER — CREAM ══ */
+.s-faq {
+  background: #f2ede4;
+  padding: 52px 28px;
+  position: relative;
+}
+.s-faq .s-label { color: #C17F3A; }
+.s-faq-h2 {
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+  color: #0D0A09;
+  max-width: 300px;
+  margin-bottom: 32px;
+}
+.s-faq-items { display: flex; flex-direction: column; border-top: 1px solid rgba(13,10,9,0.1); }
+.s-faq-item {
+  padding: 14px 0;
+  border-bottom: 1px solid rgba(13,10,9,0.1);
+}
+.s-faq-q {
+  font-size: 12px;
+  font-weight: 700;
+  color: #0D0A09;
+  margin-bottom: 4px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.s-faq-q::after { content: '+'; color: #C17F3A; font-size: 14px; font-weight: 300; }
+.s-faq-a { font-size: 10.5px; color: rgba(13,10,9,0.6); line-height: 1.65; }
+.s-faq-link { font-size: 11px; font-weight: 700; color: #0D0A09; display: flex; align-items: center; gap: 5px; margin-top: 20px; }
+.s-faq-link .arr { color: #C41230; }
+
+/* ══ 8. FINAL CTA ══ */
+.s-cta {
+  position: relative;
+  padding: 64px 28px;
+  overflow: hidden;
+  background: #0D0A09;
+}
+.s-cta-bg {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 70% 60% at 0% 50%, rgba(27,68,216,0.18) 0%, transparent 60%),
+    radial-gradient(ellipse 50% 50% at 100% 50%, rgba(196,18,48,0.1) 0%, transparent 55%);
+}
+.s-cta-content { position: relative; z-index: 1; }
+.s-cta-h2 {
+  font-size: 32px;
+  font-weight: 700;
+  line-height: 1.05;
+  letter-spacing: -0.04em;
+  color: #f2ede4;
+  margin-bottom: 28px;
+  max-width: 340px;
+}
+.s-cta-h2 .dim { opacity: 0.25; }
+.s-btn-red-lg { font-size: 11px; font-weight: 700; background: #C41230; color: white; padding: 13px 22px; letter-spacing: 0.08em; display: inline-block; box-shadow: 0 0 32px rgba(196,18,48,0.25); }
+
+/* ── SECTION TAG ── */
+.s-section-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 9px;
+  color: rgba(242,237,228,0.3);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+  padding: 0 0 16px;
+  border-bottom: 1px solid rgba(242,237,228,0.06);
+  width: 100%;
+  margin-bottom: 20px;
+}
+.s-section-tag span { color: rgba(242,237,228,0.15); font-size: 8px; }
+
+/* ── ANNOTATIONS ── */
+.annotations {
+  max-width: 560px;
+  margin: 40px auto 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+.ann-item {
+  display: grid;
+  grid-template-columns: 140px 1fr;
+  gap: 0;
+  padding: 14px 0;
+  border-bottom: 1px solid rgba(242,237,228,0.08);
+  align-items: start;
+}
+.ann-section { font-size: 10px; font-weight: 700; color: #C17F3A; letter-spacing: 0.1em; text-transform: uppercase; padding-top: 1px; }
+.ann-desc { font-size: 12px; color: rgba(242,237,228,0.65); line-height: 1.6; }
+.ann-desc strong { color: #f2ede4; }
+</style>
+</head>
+<body>
+
+<p class="page-title">Direction C — Cinematic Immersion</p>
+<h1 class="page-headline">Full page redesign</h1>
+<p class="page-sub">Scrollable mockup — all 8 sections. Annotations below.</p>
+
+<div class="site">
+
+  <!-- NAV -->
+  <div class="s-nav">
+    <span class="s-logo">nyoo<span>.</span>studio</span>
+    <div class="s-nav-links">
+      <span class="s-nav-link">About</span>
+      <span class="s-nav-link">Services</span>
+      <span class="s-nav-link">FAQ</span>
+      <span class="s-nav-cta">Book a Call</span>
+    </div>
+  </div>
+
+  <!-- 1. HERO -->
+  <div class="s-hero">
+    <div class="s-hero-bg"></div>
+    <div class="s-hero-grid"></div>
+    <div class="s-hero-content">
+      <div class="s-eyebrow"><span class="s-eyebrow-text">DC Metro · Small Business Marketing</span></div>
+      <h1 class="s-hero-h1">
+        <span class="dim">Your</span> social<br>
+        <span class="dim">should be</span><br>
+        closing <span class="accent">deals.</span>
+      </h1>
+      <p class="s-hero-sub">
+        Nyoo Studio builds lead-generation systems for established small businesses in DC Metro. Not followers. Not impressions. Clients.
+      </p>
+      <div class="s-hero-btns">
+        <div class="s-btn-red">Book Your Strategy Call</div>
+        <div class="s-btn-ghost">See how it works <span>→</span></div>
+      </div>
+    </div>
+    <div class="s-scroll-hint">
+      <div class="s-scroll-line"></div>
+      <div class="s-scroll-text">scroll</div>
+    </div>
+  </div>
+
+  <!-- 2. PROBLEM -->
+  <div class="s-problem">
+    <div class="s-problem-bg"></div>
+    <div class="s-label">The gap</div>
+    <h2 class="s-problem-h2">You're posting. Getting likes. But your phone isn't ringing.</h2>
+    <div class="s-problem-items">
+      <div class="s-problem-item">
+        <div class="s-problem-num">01</div>
+        <div class="s-problem-body">
+          <div class="s-problem-title">Engagement with no pipeline</div>
+          <div class="s-problem-text">Likes and comments don't pay rent. None of it is connected to how people actually become your clients.</div>
+        </div>
+      </div>
+      <div class="s-problem-item">
+        <div class="s-problem-num">02</div>
+        <div class="s-problem-body">
+          <div class="s-problem-title">Marketing spend you can't trace</div>
+          <div class="s-problem-text">You've paid for agencies and freelancers. They sent reports full of impressions. You can't name a single client who came from social.</div>
+        </div>
+      </div>
+      <div class="s-problem-item">
+        <div class="s-problem-num">03</div>
+        <div class="s-problem-body">
+          <div class="s-problem-title">Referrals don't scale</div>
+          <div class="s-problem-text">Word of mouth keeps the lights on. It won't build a business. You need a system that generates leads on a schedule, not luck.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3. WHAT WE DO -->
+  <div class="s-whatwedo">
+    <div class="s-whatwedo-bg"></div>
+    <div class="s-whatwedo-content">
+      <div class="s-label">The solution</div>
+      <h2 class="s-whatwedo-h2">Social media that works like a sales channel. Because it is one.</h2>
+      <p class="s-whatwedo-sub">Everything we build points toward one outcome: turning your social presence into a reliable source of qualified leads.</p>
+      <div class="s-service-cards">
+        <div class="s-service-card">
+          <div class="s-service-num">01</div>
+          <div>
+            <div class="s-service-title">Lead-First Content Strategy</div>
+            <div class="s-service-text">Content mapped to your sales cycle. Every post has a destination — attracting prospects already looking for what you offer.</div>
+          </div>
+        </div>
+        <div class="s-service-card">
+          <div class="s-service-num">02</div>
+          <div>
+            <div class="s-service-title">Social Media That Converts</div>
+            <div class="s-service-text">Consistent presence across platforms where your clients spend time. All of it tied back to lead generation, not vanity metrics.</div>
+          </div>
+        </div>
+        <div class="s-service-card">
+          <div class="s-service-num">03</div>
+          <div>
+            <div class="s-service-title">Pipeline Infrastructure</div>
+            <div class="s-service-text">The backend systems that capture, qualify, and route leads. Built once, running always. You see exactly where clients come from.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 4. HOW IT WORKS -->
+  <div class="s-howitworks">
+    <div class="s-how-bg"></div>
+    <div class="s-label">The process</div>
+    <h2 class="s-how-h2">No onboarding decks. No 12-week discovery phases.</h2>
+    <div class="s-steps">
+      <div class="s-step-line"></div>
+      <div class="s-step">
+        <div class="s-step-indicator">
+          <div class="s-step-dot"></div>
+          <div class="s-step-num">01</div>
+        </div>
+        <div>
+          <div class="s-step-title">Strategy Call</div>
+          <div class="s-step-text">30 minutes about your business, your sales cycle, and where leads come from today. We listen more than we talk.</div>
+        </div>
+      </div>
+      <div class="s-step">
+        <div class="s-step-indicator">
+          <div class="s-step-dot"></div>
+          <div class="s-step-num">02</div>
+        </div>
+        <div>
+          <div class="s-step-title">Lead Generation Plan</div>
+          <div class="s-step-text">A content strategy mapped to your sales funnel. Tailored to your voice, your ideal client, the platforms where they're reachable. You review. We adjust.</div>
+        </div>
+      </div>
+      <div class="s-step">
+        <div class="s-step-indicator">
+          <div class="s-step-dot"></div>
+          <div class="s-step-num">03</div>
+        </div>
+        <div>
+          <div class="s-step-title">We Build Your Pipeline</div>
+          <div class="s-step-text">Content goes live. Lead flows activate. Reporting tracks inquiries, not impressions. You stay focused on running your business.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 5. STATS (replaces empty Social Proof) -->
+  <div class="s-stats">
+    <div class="s-stats-grain"></div>
+    <div class="s-stats-label">Why Nyoo Studio</div>
+    <div class="s-stats-grid">
+      <div>
+        <div class="s-stat-num">27<span class="s-stat-unit">yr</span></div>
+        <div class="s-stat-label">Combined experience in brand, content & systems</div>
+      </div>
+      <div>
+        <div class="s-stat-num">DC</div>
+        <div class="s-stat-label">Metro–focused. We know this market.</div>
+      </div>
+      <div>
+        <div class="s-stat-num">$0</div>
+        <div class="s-stat-label">Lock-in. Month-to-month by default.</div>
+      </div>
+      <div>
+        <div class="s-stat-num">2</div>
+        <div class="s-stat-label">Founders. Every client gets both of us.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 6. FOUNDERS -->
+  <div class="s-founders">
+    <div class="s-founders-bg"></div>
+    <div class="s-label">The team</div>
+    <h2 class="s-founders-h2">Not a faceless agency.</h2>
+    <p class="s-founders-sub">Two people who built careers doing this. Now they do it for businesses that deserve better than what they've been getting.</p>
+    <div class="s-founder-cards">
+      <div class="s-founder-card">
+        <div class="s-founder-photo-fill">
+          <div class="s-founder-photo-icon"></div>
+        </div>
+        <div class="s-founder-photo-bg"></div>
+        <div class="s-founder-overlay">
+          <div class="s-founder-name">Jo Yoo</div>
+          <div class="s-founder-role">Content & Client Lead</div>
+        </div>
+      </div>
+      <div class="s-founder-card">
+        <div class="s-founder-photo-fill">
+          <div class="s-founder-photo-icon"></div>
+        </div>
+        <div class="s-founder-photo-bg"></div>
+        <div class="s-founder-overlay">
+          <div class="s-founder-name">Jin Yoo</div>
+          <div class="s-founder-role">Strategy & Systems</div>
+        </div>
+      </div>
+    </div>
+    <div class="s-founder-bio-strip">12 years of brand growth + federal-scale systems thinking — built for small businesses that deserve access to both.</div>
+    <div class="s-link">Read our story <span class="arr">→</span></div>
+  </div>
+
+  <!-- 7. FAQ — CREAM SECTION BREAK -->
+  <div class="s-faq">
+    <div class="s-label">Common questions</div>
+    <h2 class="s-faq-h2">A few things people usually ask.</h2>
+    <div class="s-faq-items">
+      <div class="s-faq-item">
+        <div class="s-faq-q">Who do you work with?</div>
+        <div class="s-faq-a">Established small businesses in DC Metro — typically 2–20 employees with consistent revenue who need professional marketing they don't have time to do themselves.</div>
+      </div>
+      <div class="s-faq-item">
+        <div class="s-faq-q">What does a typical sprint look like?</div>
+        <div class="s-faq-a">We plan a month of content at a time. You review and approve everything before it goes out.</div>
+      </div>
+      <div class="s-faq-item">
+        <div class="s-faq-q">Are contracts month-to-month?</div>
+        <div class="s-faq-a">Yes. All packages are month-to-month by default. Commit to 3 or 6 months for a discount. You're never stuck.</div>
+      </div>
+    </div>
+    <div class="s-faq-link">See all FAQs <span class="arr">→</span></div>
+  </div>
+
+  <!-- 8. FINAL CTA -->
+  <div class="s-cta">
+    <div class="s-cta-bg"></div>
+    <div class="s-cta-content">
+      <h2 class="s-cta-h2">
+        <span class="dim">Ready to know exactly</span><br>
+        where your next client<br>
+        <span class="dim">is coming from?</span>
+      </h2>
+      <div class="s-btn-red-lg">Book Your Strategy Call</div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ANNOTATIONS -->
+<div class="annotations">
+  <div class="ann-item">
+    <div class="ann-section">Hero</div>
+    <div class="ann-desc"><strong>Dim/bright type contrast</strong> — filler words ("Your", "should be") fade to 22% opacity so "closing deals." hits like a title card. Subtle grid texture + atmospheric red/cobalt light instead of floating orbs. Scroll indicator on the right edge.</div>
+  </div>
+  <div class="ann-item">
+    <div class="ann-section">Problem</div>
+    <div class="ann-desc"><strong>Numbered list replaces identical glass cards</strong> — horizontal rule separators, cobalt numbers, no glassmorphism. More scannable and editorial. Cobalt orb stays as atmosphere (on-brand vs purple which is removed).</div>
+  </div>
+  <div class="ann-item">
+    <div class="ann-section">What We Do</div>
+    <div class="ann-desc"><strong>Service cards with amber numbering</strong> — glass cards simplified to flat bordered rows with amber numbered labels instead of just titles. Photo background stays but pattern texture replaces it in the mockup.</div>
+  </div>
+  <div class="ann-item">
+    <div class="ann-section">How It Works</div>
+    <div class="ann-desc"><strong>Vertical timeline with red thread</strong> — red connecting line with glowing dots replaces isolated 3-column cards. Creates visual flow and momentum. Much more cinematic than the current grid.</div>
+  </div>
+  <div class="ann-item">
+    <div class="ann-section">Stats (was: Social Proof)</div>
+    <div class="ann-desc"><strong>Red section now earns its place</strong> — "27yr / DC / $0 / 2" in oversized type on red background with grain overlay. Replaces the empty commented-out testimonial block. Credibility before the founders section.</div>
+  </div>
+  <div class="ann-item">
+    <div class="ann-section">Founders</div>
+    <div class="ann-desc"><strong>Photos bleed edge-to-edge in 3:4 cards</strong> — name + role overlay at the bottom of each photo like a film credit. More cinematic than a square thumbnail in a glass card. Amber orb provides warmth.</div>
+  </div>
+  <div class="ann-item">
+    <div class="ann-section">FAQ</div>
+    <div class="ann-desc"><strong>Cream section break</strong> — the only cream section on the page. Creates a dark → dark → dark → red → dark → cream → dark rhythm that makes every section feel distinct. Questions on cream feel trustworthy and open.</div>
+  </div>
+  <div class="ann-item">
+    <div class="ann-section">Final CTA</div>
+    <div class="ann-desc"><strong>Dim/bright technique mirrors the hero</strong> — filler words dimmed, key phrase bright. Cobalt bleeds in from the left, red from the right. Creates a bookend feel with the hero.</div>
+  </div>
+  <div class="ann-item" style="border:none;">
+    <div class="ann-section">Removed</div>
+    <div class="ann-desc"><strong>All purple orbs eliminated</strong> — purple (#8B5CF6) never appeared in the brand palette. Replaced everywhere with amber (#C17F3A) for warmth or cobalt (#1B44D8) for atmosphere. The glassmorphism "glass-card" pattern is broken up — each section now has its own visual language.</div>
+  </div>
+</div>
+
+</body>
+</html>
