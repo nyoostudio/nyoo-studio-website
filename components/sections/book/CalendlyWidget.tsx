@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useCallback } from "react";
 import Script from "next/script";
 
 // Extend Window interface for TypeScript
@@ -24,28 +24,27 @@ export function CalendlyWidget({ name, email }: { name?: string; email?: string 
   const containerRef = useRef<HTMLDivElement>(null);
   const baseUrl = "https://calendly.com/jin-nyoostudio/30min?background_color=000000&text_color=ffffff";
 
-  const initCalendly = () => {
+  // Stable reference so both useEffect and Script callbacks always use
+  // the latest name/email values without stale closures.
+  const initCalendly = useCallback(() => {
     if (window.Calendly && containerRef.current) {
-      // Clear container before initializing to avoid duplicate widgets if re-rendered
       containerRef.current.innerHTML = "";
-      
       window.Calendly.initInlineWidget({
         url: baseUrl,
         parentElement: containerRef.current,
-        prefill: {
-          name,
-          email,
-        },
+        prefill: { name, email },
       });
     }
-  };
+  }, [name, email, baseUrl]);
 
   useEffect(() => {
-    // If Calendly is already loaded (e.g. from previous navigation)
+    // Handles two cases:
+    // 1. Script already loaded from a previous visit (cached) — onLoad won't fire again.
+    // 2. Re-renders when name/email change after initial load.
     if (window.Calendly) {
       initCalendly();
     }
-  }, [name, email]);
+  }, [initCalendly]);
 
   return (
     <div className="w-full">
