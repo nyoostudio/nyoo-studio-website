@@ -1,16 +1,18 @@
-// app/api/submit-contact/route.ts
 import { NextRequest, NextResponse } from "next/server";
 
-const RECAPTCHA_SECRET = process.env.RECAPTCHA_SECRET_KEY!;
 const SCORE_THRESHOLD = 0.5;
 // NOTE: Replace YOUR_FORM_ID with the real Formspree ID once the contact form is created at formspree.io
 const FORMSPREE_URL = "https://formspree.io/f/YOUR_FORM_ID";
 
 async function verifyRecaptchaToken(token: string): Promise<boolean> {
+  const secret = process.env.RECAPTCHA_SECRET_KEY;
+  if (!secret) {
+    throw new Error("RECAPTCHA_SECRET_KEY is not configured");
+  }
   const res = await fetch("https://www.google.com/recaptcha/api/siteverify", {
     method: "POST",
     headers: { "Content-Type": "application/x-www-form-urlencoded" },
-    body: `secret=${RECAPTCHA_SECRET}&response=${token}`,
+    body: new URLSearchParams({ secret, response: token }).toString(),
   });
   const data = (await res.json()) as { success: boolean; score: number };
   return data.success && data.score >= SCORE_THRESHOLD;
