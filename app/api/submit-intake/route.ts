@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 
 const SCORE_THRESHOLD = 0.5;
 const FORMSPREE_URL = "https://formspree.io/f/xaqlbrap";
-const N8N_URL = "https://nyoostudio.app.n8n.cloud/webhook/inquiry";
+const N8N_URL = "https://n8n.srv1593779.hstgr.cloud/webhook/inquiry";
 
 async function verifyRecaptchaToken(token: string): Promise<boolean> {
   const secret = process.env.RECAPTCHA_SECRET_KEY;
