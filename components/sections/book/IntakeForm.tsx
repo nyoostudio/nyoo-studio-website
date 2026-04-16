@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { CalendlyWidget } from "./CalendlyWidget";
+import { useRecaptcha } from "@/hooks/useRecaptcha";
 
 const REVENUE_OPTIONS = [
   "Under $10K/mo",
@@ -29,9 +30,6 @@ const CURRENT_MARKETING_OPTIONS = [
 
 const HOW_HEARD_OPTIONS = ["Google", "Social Media", "Referral", "Other"];
 
-const CALENDAR_URL =
-  "https://calendar.google.com/calendar/appointments/schedules/AcZssZ0ngBnhDlfdX_Gwc3eHb_lr9s_9VOlEWhJIFMSy92UYfKis_T2mOdQ6s8q0e-hNlMuAWlHkVlaS?gv=true";
-
 const inputClass =
   "glass-input bg-transparent px-4 py-3 text-sm text-white placeholder:opacity-30 focus:outline-none";
 
@@ -48,6 +46,7 @@ export function IntakeForm() {
     name: "",
     email: "",
   });
+  const { executeRecaptcha } = useRecaptcha();
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -55,27 +54,27 @@ export function IntakeForm() {
 
     const form = e.currentTarget;
     const data = new FormData(form);
+    const formData = Object.fromEntries(data);
 
-    const payload = Object.fromEntries(data);
+    let token: string;
+    try {
+      token = await executeRecaptcha("intake_submit");
+    } catch {
+      setStatus("error");
+      return;
+    }
 
     try {
-      const [formspreeRes] = await Promise.all([
-        fetch("https://formspree.io/f/xaqlbrap", {
-          method: "POST",
-          body: data,
-          headers: { Accept: "application/json" },
-        }),
-        fetch("https://nyoostudio.app.n8n.cloud/webhook/inquiry", {
-          method: "POST",
-          body: JSON.stringify(payload),
-          headers: { "Content-Type": "application/json" },
-        }).catch(() => null), // n8n failure is non-blocking
-      ]);
+      const res = await fetch("/api/submit-intake", {
+        method: "POST",
+        body: JSON.stringify({ ...formData, token }),
+        headers: { "Content-Type": "application/json" },
+      });
 
-      if (formspreeRes.ok) {
+      if (res.ok) {
         setUserData({
-          name: payload.name as string,
-          email: payload.email as string,
+          name: formData.name as string,
+          email: formData.email as string,
         });
         setStatus("success");
         form.reset();
