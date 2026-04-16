@@ -13,6 +13,13 @@ declare global {
           name?: string;
           email?: string;
         };
+        pageSettings?: {
+          backgroundColor?: string;
+          hideEventTypeDetails?: boolean;
+          hideLandingPageDetails?: boolean;
+          primaryColor?: string;
+          textColor?: string;
+        };
         utm?: Record<string, string>;
       }) => void;
     };
@@ -26,9 +33,8 @@ export function CalendlyWidget({ name, email }: { name?: string; email?: string 
   const initializedRef = useRef(false);
   const [scriptLoaded, setScriptLoaded] = useState(false);
 
-  // The base URL for the scheduling page. Styling is handled via query params in the URL itself 
-  // as per Calendly's standard embed format, or via the JS API if needed.
-  const baseUrl = "https://calendly.com/jin-nyoostudio/30min?background_color=000000&text_color=ffffff";
+  // Clean URL without query params — styles are passed via pageSettings instead
+  const baseUrl = "https://calendly.com/jin-nyoostudio/30min";
 
   const initWidget = useCallback(() => {
     if (!window.Calendly || !containerRef.current || initializedRef.current) return;
@@ -36,7 +42,15 @@ export function CalendlyWidget({ name, email }: { name?: string; email?: string 
     window.Calendly.initInlineWidget({
       url: baseUrl,
       parentElement: containerRef.current,
-      prefill: { name, email },
+      prefill: {
+        name: name || undefined,
+        email: email || undefined,
+      },
+      pageSettings: {
+        backgroundColor: "000000",
+        textColor: "ffffff",
+        primaryColor: "c41230",
+      },
     });
     
     initializedRef.current = true;
@@ -49,7 +63,7 @@ export function CalendlyWidget({ name, email }: { name?: string; email?: string 
       return;
     }
 
-    // 2. Check if the script tag already exists in the document (from previous mount)
+    // 2. Check if the script tag already exists in the document
     const existingScript = document.querySelector<HTMLScriptElement>(
       `script[src="${CALENDLY_SCRIPT_SRC}"]`
     );
@@ -57,7 +71,6 @@ export function CalendlyWidget({ name, email }: { name?: string; email?: string 
     if (existingScript) {
       const handleLoad = () => setScriptLoaded(true);
       existingScript.addEventListener("load", handleLoad);
-      // Ensure we check again in case it loaded between query and listener
       if (window.Calendly) setScriptLoaded(true);
       return () => existingScript.removeEventListener("load", handleLoad);
     }
@@ -80,6 +93,7 @@ export function CalendlyWidget({ name, email }: { name?: string; email?: string 
   return (
     <div className="w-full">
       <div
+        id="calendly-widget-container"
         ref={containerRef}
         className="calendly-inline-widget"
         style={{ minWidth: "320px", height: "700px" }}
