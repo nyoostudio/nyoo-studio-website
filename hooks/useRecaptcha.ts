@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useCallback } from "react";
+import { useCallback, useEffect } from "react";
 
 declare global {
   interface Window {
@@ -14,17 +14,23 @@ declare global {
   }
 }
 
-const SITE_KEY = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY!;
+const SITE_KEY: string | undefined =
+  process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY;
 
 let recaptchaReady: Promise<void>;
 
 export function useRecaptcha() {
   useEffect(() => {
     if (!SITE_KEY) {
-      console.error("[useRecaptcha] NEXT_PUBLIC_RECAPTCHA_SITE_KEY is not set");
+      console.error(
+        "[useRecaptcha] NEXT_PUBLIC_RECAPTCHA_SITE_KEY is not set"
+      );
       return;
     }
-    if (document.querySelector(`script[src*="recaptcha/api.js"]`)) return;
+    if (document.querySelector(`script[src*="recaptcha/api.js"]`)) {
+      if (!recaptchaReady) recaptchaReady = Promise.resolve();
+      return;
+    }
     const script = document.createElement("script");
     script.src = `https://www.google.com/recaptcha/api.js?render=${SITE_KEY}`;
     script.async = true;
@@ -36,27 +42,26 @@ export function useRecaptcha() {
   }, []);
 
   const executeRecaptcha = useCallback(
-    (action: string): Promise<string> =>
-      new Promise((resolve, reject) => {
-        if (!recaptchaReady) {
-          reject(new Error("reCAPTCHA not initialized"));
+    async (action: string): Promise<string> => {
+      if (!recaptchaReady) {
+        throw new Error("reCAPTCHA not initialized");
+      }
+      await recaptchaReady;
+      return new Promise<string>((resolve, reject) => {
+        const g = window.grecaptcha;
+        if (!g) {
+          reject(new Error("grecaptcha unavailable after load"));
           return;
         }
-        recaptchaReady
-          .then(() => {
-            window.grecaptcha!.ready(async () => {
-              try {
-                const token = await window.grecaptcha!.execute(SITE_KEY, {
-                  action,
-                });
-                resolve(token);
-              } catch (err) {
-                reject(err);
-              }
-            });
-          })
-          .catch(reject);
-      }),
+        g.ready(async () => {
+          try {
+            resolve(await g.execute(SITE_KEY as string, { action }));
+          } catch (err) {
+            reject(err);
+          }
+        });
+      });
+    },
     []
   );
 
