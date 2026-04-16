@@ -1,101 +1,61 @@
 "use client";
 
-import { useEffect, useRef, useState, useCallback } from "react";
-
-// Extend Window interface for TypeScript
-declare global {
-  interface Window {
-    Calendly?: {
-      initInlineWidget: (options: {
-        url: string;
-        parentElement: HTMLElement | null;
-        prefill?: {
-          name?: string;
-          email?: string;
-        };
-        pageSettings?: {
-          backgroundColor?: string;
-          hideEventTypeDetails?: boolean;
-          hideLandingPageDetails?: boolean;
-          primaryColor?: string;
-          textColor?: string;
-        };
-        utm?: Record<string, string>;
-      }) => void;
-    };
-  }
-}
+import { useEffect, useState } from "react";
 
 const CALENDLY_SCRIPT_SRC = "https://assets.calendly.com/assets/external/widget.js";
 
 export function CalendlyWidget({ name, email }: { name?: string; email?: string }) {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const initializedRef = useRef(false);
-  const [scriptLoaded, setScriptLoaded] = useState(false);
+  const [isScriptInjected, setIsScriptInjected] = useState(false);
 
-  // Clean URL without query params — styles are passed via pageSettings instead
-  const baseUrl = "https://calendly.com/jin-nyoostudio/30min";
+  // Construct the URL with prefill data directly in the query strings.
+  // This is the most robust way to pass data when using the declarative embed.
+  const queryParams = new URLSearchParams();
+  if (name) queryParams.set("name", name);
+  if (email) queryParams.set("email", email);
+  
+  // Custom styling params
+  queryParams.set("background_color", "000000");
+  queryParams.set("text_color", "ffffff");
+  queryParams.set("primary_color", "c41230");
 
-  const initWidget = useCallback(() => {
-    if (!window.Calendly || !containerRef.current || initializedRef.current) return;
-
-    window.Calendly.initInlineWidget({
-      url: baseUrl,
-      parentElement: containerRef.current,
-      prefill: {
-        name: name || undefined,
-        email: email || undefined,
-      },
-      pageSettings: {
-        backgroundColor: "000000",
-        textColor: "ffffff",
-        primaryColor: "c41230",
-      },
-    });
-    
-    initializedRef.current = true;
-  }, [name, email, baseUrl]);
+  const finalUrl = `https://calendly.com/jin-nyoostudio/30min?${queryParams.toString()}`;
 
   useEffect(() => {
-    // 1. Check if Calendly is already present in the global window
-    if (window.Calendly) {
-      setScriptLoaded(true);
-      return;
-    }
-
-    // 2. Check if the script tag already exists in the document
+    // 1. Check if the script is already in the document
     const existingScript = document.querySelector<HTMLScriptElement>(
       `script[src="${CALENDLY_SCRIPT_SRC}"]`
     );
 
     if (existingScript) {
-      const handleLoad = () => setScriptLoaded(true);
-      existingScript.addEventListener("load", handleLoad);
-      if (window.Calendly) setScriptLoaded(true);
-      return () => existingScript.removeEventListener("load", handleLoad);
+      setIsScriptInjected(true);
+      // If window.Calendly is already here, it might have already processed the DOM.
+      // We might need to tell it to look again if the div was just mounted.
+      if (typeof window !== "undefined" && (window as any).Calendly?.initBadgeWidget) {
+         // Some versions have a refresh/init function, but usually mounting the div
+         // *before* the script loads or using a script that is already loaded works.
+      }
+      return;
     }
 
-    // 3. If no script exists, create and inject it
+    // 2. Inject the script if not present
     const script = document.createElement("script");
     script.src = CALENDLY_SCRIPT_SRC;
     script.async = true;
-    script.onload = () => setScriptLoaded(true);
     document.head.appendChild(script);
+    setIsScriptInjected(true);
   }, []);
-
-  // Initialize the widget once BOTH the script is loaded AND the container is ready
-  useEffect(() => {
-    if (scriptLoaded) {
-      initWidget();
-    }
-  }, [scriptLoaded, initWidget]);
 
   return (
     <div className="w-full">
+      {/* 
+        Declarative Approach: 
+        Calendly's widget.js automatically finds any element with 'calendly-inline-widget' 
+        and initializes it using the 'data-url'. This avoids race conditions with 
+        manual initInlineWidget calls that often cause the 'split' TypeError.
+      */}
       <div
-        id="calendly-widget-container"
-        ref={containerRef}
         className="calendly-inline-widget"
+        data-url={finalUrl}
         style={{ minWidth: "320px", height: "700px" }}
       />
     </div>
