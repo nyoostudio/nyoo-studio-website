@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useRecaptcha } from "@/hooks/useRecaptcha";
 
 const HOW_HEARD_OPTIONS = [
   "Google",
@@ -16,6 +17,7 @@ const labelClass = "text-xs font-bold uppercase tracking-widest opacity-50";
 
 export function ContactForm() {
   const [status, setStatus] = useState<"idle" | "sending" | "success" | "error">("idle");
+  const { executeRecaptcha } = useRecaptcha();
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -23,13 +25,21 @@ export function ContactForm() {
 
     const form = e.currentTarget;
     const data = new FormData(form);
+    const formData = Object.fromEntries(data);
+
+    let token: string;
+    try {
+      token = await executeRecaptcha("contact_submit");
+    } catch {
+      setStatus("error");
+      return;
+    }
 
     try {
-      // Replace YOUR_FORM_ID with the Formspree form ID once created
-      const res = await fetch("https://formspree.io/f/YOUR_FORM_ID", {
+      const res = await fetch("/api/submit-contact", {
         method: "POST",
-        body: data,
-        headers: { Accept: "application/json" },
+        body: JSON.stringify({ ...formData, token }),
+        headers: { "Content-Type": "application/json" },
       });
       if (res.ok) {
         setStatus("success");
