@@ -36,10 +36,10 @@ export function Header() {
         {/* Desktop CTA */}
         <div className="hidden md:block">
           <Link
-            href="/book"
+            href="/audit"
             className="inline-flex items-center justify-center bg-red px-5 py-2 text-sm font-bold tracking-wide text-white transition-all duration-300 hover:bg-red/90 hover:shadow-lg hover:shadow-red/20 hover:-translate-y-0.5"
           >
-            Book a Call
+            Start Audit
           </Link>
         </div>
 
@@ -80,11 +80,11 @@ export function Header() {
             onLinkClick={closeMenu}
           />
           <Link
-            href="/book"
+            href="/audit"
             onClick={closeMenu}
             className="inline-flex items-center justify-center bg-red px-5 py-2 text-sm font-bold tracking-wide text-white transition-all duration-300 hover:bg-red/90 hover:shadow-lg hover:shadow-red/20"
           >
-            Book a Call
+            Start Audit
           </Link>
         </div>
       </div>

@@ -118,7 +118,7 @@ export function HeroHome() {
         </p>
         <div className="flex flex-col gap-2 items-start sm:items-end">
           <Link
-            href="/book"
+            href="/audit"
             className="inline-flex items-center gap-3 font-bold whitespace-nowrap transition-opacity hover:opacity-80"
             style={{
               fontSize: "clamp(12px, 1.3vw, 14px)",
@@ -128,16 +128,16 @@ export function HeroHome() {
               padding: "clamp(12px, 1.5vw, 16px) clamp(18px, 2.5vw, 28px)",
             }}
           >
-            Book Your Strategy Call →
+            Start Free Audit →
           </Link>
           <Link
-            href="/services"
+            href="/book"
             className="flex items-center gap-1.5 transition-colors whitespace-nowrap"
             style={{ fontSize: "12px", color: "var(--muted)", letterSpacing: "0.08em" }}
             onMouseEnter={(e) => (e.currentTarget.style.color = "var(--cream)")}
             onMouseLeave={(e) => (e.currentTarget.style.color = "var(--muted)")}
           >
-            See how it works →
+            Book a call instead →
           </Link>
         </div>
       </div>

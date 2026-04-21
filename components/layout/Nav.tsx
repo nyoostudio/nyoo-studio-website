@@ -6,6 +6,7 @@ const links = [
   { label: "Services", href: "/services" },
   { label: "FAQ", href: "/faq" },
   { label: "Contact", href: "/contact" },
+  { label: "Book a Call", href: "/book" },
 ];
 
 interface NavProps {
