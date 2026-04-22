@@ -17,6 +17,7 @@ export function EmailGate({ onSubmit, onBack }: EmailGateProps) {
   const [firstName, setFirstName] = useState("");
   const [email, setEmail] = useState("");
   const [wantsNewsletter, setWantsNewsletter] = useState(false);
+  const [privacyAcknowledged, setPrivacyAcknowledged] = useState(false);
   const [busy, setBusy] = useState(false);
   const { executeRecaptcha } = useRecaptcha();
 
@@ -122,7 +123,29 @@ export function EmailGate({ onSubmit, onBack }: EmailGateProps) {
             </span>
           </label>
 
-          <div className="flex items-center justify-between gap-4 pt-4">
+          {/* Privacy acknowledgment */}
+          <label
+            className="flex items-start gap-3 cursor-pointer py-1"
+            style={{ color: "var(--cream)" }}
+          >
+            <input
+              type="checkbox"
+              required
+              checked={privacyAcknowledged}
+              onChange={(e) => setPrivacyAcknowledged(e.target.checked)}
+              className="mt-0.5 w-4 h-4 flex-shrink-0"
+              style={{ accentColor: "var(--red)" }}
+            />
+            <span className="text-xs leading-relaxed opacity-60">
+              I acknowledge that Nyoo Studio will use my name and email address
+              to deliver my audit results and, if selected above, occasional
+              marketing tips. I may unsubscribe at any time. My information
+              will not be shared with third parties or sold.{" "}
+              <span style={{ color: "var(--red)" }}>*</span>
+            </span>
+          </label>
+
+          <div className="flex items-center justify-between gap-4 pt-2">
             <button
               type="button"
               onClick={onBack}
@@ -133,7 +156,7 @@ export function EmailGate({ onSubmit, onBack }: EmailGateProps) {
             </button>
             <button
               type="submit"
-              disabled={busy}
+              disabled={busy || !privacyAcknowledged}
               className="inline-flex items-center gap-3 font-bold transition-all duration-300 hover:-translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed"
               style={{
                 background: "var(--red)",
