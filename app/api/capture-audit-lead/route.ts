@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 
 const SCORE_THRESHOLD = 0.5;
-const N8N_URL = "https://n8n.srv1593779.hstgr.cloud/webhook/inquiry";
+const N8N_URL = "https://n8n.srv1593779.hstgr.cloud/webhook-test/2a6d8c5f-89a9-4fab-acc9-bfa933c22bc8";
 
 async function verifyRecaptchaToken(token: string): Promise<boolean> {
   const secret = process.env.RECAPTCHA_SECRET_KEY;
