@@ -82,7 +82,7 @@ export default function MaintenancePage() {
             marginBottom: "20px",
           }}
         >
-          Under Renovation
+          UNDER RENOVATION
         </span>
 
         {/* Headline */}

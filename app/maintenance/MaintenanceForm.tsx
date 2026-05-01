@@ -68,6 +68,7 @@ export function MaintenanceForm() {
               value={name}
               onChange={(e) => setName(e.target.value)}
               required
+              className="focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber"
               style={{
                 width: "100%",
                 padding: "12px 16px",
@@ -76,8 +77,6 @@ export function MaintenanceForm() {
                 color: "var(--cream)",
                 fontFamily: "var(--font-body)",
                 fontSize: "14px",
-                outline: "2px solid var(--amber)",
-                outlineOffset: "2px",
               }}
             />
           </div>
@@ -90,6 +89,7 @@ export function MaintenanceForm() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
+              className="focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber"
               style={{
                 width: "100%",
                 padding: "12px 16px",
@@ -98,8 +98,6 @@ export function MaintenanceForm() {
                 color: "var(--cream)",
                 fontFamily: "var(--font-body)",
                 fontSize: "14px",
-                outline: "2px solid var(--amber)",
-                outlineOffset: "2px",
               }}
             />
           </div>
