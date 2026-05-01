@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 
-export function middleware(request: NextRequest) {
+export function proxy(request: NextRequest) {
   const secret = process.env.PREVIEW_SECRET;
   const cookieValue = request.cookies.get("preview_bypass")?.value;
 
