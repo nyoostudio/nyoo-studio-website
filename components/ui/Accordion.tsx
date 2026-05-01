@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useId } from "react";
 import { cn } from "@/lib/utils";
 
 export interface AccordionItem {
@@ -19,9 +19,11 @@ interface AccordionEntryProps {
   isOpen: boolean;
   onToggle: () => void;
   theme: "dark" | "light";
+  panelId: string;
+  buttonId: string;
 }
 
-function AccordionEntry({ item, isOpen, onToggle, theme }: AccordionEntryProps) {
+function AccordionEntry({ item, isOpen, onToggle, theme, panelId, buttonId }: AccordionEntryProps) {
   const isDark = theme === "dark";
   return (
     <div
@@ -31,8 +33,10 @@ function AccordionEntry({ item, isOpen, onToggle, theme }: AccordionEntryProps) 
       )}
     >
       <button
+        id={buttonId}
         onClick={onToggle}
         aria-expanded={isOpen}
+        aria-controls={panelId}
         className={cn(
           "flex w-full items-center justify-between gap-4 py-5 text-left font-bold transition-all duration-300 hover:opacity-70 group",
           isDark ? "text-white" : "text-black"
@@ -52,21 +56,28 @@ function AccordionEntry({ item, isOpen, onToggle, theme }: AccordionEntryProps) 
         </span>
       </button>
       <div
-        className={cn(
-          "overflow-hidden transition-all duration-400 ease-out",
-          isOpen ? "max-h-96 pb-5 opacity-100" : "max-h-0 opacity-0"
-        )}
+        id={panelId}
+        role="region"
+        aria-labelledby={buttonId}
+        aria-hidden={!isOpen}
+        className="grid"
+        style={{
+          gridTemplateRows: isOpen ? "1fr" : "0fr",
+          transition: "grid-template-rows 0.35s ease-out",
+        }}
       >
-        <p
-          className={isDark ? "opacity-80" : ""}
-          style={{
-            fontSize: "clamp(13px, 1.4vw, 15px)",
-            lineHeight: 1.75,
-            color: isDark ? "inherit" : "rgba(8,8,8,0.6)",
-          }}
-        >
-          {item.answer}
-        </p>
+        <div className="overflow-hidden">
+          <p
+            className={isDark ? "opacity-80 pb-5" : "pb-5"}
+            style={{
+              fontSize: "clamp(13px, 1.4vw, 15px)",
+              lineHeight: 1.75,
+              color: isDark ? "inherit" : "rgba(8,8,8,0.6)",
+            }}
+          >
+            {item.answer}
+          </p>
+        </div>
       </div>
     </div>
   );
@@ -74,6 +85,7 @@ function AccordionEntry({ item, isOpen, onToggle, theme }: AccordionEntryProps) 
 
 export function Accordion({ items, className, theme = "dark" }: AccordionProps) {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
+  const baseId = useId();
 
   return (
     <div className={cn("w-full", className)}>
@@ -84,6 +96,8 @@ export function Accordion({ items, className, theme = "dark" }: AccordionProps) 
           isOpen={openIndex === i}
           onToggle={() => setOpenIndex(openIndex === i ? null : i)}
           theme={theme}
+          panelId={`${baseId}-panel-${i}`}
+          buttonId={`${baseId}-btn-${i}`}
         />
       ))}
     </div>

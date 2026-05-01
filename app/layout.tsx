@@ -56,9 +56,23 @@ export default function RootLayout({
         </Script>
       </head>
       <body className="bg-soft-black text-white font-body">
+        <a
+          href="#main-content"
+          className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-[200] focus:bg-red focus:text-white focus:px-4 focus:py-2 focus:font-bold focus:outline-none"
+        >
+          Skip to content
+        </a>
+        <svg aria-hidden width="0" height="0" style={{ position: "absolute" }}>
+          <defs>
+            <filter id="grain-global">
+              <feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch" />
+              <feColorMatrix type="saturate" values="0" />
+            </filter>
+          </defs>
+        </svg>
         <LocalBusinessJsonLd />
         <Header />
-        <main className="pt-[72px] perspective-wrap">{children}</main>
+        <main id="main-content" className="pt-[72px] perspective-wrap">{children}</main>
         <Footer />
         <Analytics />
       </body>

@@ -58,7 +58,7 @@ export function Hero({ headline, subhead, cta, gradient = false, className }: He
         gradient
           ? {
               background:
-                "radial-gradient(circle at 0% 100%, rgba(139, 92, 246, 0.15) 0%, transparent 50%), radial-gradient(circle at 100% 0%, rgba(27, 68, 216, 0.15) 0%, transparent 50%), #0D0A09",
+                "radial-gradient(circle at 0% 100%, rgba(196, 18, 48, 0.12) 0%, transparent 50%), radial-gradient(circle at 100% 0%, rgba(27, 68, 216, 0.15) 0%, transparent 50%), #0D0A09",
             }
           : undefined
       }
@@ -69,10 +69,6 @@ export function Hero({ headline, subhead, cta, gradient = false, className }: He
           <div
             className="orb orb-cobalt w-[500px] h-[500px] -top-32 -right-32"
             style={{ animation: "float-slow 12s ease-in-out infinite" }}
-          />
-          <div
-            className="orb orb-purple w-[400px] h-[400px] bottom-0 -left-20"
-            style={{ animation: "float-medium 10s ease-in-out infinite" }}
           />
           <div
             className="orb orb-red w-[300px] h-[300px] top-1/2 left-1/3"

@@ -25,8 +25,8 @@ export function ResultsScreen({
 }: ResultsScreenProps) {
   const gradeCopy: Record<string, string> = {
     A: "You're running a tight operation.",
-    B: "You're doing most of it right \u2014 a few gaps are costing you.",
-    C: "There's a real machine hiding here \u2014 it's not running yet.",
+    B: "You're doing most of it right: a few gaps are costing you.",
+    C: "There's a real machine hiding here; it's not running yet.",
     D: "You're posting. You're not compounding. Fix the fundamentals.",
     F: "The good news: the biggest gains are the easiest to make.",
   };
@@ -154,7 +154,7 @@ export function ResultsScreen({
             >
               {actionItems.length > 0
                 ? "Fix these, in this order."
-                : "You've covered the fundamentals \u2014 keep going."}
+                : "You've covered the fundamentals. Keep going."}
             </h2>
           </div>
 
@@ -176,7 +176,7 @@ export function ResultsScreen({
               style={{ color: "var(--muted)", fontFamily: "var(--font-subtitle)", fontSize: "16px" }}
             >
               Your audit didn&apos;t flag any critical gaps. That&apos;s rare. The next move is
-              scale &mdash; compounding what&apos;s already working.
+              scale: compounding what&apos;s already working.
             </p>
           )}
         </div>
@@ -235,7 +235,7 @@ export function ResultsScreen({
             <button
               type="button"
               onClick={onRestart}
-              className="text-xs font-bold uppercase tracking-[0.18em] transition-opacity hover:opacity-60 pt-2"
+              className="min-h-[44px] flex items-center text-xs font-bold uppercase tracking-[0.18em] transition-opacity hover:opacity-60 px-2"
               style={{ color: "var(--muted)" }}
             >
               Start another audit

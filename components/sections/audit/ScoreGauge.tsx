@@ -68,10 +68,12 @@ export function ScoreGauge({ score, grade }: ScoreGaugeProps) {
   const path = arcPath(RADIUS, START_ANGLE, SWEEP);
 
   return (
-    <div className="relative flex flex-col items-center" style={{ width: SIZE }}>
+    <div
+      className="relative w-full max-w-[280px]"
+      style={{ aspectRatio: "1 / 1" }}
+    >
       <svg
-        width={SIZE}
-        height={SIZE}
+        className="absolute inset-0 w-full h-full"
         viewBox={`0 0 ${SIZE} ${SIZE}`}
         role="img"
         aria-label={`Overall score ${score} out of 100. Grade ${grade}.`}

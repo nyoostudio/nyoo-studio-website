@@ -20,16 +20,24 @@ npm run lint   # ESLint
 
 ## Site Architecture
 
-| Route | File | Page |
-|-------|------|------|
-| `/` | `app/page.tsx` | Homepage |
-| `/about` | `app/about/page.tsx` | About the Founders |
-| `/services` | `app/services/page.tsx` | Packages & Pricing |
-| `/faq` | `app/faq/page.tsx` | FAQs |
-| `/contact` | `app/contact/page.tsx` | Contact / Book a Call |
-| `/book`    | `app/book/page.tsx`    | Intake Form (post-call booking) |
+| Route | File | Page | Status |
+|-------|------|------|--------|
+| `/` | `app/page.tsx` | Homepage | Live (restructure pending) |
+| `/about` | `app/about/page.tsx` | About the Founders | Live |
+| `/services` | `app/services/page.tsx` | Packages & Pricing | Live (restructure pending) |
+| `/faq` | `app/faq/page.tsx` | FAQs | Live (update pending) |
+| `/contact` | `app/contact/page.tsx` | Contact / Book a Call | Live |
+| `/book` | `app/book/page.tsx` | Intake Form | Live (rename to `/apply` pending) |
+| `/audit` | `app/audit/page.tsx` | 15-Min Social Media Self-Audit | Live |
+| `/diy-tools` | `app/diy-tools/page.tsx` | DIY Tools Library | Not built — blocked on content |
+| `/community` | `app/community/page.tsx` | Community Membership | Not built — blocked on platform decision |
+| `/apply` | `app/apply/page.tsx` | Apply to Work With Nyoo | Not built — redirect from `/book` pending |
 
-**Nav order:** Work (future/hidden) → About → Services → FAQ → [Book a Call — red button]
+**Nav order (current):** Work (hidden) → About → Services → FAQ → [Book a Call — red button]
+
+**Nav order (planned):** About → Free Resources → Community → Services → Contact
+
+See `Website Restructure Plan.md` in the vault for full nav and page-by-page specs.
 
 ---
 
@@ -220,6 +228,8 @@ Every page MUST have:
 
 ## Page Content Specs
 
+> **These specs reflect the current live site (pre-restructure).** A full restructure is planned — new section order, new components, and new pages. See `Website Restructure Plan.md` in the vault before making structural changes to any page.
+
 ### Homepage (`/`)
 
 **Sections (in order):**
@@ -240,14 +250,14 @@ Every page MUST have:
 5. Values (no "Values" heading) — 3 statements, clean
 
 ### Services (`/services`)
+> **Restructure pending** — three-tier model being replaced with single full-service plan. Do not add features to `PricingTiers`, `CommitDiscounts`, `AddOns`, or `ReferralDiscounts` components — they're slated for removal once the plan is defined.
+
+Current live structure:
 1. Hero — H1: "What we do. What it costs. No surprises."
 2. Three pricing tiers: Foundation ($1,299/mo), Growth Engine ($2,499/mo ⭐), Scale (from $3,499/mo)
 3. Commit Discounts (3-mo: 10%, 6-mo: 15%)
 4. Add-Ons table
 5. Referral + Multi-Client discounts
-
-**Growth Engine** is "Most Popular" — badge it.
-**Performance guarantee:** If contracted piece count missed, shortfall carries to next sprint.
 
 ### FAQ (`/faq`)
 Use accordion. Group by category:

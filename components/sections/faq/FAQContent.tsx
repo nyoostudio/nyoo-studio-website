@@ -25,12 +25,12 @@ export function FAQContent({ categories }: FAQContentProps) {
     <section className="relative bg-soft-black text-white px-6 py-24 md:py-32">
       <div className="mx-auto max-w-[1200px] grid md:grid-cols-[280px_1fr] gap-16 md:gap-24 items-start">
         {/* Sticky category nav — desktop only */}
-        <nav className="hidden md:flex flex-col gap-3 sticky top-24 glass-card-static p-6 rounded-lg">
+        <nav className="hidden md:flex flex-col gap-3 sticky top-[96px] glass-card-static p-6 rounded-lg">
           {categories.map((cat) => (
             <a
               key={cat.category}
               href={`#${cat.category.toLowerCase().replace(/\s+&\s+/g, "-").replace(/\s+/g, "-")}`}
-              className="text-sm font-bold tracking-widest uppercase opacity-40 hover:opacity-100 hover:text-red transition-all duration-300"
+              className="text-sm font-bold tracking-widest uppercase opacity-40 hover:opacity-100 hover:text-red focus-visible:opacity-100 focus-visible:text-red focus-visible:outline-none focus-visible:underline transition-all duration-300"
             >
               {cat.category}
             </a>

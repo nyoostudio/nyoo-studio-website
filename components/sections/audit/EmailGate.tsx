@@ -149,7 +149,7 @@ export function EmailGate({ onSubmit, onBack }: EmailGateProps) {
             <button
               type="button"
               onClick={onBack}
-              className="text-xs font-bold uppercase tracking-[0.18em] transition-opacity hover:opacity-60"
+              className="min-h-[44px] flex items-center text-xs font-bold uppercase tracking-[0.18em] transition-opacity hover:opacity-60 px-2"
               style={{ color: "var(--muted)" }}
             >
               &larr; Back

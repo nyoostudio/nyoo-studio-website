@@ -31,12 +31,29 @@ const INITIAL_STATE: AuditState = {
 
 export function AuditApp() {
   const [state, setState] = useState<AuditState>(INITIAL_STATE);
+  const [announcement, setAnnouncement] = useState("");
 
   useEffect(() => {
     const el = document.getElementById("audit-step-heading");
     if (el && typeof (el as HTMLElement).focus === "function") {
       (el as HTMLElement).focus({ preventScroll: true });
       window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+  }, [state.screen, state.currentPillar, state.currentQ]);
+
+  useEffect(() => {
+    const msgs: Partial<Record<AuditState["screen"], string>> = {
+      platforms: "Step 1: Choose your platforms.",
+      "email-gate": "Audit complete. Enter your email to view results.",
+      generating: "Generating your results.",
+      results: "Your audit results are ready.",
+    };
+    if (state.screen === "questions") {
+      setAnnouncement(
+        `Pillar ${state.currentPillar + 1} of 4, question ${state.currentQ + 1} of 5.`
+      );
+    } else {
+      setAnnouncement(msgs[state.screen] ?? "");
     }
   }, [state.screen, state.currentPillar, state.currentQ]);
 
@@ -169,50 +186,61 @@ export function AuditApp() {
     setState(INITIAL_STATE);
   }, []);
 
-  switch (state.screen) {
-    case "landing":
-      return <LandingScreen onStart={handleStart} />;
+  function renderScreen() {
+    switch (state.screen) {
+      case "landing":
+        return <LandingScreen onStart={handleStart} />;
 
-    case "platforms":
-      return (
-        <PlatformSelector
-          selected={state.platforms}
-          onBack={handlePlatformsBack}
-          onContinue={handlePlatformsContinue}
-        />
-      );
+      case "platforms":
+        return (
+          <PlatformSelector
+            selected={state.platforms}
+            onBack={handlePlatformsBack}
+            onContinue={handlePlatformsContinue}
+          />
+        );
 
-    case "questions":
-      if (!currentQuestion) return null;
-      return (
-        <QuestionStep
-          key={currentQuestion.id}
-          question={currentQuestion}
-          currentPillar={state.currentPillar}
-          currentQ={state.currentQ}
-          selected={state.answers[currentQuestion.id]}
-          onAnswer={handleAnswer}
-          onBack={handleBack}
-          onNext={handleNext}
-        />
-      );
+      case "questions":
+        if (!currentQuestion) return null;
+        return (
+          <QuestionStep
+            key={currentQuestion.id}
+            question={currentQuestion}
+            currentPillar={state.currentPillar}
+            currentQ={state.currentQ}
+            selected={state.answers[currentQuestion.id]}
+            onAnswer={handleAnswer}
+            onBack={handleBack}
+            onNext={handleNext}
+          />
+        );
 
-    case "email-gate":
-      return <EmailGate onSubmit={handleEmailSubmit} onBack={handleEmailBack} />;
+      case "email-gate":
+        return <EmailGate onSubmit={handleEmailSubmit} onBack={handleEmailBack} />;
 
-    case "generating":
-      return <GeneratingScreen />;
+      case "generating":
+        return <GeneratingScreen />;
 
-    case "results":
-      if (!state.scores || !state.actionItems) return null;
-      return (
-        <ResultsScreen
-          scores={state.scores}
-          actionItems={state.actionItems}
-          firstName={state.email.firstName}
-          submitFailed={state.submitStatus === "failed"}
-          onRestart={handleRestart}
-        />
-      );
+      case "results":
+        if (!state.scores || !state.actionItems) return null;
+        return (
+          <ResultsScreen
+            scores={state.scores}
+            actionItems={state.actionItems}
+            firstName={state.email.firstName}
+            submitFailed={state.submitStatus === "failed"}
+            onRestart={handleRestart}
+          />
+        );
+    }
   }
+
+  return (
+    <>
+      <div role="status" aria-live="polite" className="sr-only">
+        {announcement}
+      </div>
+      {renderScreen()}
+    </>
+  );
 }

@@ -12,12 +12,10 @@ export function Header() {
 
   return (
     <header
-      className="fixed top-0 left-0 right-0 z-[100] text-white"
-      style={{ background: 'rgba(8,8,8,0.88)', backdropFilter: 'blur(12px)', WebkitBackdropFilter: 'blur(12px)', borderBottom: '1px solid var(--rule)' }}
+      className="fixed top-0 left-0 right-0 z-[100] bg-soft-black/[0.88] text-white"
+      style={{ backdropFilter: "blur(12px)", WebkitBackdropFilter: "blur(12px)", borderBottom: "1px solid var(--rule)" }}
     >
-      <div
-        className="mx-auto flex max-w-[1200px] items-center justify-between px-6 py-4"
-      >
+      <div className="mx-auto flex max-w-[1200px] items-center justify-between px-6 py-4">
         {/* Logo */}
         <Link href="/" className="hover:opacity-80 transition-opacity duration-300">
           <Image
@@ -31,7 +29,7 @@ export function Header() {
         </Link>
 
         {/* Desktop nav */}
-        <Nav className="hidden md:flex" />
+        <Nav className="hidden md:flex" aria-label="Primary" />
 
         {/* Desktop CTA */}
         <div className="hidden md:block">
@@ -48,6 +46,7 @@ export function Header() {
           className="flex md:hidden flex-col gap-1.5 p-1"
           aria-label={menuOpen ? "Close menu" : "Open menu"}
           aria-expanded={menuOpen}
+          aria-controls="mobile-menu"
           onClick={() => setMenuOpen((o) => !o)}
         >
           <span
@@ -70,22 +69,31 @@ export function Header() {
 
       {/* Mobile menu */}
       <div
-        className={`md:hidden overflow-hidden transition-all duration-400 ease-out ${
-          menuOpen ? "max-h-[400px] opacity-100" : "max-h-0 opacity-0"
-        }`}
+        id="mobile-menu"
+        className="md:hidden grid"
+        style={{
+          gridTemplateRows: menuOpen ? "1fr" : "0fr",
+          opacity: menuOpen ? 1 : 0,
+          transition: "grid-template-rows 0.4s ease-out, opacity 0.4s ease-out",
+        }}
+        aria-hidden={!menuOpen}
+        {...(!menuOpen ? { inert: true } : {})}
       >
-        <div className="border-t border-white/10 bg-soft-black/90 backdrop-blur-xl px-6 py-8 flex flex-col gap-6">
-          <Nav
-            className="flex-col items-start gap-6"
-            onLinkClick={closeMenu}
-          />
-          <Link
-            href="/audit"
-            onClick={closeMenu}
-            className="inline-flex items-center justify-center bg-red px-5 py-2 text-sm font-bold tracking-wide text-white transition-all duration-300 hover:bg-red/90 hover:shadow-lg hover:shadow-red/20"
-          >
-            Start Audit
-          </Link>
+        <div className="overflow-hidden">
+          <div className="border-t border-white/10 bg-soft-black/90 backdrop-blur-xl px-6 py-8 flex flex-col gap-6">
+            <Nav
+              className="flex-col items-start gap-6"
+              aria-label="Mobile"
+              onLinkClick={closeMenu}
+            />
+            <Link
+              href="/audit"
+              onClick={closeMenu}
+              className="inline-flex items-center justify-center bg-red px-5 py-2 text-sm font-bold tracking-wide text-white transition-all duration-300 hover:bg-red/90 hover:shadow-lg hover:shadow-red/20"
+            >
+              Start Audit
+            </Link>
+          </div>
         </div>
       </div>
     </header>
