@@ -19,6 +19,12 @@ export async function POST(req: NextRequest) {
   if (typeof email !== "string" || !EMAIL_REGEX.test(email)) {
     return NextResponse.json({ error: "Valid email is required" }, { status: 400 });
   }
+  if (name.trim().length > 200) {
+    return NextResponse.json({ error: "Name is too long" }, { status: 400 });
+  }
+  if (email.trim().length > 254) {
+    return NextResponse.json({ error: "Email is too long" }, { status: 400 });
+  }
 
   const apiKey = process.env.NOTION_API_KEY;
   const dbId = process.env.NOTION_WAITLIST_DB_ID;
