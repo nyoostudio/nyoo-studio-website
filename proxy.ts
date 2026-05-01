@@ -1,6 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
 
 export function proxy(request: NextRequest) {
+  if (process.env.NODE_ENV !== "production" && !process.env.PREVIEW_SECRET) {
+    console.warn("[proxy] PREVIEW_SECRET is not set — preview bypass is disabled");
+  }
+
   const secret = process.env.PREVIEW_SECRET;
   const cookieValue = request.cookies.get("preview_bypass")?.value;
 
@@ -19,6 +23,7 @@ export function proxy(request: NextRequest) {
       httpOnly: true,
       sameSite: "lax",
       path: "/",
+      secure: process.env.NODE_ENV === "production",
     });
     return response;
   }
