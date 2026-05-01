@@ -97,7 +97,6 @@ export function ActionItemCard({ title, body, icon, index }: ActionItemCardProps
   return (
     <article
       className="glass-card-static relative grid grid-cols-[auto_1fr] gap-5 p-6 md:p-7"
-      style={{ borderLeft: "2px solid var(--red)" }}
     >
       <div
         className="flex items-center justify-center w-11 h-11 rounded-full"

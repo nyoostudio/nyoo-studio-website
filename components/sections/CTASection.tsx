@@ -28,9 +28,7 @@ export function CTASection({
       style={
         isGradient
           ? {
-              background: "linear-gradient(135deg, #0D0A09 0%, #111a3a 55%, #1B44D8 100%)",
-              backgroundSize: "200% 200%",
-              animation: "gradient-shift 8s ease infinite",
+              background: "radial-gradient(ellipse at 80% 50%, rgba(27,68,216,0.22) 0%, transparent 60%), #0D0A09",
             }
           : undefined
       }
@@ -62,7 +60,6 @@ export function CTASection({
         <Link
           href={ctaHref}
           className="inline-flex shrink-0 items-center justify-center bg-red text-white px-8 py-4 text-base font-bold tracking-wide transition-all duration-300 hover:bg-red/90 hover:-translate-y-1 hover:shadow-xl hover:shadow-red/25"
-          style={{ animation: "pulse-glow 3s ease-in-out infinite" }}
         >
           {ctaLabel}
         </Link>

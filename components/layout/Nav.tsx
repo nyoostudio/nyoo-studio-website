@@ -12,11 +12,12 @@ const links = [
 interface NavProps {
   className?: string;
   onLinkClick?: () => void;
+  "aria-label"?: string;
 }
 
-export function Nav({ className, onLinkClick }: NavProps) {
+export function Nav({ className, onLinkClick, "aria-label": ariaLabel }: NavProps) {
   return (
-    <nav className={cn("flex items-center gap-8", className)}>
+    <nav aria-label={ariaLabel} className={cn("flex items-center gap-8", className)}>
       {links.map(({ label, href }) => (
         <Link
           key={href}

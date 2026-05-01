@@ -33,7 +33,6 @@ export function PricingCard({
     >
       {badge && (
         <span className="absolute -top-3 left-8 bg-red px-3 py-1 text-xs font-bold uppercase tracking-widest text-white shadow-lg shadow-red/20"
-          style={{ animation: "pulse-glow 3s ease-in-out infinite" }}
         >
           {badge}
         </span>
