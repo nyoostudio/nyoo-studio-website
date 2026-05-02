@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 
 export function proxy(request: NextRequest) {
   if (process.env.NODE_ENV !== "production" && !process.env.PREVIEW_SECRET) {
-    console.warn("[proxy] PREVIEW_SECRET is not set — preview bypass is disabled");
+    console.warn("[middleware] PREVIEW_SECRET is not set — preview bypass is disabled");
   }
 
   const secret = process.env.PREVIEW_SECRET;
@@ -28,10 +28,10 @@ export function proxy(request: NextRequest) {
     return response;
   }
 
-  // Block — rewrite to maintenance page (URL stays the same for the visitor)
+  // Block — redirect to maintenance page
   const url = request.nextUrl.clone();
   url.pathname = "/maintenance";
-  return NextResponse.rewrite(url);
+  return NextResponse.redirect(url);
 }
 
 export const config = {

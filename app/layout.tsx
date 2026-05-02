@@ -72,7 +72,7 @@ export default function RootLayout({
         </svg>
         <LocalBusinessJsonLd />
         <Header />
-        <main id="main-content" className="pt-[72px] perspective-wrap">{children}</main>
+        <main id="main-content" className="pt-[72px]">{children}</main>
         <Footer />
         <Analytics />
       </body>

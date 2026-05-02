@@ -1,5 +1,14 @@
 import { NextRequest, NextResponse } from "next/server";
-import { Client } from "@notionhq/client";
+
+// Using dynamic import to handle Turbopack resolution issues on Windows
+let NotionClient: any = null;
+async function getNotionClient(apiKey: string) {
+  if (!NotionClient) {
+    const { Client } = await import("@notionhq/client");
+    NotionClient = Client;
+  }
+  return new NotionClient({ auth: apiKey });
+}
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -35,7 +44,7 @@ export async function POST(req: NextRequest) {
   }
 
   try {
-    const notion = new Client({ auth: apiKey });
+    const notion = await getNotionClient(apiKey);
     await notion.pages.create({
       parent: { database_id: dbId },
       properties: {
@@ -50,9 +59,13 @@ export async function POST(req: NextRequest) {
         },
       },
     });
-  } catch (err) {
+  } catch (err: any) {
     console.error("Notion write failed:", err);
-    return NextResponse.json({ error: "Server error" }, { status: 500 });
+    return NextResponse.json({ 
+      error: "Server error", 
+      details: err?.message || "Unknown error",
+      code: err?.code
+    }, { status: 500 });
   }
 
   return NextResponse.json({ ok: true });

@@ -30,10 +30,11 @@ export function Footer() {
           {/* Logo */}
           <Link href="/" className="hover:opacity-80 transition-opacity duration-300">
             <Image
-              src="/images/nyoo studio logo white.png"
+              src="/images/nyoo-logo-horizontal-white.png"
               alt="Nyoo Studio"
-              width={36}
-              height={36}
+              width={140}
+              height={40}
+              style={{ width: "140px", height: "auto" }}
             />
           </Link>
 
