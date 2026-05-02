@@ -19,10 +19,10 @@ export function Header() {
         {/* Logo */}
         <Link href="/" className="hover:opacity-80 transition-opacity duration-300">
           <Image
-            src="/images/nyoo logo type horizontal white cropped.png"
+            src="/images/nyoo-logo-horizontal-white.png"
             alt="Nyoo Studio"
             width={150}
-            height={150}
+            height={40}
             priority
             className="transition-opacity duration-300"
           />
@@ -50,19 +50,16 @@ export function Header() {
           onClick={() => setMenuOpen((o) => !o)}
         >
           <span
-            className={`block h-0.5 w-6 bg-white transition-all duration-300 ease-out ${
-              menuOpen ? "translate-y-2 rotate-45" : ""
-            }`}
+            className={`block h-0.5 w-6 bg-white transition-all duration-300 ease-out ${menuOpen ? "translate-y-2 rotate-45" : ""
+              }`}
           />
           <span
-            className={`block h-0.5 w-6 bg-white transition-all duration-300 ease-out ${
-              menuOpen ? "opacity-0 scale-x-0" : ""
-            }`}
+            className={`block h-0.5 w-6 bg-white transition-all duration-300 ease-out ${menuOpen ? "opacity-0 scale-x-0" : ""
+              }`}
           />
           <span
-            className={`block h-0.5 w-6 bg-white transition-all duration-300 ease-out ${
-              menuOpen ? "-translate-y-2 -rotate-45" : ""
-            }`}
+            className={`block h-0.5 w-6 bg-white transition-all duration-300 ease-out ${menuOpen ? "-translate-y-2 -rotate-45" : ""
+              }`}
           />
         </button>
       </div>
