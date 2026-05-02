@@ -36,5 +36,5 @@ export function proxy(request: NextRequest) {
 
 export const config = {
   // Exclude Next.js internals, API routes, the maintenance page itself, and static assets
-  matcher: ["/((?!_next|api|maintenance|favicon\\.ico|icon\\.svg).*)"],
+  matcher: ["/((?!_next|api|maintenance|images|favicon\\.ico|icon\\.svg).*)"],
 };

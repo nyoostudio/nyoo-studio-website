@@ -11,6 +11,18 @@ async function getNotionClient(apiKey: string) {
 }
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const RECAPTCHA_SECRET = process.env.RECAPTCHA_SECRET_KEY!;
+const SCORE_THRESHOLD = 0.5;
+
+async function verifyRecaptchaToken(token: string): Promise<boolean> {
+  const res = await fetch("https://www.google.com/recaptcha/api/siteverify", {
+    method: "POST",
+    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+    body: `secret=${RECAPTCHA_SECRET}&response=${token}`,
+  });
+  const data = (await res.json()) as { success: boolean; score: number };
+  return data.success && data.score >= SCORE_THRESHOLD;
+}
 
 export async function POST(req: NextRequest) {
   let body: Record<string, unknown>;
@@ -20,19 +32,41 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Invalid request" }, { status: 400 });
   }
 
-  const { name, email } = body;
+  const { name, email, agreement, token } = body;
 
+  // Basic validation
   if (typeof name !== "string" || !name.trim()) {
     return NextResponse.json({ error: "Name is required" }, { status: 400 });
   }
   if (typeof email !== "string" || !EMAIL_REGEX.test(email)) {
     return NextResponse.json({ error: "Valid email is required" }, { status: 400 });
   }
+  if (!agreement) {
+    return NextResponse.json({ error: "Privacy agreement is required" }, { status: 400 });
+  }
+  if (typeof token !== "string" || !token) {
+    return NextResponse.json({ error: "Security check missing" }, { status: 400 });
+  }
+
+  // Length checks
   if (name.trim().length > 200) {
     return NextResponse.json({ error: "Name is too long" }, { status: 400 });
   }
   if (email.trim().length > 254) {
     return NextResponse.json({ error: "Email is too long" }, { status: 400 });
+  }
+
+  // reCAPTCHA verification
+  let valid: boolean;
+  try {
+    valid = await verifyRecaptchaToken(token);
+  } catch (err) {
+    console.error("reCAPTCHA verification failed:", err);
+    return NextResponse.json({ error: "Security verification failed" }, { status: 500 });
+  }
+
+  if (!valid) {
+    return NextResponse.json({ error: "Security check failed. Please try again." }, { status: 400 });
   }
 
   const apiKey = process.env.NOTION_API_KEY;

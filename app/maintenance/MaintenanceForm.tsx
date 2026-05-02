@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useRecaptcha } from "@/hooks/useRecaptcha";
 
 type Status = "idle" | "loading" | "success" | "error";
 
@@ -16,19 +17,37 @@ const srOnly: React.CSSProperties = {
 export function MaintenanceForm() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
+  const [agreement, setAgreement] = useState(false);
   const [status, setStatus] = useState<Status>("idle");
   const [errorMsg, setErrorMsg] = useState("");
+  const { executeRecaptcha } = useRecaptcha();
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
+    if (!agreement) {
+      setErrorMsg("You must agree to the Privacy Act Statement.");
+      setStatus("error");
+      return;
+    }
+
     setStatus("loading");
     setErrorMsg("");
+
+    let token: string;
+    try {
+      token = await executeRecaptcha("waitlist_submit");
+    } catch (err) {
+      console.error("reCAPTCHA error:", err);
+      setErrorMsg("Security check failed. Please try again.");
+      setStatus("error");
+      return;
+    }
 
     try {
       const res = await fetch("/api/waitlist-new", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, email }),
+        body: JSON.stringify({ name, email, agreement, token }),
       });
 
       if (res.ok) {
@@ -58,7 +77,7 @@ export function MaintenanceForm() {
           You&apos;re on the list.
         </p>
       ) : (
-        <form onSubmit={handleSubmit} style={{ width: "100%", display: "flex", flexDirection: "column", gap: "12px" }}>
+        <form onSubmit={handleSubmit} style={{ width: "100%", display: "flex", flexDirection: "column", gap: "16px" }}>
           <div style={{ position: "relative" }}>
             <label htmlFor="maintenance-name" style={srOnly}>Your name</label>
             <input
@@ -101,6 +120,31 @@ export function MaintenanceForm() {
               }}
             />
           </div>
+
+          <div style={{ display: "flex", alignItems: "flex-start", gap: "10px", textAlign: "left" }}>
+            <input
+              id="privacy-agreement"
+              type="checkbox"
+              checked={agreement}
+              onChange={(e) => setAgreement(e.target.checked)}
+              required
+              style={{ marginTop: "4px", cursor: "pointer" }}
+            />
+            <label 
+              htmlFor="privacy-agreement" 
+              style={{ 
+                fontFamily: "var(--font-body)", 
+                fontSize: "12px", 
+                color: "var(--cream)", 
+                opacity: 0.7,
+                cursor: "pointer",
+                lineHeight: "1.4"
+              }}
+            >
+              I agree to the Privacy Act Statement and consent to receive updates about Nyoo Studio.
+            </label>
+          </div>
+
           {status === "error" && (
             <p role="alert" style={{ color: "var(--red)", fontFamily: "var(--font-body)", fontSize: "13px" }}>
               {errorMsg}

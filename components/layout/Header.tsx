@@ -19,10 +19,10 @@ export function Header() {
         {/* Logo */}
         <Link href="/" className="hover:opacity-80 transition-opacity duration-300">
           <Image
-            src="/images/nyoo logo type horizontal white cropped.png"
+            src="/images/nyoo-logo-horizontal-white.png"
             alt="Nyoo Studio"
             width={150}
-            height={150}
+            height={40}
             priority
             className="transition-opacity duration-300"
           />

@@ -39,7 +39,7 @@ export default function MaintenancePage() {
       >
         <div style={{ marginBottom: "40px" }}>
           <Image
-            src="/images/nyoo logo type horizontal white.png"
+            src="/images/nyoo-logo-type-horizontal-white.png"
             alt="Nyoo Studio"
             width={200}
             height={60}
