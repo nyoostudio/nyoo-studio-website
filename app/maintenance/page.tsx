@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { GrainOverlay } from "@/components/ui/GrainOverlay";
 import { MaintenanceForm } from "./MaintenanceForm";
+import { SiteAccessForm } from "./SiteAccessForm";
 import Image from "next/image";
 
 export const metadata: Metadata = {
@@ -19,7 +20,8 @@ export default function MaintenancePage() {
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        overflow: "hidden",
+        overflowY: "auto",
+        padding: "32px 0",
       }}
     >
       <GrainOverlay opacity={0.10} />
@@ -94,6 +96,7 @@ export default function MaintenancePage() {
         </p>
 
         <MaintenanceForm />
+        <SiteAccessForm />
       </div>
     </div>
   );
